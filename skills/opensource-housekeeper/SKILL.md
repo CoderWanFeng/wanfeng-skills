@@ -26,6 +26,38 @@ description: "零基础用户的一站式开源管家：既能「发布」本地
 4. **失败兜底**：push 失败时给具体重试方案，不让用户卡住。
 5. **零假设**：不假设用户已有任何平台账号，不假设用户配过 SSH。
 6. **安全提示**：PAT 不让用户明文发到对话里，让用户自己保管。
+7. **教学式失败处理**：每条报错按「原文 + 人话 + 根因 + 3 步 + 兜底」5 段写，绝不甩原文。
+8. **主动诊断**：在动手前先做 5 项检查，不要等用户问「为什么不行」。
+
+---
+
+## 🐣 Step -1 · 小白入门（可选，遇到术语时引用）
+
+> **不强制念给用户听**。当用户表现出不懂（比如问「SSH 是啥」「commit 什么意思」），**主动**把对应术语的人话解释念出来。
+> 完整 15 个概念在 [reference/beginner-glossary.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/beginner-glossary.md)。
+
+**最常用的 7 个**（对话里高频出现）：
+
+| 术语 | 人话（≤30 字） |
+|---|---|
+| 仓库 Repository | 「网上的一个文件夹，装着你整个项目」 |
+| 提交 Commit | 「给代码拍一张'快照'，附上文字说明改了啥」 |
+| 分支 Branch | 「同一条时间线上岔出去的小路，可以分开改东西最后合并」 |
+| 远程 Remote | 「代码在网上的备份地址」 |
+| SSH Key | 「你家门钥匙，让 GitHub 知道你是你」 |
+| PAT (Personal Access Token) | 「临时通行证，比密码安全，可以随时撤销」 |
+| `.gitignore` | 「黑名单，告诉 Git 哪些文件不要管」 |
+
+**使用方式**：
+
+```
+用户：「SSH 是啥？」
+AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是你。
+       我等下要帮你生成一把（一次性），贴到 GitHub 账号里，
+       以后 push 都不用再输密码。」
+```
+
+> 详细 15 个概念 + 比喻 + 常见误解：[reference/beginner-glossary.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/beginner-glossary.md)
 
 ---
 
@@ -77,6 +109,72 @@ description: "零基础用户的一站式开源管家：既能「发布」本地
 ## Step 1 · 询问账号 & 仓库情况（必须先问！）
 
 > **仅当 Step 0 确认是「发布」才执行此步**。
+
+### Step 0.5 · 场景识别（可选，但强烈推荐）
+
+> **目的**：根据项目类型给用户最合适的 .gitignore + README 模板。
+> 4 种场景的完整模板在 [reference/scenario-templates.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md)。
+
+**对话**：
+
+```
+在我引导你之前，先问一个事：
+
+你这次推的项目主要是哪种？
+
+1. ⭐ 写代码的（网页 / APP / 工具脚本 / 配置文件）
+   → 走「代码项目」模板
+
+2. 写文档/笔记的（学习笔记 / 电子书 / 手册 / wiki）
+   → 走「文档项目」模板
+
+3. 图片 / 设计稿 / 摄影集（.jpg .png .psd .ai）
+   → 走「素材项目」模板
+
+4. 配置文件 / dotfiles（.vimrc .zshrc .gitconfig）
+   → 走「配置项目」模板
+
+5. 教程 / 书 / 课程资料（chapters / lessons / slides）
+   → 走「教程项目」模板
+
+6. 我也不确定（看目录自动判断）
+   → AI 自动识别
+
+回复数字即可。
+```
+
+| 回答 | 下一步 |
+|---|---|
+| 1（代码） | 走默认代码模板（package.json / requirements.txt 等） |
+| 2（文档） | 走 [scenario-templates.md#场景 1](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
+| 3（素材） | 走 [scenario-templates.md#场景 2](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
+| 4（dotfiles） | 走 [scenario-templates.md#场景 3](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
+| 5（教程） | 走 [scenario-templates.md#场景 4](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
+| 6（自动） | AI 看目录标志性文件自动判断 |
+
+**自动识别规则**（回答 6 时 AI 自己跑）：
+
+```bash
+# 看目录里有什么标志性文件
+ls -la "{项目路径}" | head -30
+
+# 判断
+if [ -f "package.json" ] || [ -f "requirements.txt" ] || [ -f "go.mod" ]; then
+  echo "代码项目"
+elif ls *.md 2>/dev/null | head -1 > /dev/null; then
+  echo "文档项目"
+elif ls *.jpg *.png *.psd 2>/dev/null | head -1 > /dev/null; then
+  echo "素材项目"
+elif [ -f ".vimrc" ] || [ -f ".zshrc" ] || [ -f ".gitconfig" ]; then
+  echo "配置项目"
+fi
+```
+
+> **不要把场景识别强加给用户**。用户如果嫌烦，回「随便」或「默认」即可跳过。
+
+---
+
+### Step 1 主体 · 询问账号 & 仓库
 
 **问**（一次性问清楚账号 + 仓库，避免来回拉扯）：
 
@@ -450,56 +548,92 @@ git push -u origin main
 > - 开源协议可选 `MIT` / `Apache-2.0`（如果勾了 license，平台会自动生成，会和本地冲突 → 跳过）
 > - 「使用 Readme 文件初始化仓库」**不要勾**
 
-### 5.3 失败处理
+### 5.3 失败处理（5 段式：原文 + 人话 + 为什么 + 3 步 + 兜底）
+
+> **统一格式**：每个失败处理都按这个 5 段式写，绝不直接甩原文报错。
+> 完整 12 类报错的翻译在 [reference/error-decoder.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/error-decoder.md)。
 
 **失败场景一：认证失败**
 ```
-错误：Permission denied (publickey)
-原因：SSH Key 没配对，或没加到平台
-解决：
-1. 我帮你再复制一次公钥
-2. 去 {平台 settings/keys} 检查是否已添加
-3. 测试：ssh -T git@{host}
-4. 成功会显示：Hi {用户名}! You've been successfully authenticated
+【报错】Permission denied (publickey)
+【人话】「GitHub 不认识你家门钥匙」
+【为什么】你电脑里的 SSH 公钥没贴到平台，或者平台那边没保存
+【解决】
+  1. 我帮你再复制一次公钥：pbcopy < ~/.ssh/id_ed25519.pub
+     （这句是「把钥匙重新放到剪贴板」）
+  2. 去 {平台 settings/keys} 检查是不是已添加（有时保存失败）
+     - GitHub: https://github.com/settings/keys
+     - AtomGit: https://atomgit.com/settings/keys
+     - Gitee: https://gitee.com/settings/ssh
+  3. 测一下连接：ssh -T git@{github.com / atomgit.com / gitee.com}
+     看到 Hi {用户名}! You've been successfully authenticated 就 OK 了
+【兜底】改用 HTTPS+PAT 方式（最简单，不用配 SSH）
 ```
 
 **失败场景二：远程有 README（冲突）**
 ```
-错误：Updates were rejected because the remote contains work that you do not have locally
-原因：你在网站上勾了 "Add README"
-解决（二选一）：
-1. ⭐ 推荐：删掉网站仓库重建（这次别勾 README）
-2. 强制合并：
-   git pull origin main --allow-unrelated-histories
-   git push -u origin main
+【报错】Updates were rejected because the remote contains work that you do not have locally
+【人话】「网上有你没的改动（可能你勾了 Add README）」
+【为什么】你在网站建仓库时勾了 "Add a README file"，网站自动生成了一个 README，
+        和你本地的代码「不是同一个爸爸」，Git 不让直接合并
+【解决】（二选一）
+  ⭐ 推荐：删掉网站仓库重建
+    1. 去 https://github.com/{用户名}/{仓库}/settings
+    2. 滚到最下面 Danger Zone → Delete this repository
+    3. 重新 Create，这次 ⭐ 三个勾都不选
+
+  备选：强制合并（⚠️ 会保留网上的 README）
+    1. 先拉下来：git pull origin main --allow-unrelated-histories
+       （这句是「把网上的东西先拿过来」）
+    2. 可能要手动解决冲突
+    3. 再推：git push -u origin main
+【兜底】如果两个方案都搞不定，把网站上的 README 内容复制下来粘到本地 README.md
+       然后再 push（这样两边内容一致了）
 ```
 
 **失败场景三：网络不通（推 GitHub 卡住）**
 ```
-错误：Failed to connect to github.com port 443
-原因：当前网络到 GitHub 不通
-解决：
-1. 检查代理 / VPN
-2. 换平台：你之前说有 {XX 账号}，我帮你切到 {XX}，30 秒搞定
+【报错】Failed to connect to github.com port 443: Connection timed out
+【人话】「连不上 GitHub 的 443 端口（被网络拦了）」
+【为什么】当前网络到 GitHub 不通，常见原因：防火墙 / 没开代理 / 国内 ISP 屏蔽
+【解决】
+  1. 检查有没有代理：echo $HTTPS_PROXY（macOS/Linux）
+     如果有，git 要设代理：git config --global http.proxy $HTTPS_PROXY
+  2. 检查防火墙：sudo pfctl -d（macOS 临时关）
+  3. 换平台：你之前说有 {XX 账号}，我帮你切到 {XX}，30 秒搞定
+     （这也是为什么我一开始就问你有没有别的平台账号）
+【兜底】改用国内镜像 / 切到 AtomGit（国产生态，国内最稳）
 ```
 
 **失败场景四：项目太大 / 误传大文件**
 ```
-错误：remote: error: File xxx is 100 MB
-原因：误提交了大文件
-解决：
-1. 检查 .gitignore 是否包含 node_modules/、dist/、.env
-2. 已提交的话：git rm --cached xxx
-3. 重新 add + commit + push
+【报错】remote: error: File xxx is 100.00 MB; this exceeds GitHub's file size limit
+【人话】「网上仓库不让单个文件超过 100MB（怕撑爆服务器）」
+【为什么】你这个项目里有大文件没被 .gitignore 排除，比如 node_modules/、视频、压缩包
+【解决】
+  1. 看哪些文件太大：du -sh */ | sort -h
+     （这句是「找目录里最大的东西」，按从小到大排）
+  2. 把它们加进 .gitignore：echo "node_modules/" >> .gitignore
+     （这句是「告诉 Git 这个文件夹不要管」）
+  3. 如果已经误传了：git rm --cached xxx
+     （这句是「从 Git 记忆里删掉这个文件，但本地文件还在」）
+     然后：git commit -m "remove large files" && git push
+【兜底】用 Git LFS（大文件专用工具）：
+  git lfs install
+  git lfs track "*.psd" "*.zip"
+  git add .gitattributes
 ```
 
 **失败场景五：Gitee 实名认证（国内特有）**
 ```
-错误：仓库创建失败 / push 失败，要求实名
-原因：Gitee 2022 后要求实名才能创建公开仓库
-解决：
-1. 引导用户去 https://gitee.com/profile/account_information 实名
-2. 或换 AtomGit（不需要实名）
+【报错】仓库创建失败 / push 失败，要求实名
+【人话】「Gitee 规定创建公开仓库必须先实名认证」
+【为什么】2022 年起 Gitee 的合规要求，没实名不让建 Public 仓库
+【解决】
+  1. 去 https://gitee.com/profile/account_information 实名（身份证+人脸）
+  2. 等 5 分钟审核通过
+  3. 重新创建仓库
+【兜底】换 AtomGit（不需要实名）或先建 Private 仓库（Private 不需要实名）
 ```
 
 ---
@@ -595,6 +729,154 @@ URL_WITH_TOKEN=$(echo "$URL" | sed "s|https://|https://{PAT}@|")
 ```
 
 > 提示：如果是 Private 仓库，必须有访问权限 + 凭证。
+
+---
+
+## Step A2.5 · 主动环境检查清单（动手前必跑）
+
+> **目的**：在尝试 clone 之前，先把环境问题排查清楚。避免 clone 超时后被动地报错。
+> 解决任务 3「缺高阶诊断」的痛点。
+
+**对话**（先告诉用户「我要先做 5 项检查」再跑）：
+
+```
+动手前我先做 5 项检查（10 秒内能跑完），如果有问题我会主动告诉你 + 给你方案。
+不需要你做任何事。
+```
+
+**5 项检查脚本**（AI 帮用户跑）：
+
+```bash
+echo "===== [1/5] DNS 解析 ====="
+nslookup github.com 2>&1 | head -5 || echo "❌ DNS 不通"
+
+echo ""
+echo "===== [2/5] 端口连通（443） ====="
+nc -zv github.com 443 2>&1 | head -3 || echo "❌ 443 端口不通"
+
+echo ""
+echo "===== [3/5] 代理检测 ====="
+echo "HTTPS_PROXY=$HTTPS_PROXY"
+echo "HTTP_PROXY=$HTTP_PROXY"
+echo "ALL_PROXY=$ALL_PROXY"
+[ -n "$HTTPS_PROXY" ] && echo "✅ 用了代理" || echo "⚠️ 没设代理"
+
+echo ""
+echo "===== [4/5] HTTPS 协议测试 ====="
+curl -sI -o /dev/null -w "HTTP %{http_code} 耗时 %{time_total}s\n" --max-time 8 https://github.com
+
+echo ""
+echo "===== [5/5] 国内镜像可达性 ====="
+curl -sI -o /dev/null -w "ghfast.top: HTTP %{http_code} 耗时 %{time_total}s\n" --max-time 5 https://ghfast.top
+```
+
+**结果解读 + 自动处理**：
+
+| 检查结果 | AI 动作 |
+|---|---|
+| 5 项全 ✅ | 「环境正常，开拉！」 |
+| DNS 不通（[1] 失败） | 推荐换 DNS（223.5.5.5 / 8.8.8.8）或用镜像 |
+| 443 不通（[2] 失败） | 测 SSH 端口 22，能通就走 `ssh.github.com:443` |
+| 有代理（[3]） | 提醒「你开着代理，clone 会走代理。如果 git 慢，可能要设 `git config --global http.proxy $HTTPS_PROXY`」 |
+| GitHub 慢（[4] > 3s） | 自动切到 `ghfast.top` 镜像 |
+| 镜像也不通（[5] 失败） | 切到 AtomGit / Gitee（这两个对国内网络更友好） |
+
+**对话模板**：
+
+```
+[几秒后]
+✅ DNS 通了
+✅ 443 端口通
+⚠️ GitHub 响应 4.2 秒（慢）
+✅ ghfast.top 镜像 OK
+
+建议用 ghfast.top 镜像拉（速度比 GitHub 快 10 倍）。
+原项目内容完全一样，只是帮你加速。
+```
+
+---
+
+## Step A2.6 · GitHub 拉不动？高级诊断树
+
+> **触发条件**：Step A2.5 检查后 GitHub 仍不可用，或用户报「git clone 超时 / 报错」。
+> 解决任务 3「实际帮助性和准确性也受到影响，agent 仅提供了笼统的解决方案」。
+
+**对话**：
+
+```
+GitHub 这边有点问题，我按这个诊断树一步步找原因（30 秒）：
+```
+
+**诊断树**（AI 按症状走对应分支）：
+
+```
+GitHub 拉不动？按症状查：
+
+├── [症状 A] 一直转圈，最后报 `Connection timed out`
+│   │
+│   ├── 1. DNS 通了没？ → nslookup github.com
+│   │   ├── ❌ 不通 → 换 DNS（系统网络设置里改成 223.5.5.5 / 8.8.8.8）
+│   │   └── ✅ 通
+│   │       │
+│   │       ├── 2. 端口呢？→ nc -zv github.com 22 / 443
+│   │       │   ├── 22 通 443 不通 → 走 443 端口（编辑 ~/.ssh/config）
+│   │       │   │   ```
+│   │       │   │   Host github.com
+│   │       │   │     HostName ssh.github.com
+│   │       │   │     Port 443
+│   │       │   │   ```
+│   │       │   ├── 全不通 → 用国内镜像 ghfast.top
+│   │       │   └── 全通 → 检查代理（echo $HTTPS_PROXY）
+│   │
+│   └── 💡 兜底：直接用镜像 `https://ghfast.top/https://github.com/xxx/yyy`
+│
+├── [症状 B] `Connection refused`
+│   └── 防火墙 / 代理拦截
+│       1. 检查：echo $HTTPS_PROXY / $HTTP_PROXY
+│       2. 关防火墙测：sudo pfctl -d（macOS）
+│       3. 切换网络（WiFi ↔ 4G）
+│
+├── [症状 C] `401 Unauthorized`
+│   └── PAT 失效或权限不够
+│       1. 去 https://github.com/settings/tokens 看 token 还在不在
+│       2. 检查 scope 是否勾了 `repo` / `read:packages`
+│       3. 重新生成一个（覆盖旧的）
+│
+├── [症状 D] `Repository not found`
+│   └── 项目私有 / 拼错地址 / 没有访问权限
+│       1. 让用户去 https://github.com/{owner}/{repo} 看仓库是否存在
+│       2. 是不是私人仓库？→ 加 PAT 或换 SSH
+│       3. 是不是组织仓库？→ 你是不是这个 org 的成员
+│
+├── [症状 E] `SSL certificate problem`
+│   └── 证书过期 / 系统时间不对
+│       1. 校准时间：sudo sntp -sS time.apple.com（macOS）
+│       2. 升 ca-certificates：brew install ca-certificates
+│       3. 临时绕过（不推荐）：GIT_SSL_NO_VERIFY=1 git clone ...
+│
+└── [症状 F] `RPC failed; curl 56 GnuTLS recv error`
+    └── 网络抖动 / TLS 握手失败
+        1. 调大缓存：git config --global http.postBuffer 524288000
+        2. 重试：再跑一次 git clone
+        3. 换协议：git:// 或 ssh://
+```
+
+**对话模板**（找到根因后告诉用户）：
+
+```
+按你「一直转圈」的症状，我做了诊断：
+
+1. DNS 通了（能解析到 IP）
+2. 443 端口不通（被防火墙挡了）
+3. SSH 端口 22 通的
+
+👉 走 SSH 协议能绕开 443 的拦截。
+我把你的 clone URL 换成 SSH 格式：
+   原：https://github.com/xxx/yyy
+   新：git@github.com:xxx/yyy.git
+
+重试一次，能拉了就 OK。
+```
 
 ---
 
@@ -825,50 +1107,79 @@ head -200 README.md
 
 ---
 
-## 主线 B · 失败处理
+## 主线 B · 失败处理（5 段式）
+
+> **统一格式**：和主线 A 一致，每条按「原文 + 人话 + 为什么 + 3 步 + 兜底」写。
 
 **失败 1：clone 超时**
 ```
-错误：fatal: unable to access ... Connection timed out
-解决：换镜像（自动转到 ghfast.top）
+【报错】fatal: unable to access '...' Connection timed out
+【人话】「连不上 GitHub 仓库（被网络拦了）」
+【为什么】当前网络到 GitHub 不通
+【解决】
+  1. 我已经探测好了，自动转到国内镜像 ghfast.top
+     （把 https://github.com 替换成 https://ghfast.top/https://github.com）
+  2. 如果镜像也不通，去 Step A2.6 走「高级诊断树」
+  3. 还不行就换平台：到 AtomGit / Gitee 找找同名项目
+【兜底】手动指定代理：git clone -c http.proxy=$HTTPS_PROXY {url}
 ```
 
 **失败 2：依赖装失败（Node）**
 ```
-错误：npm ERR! peer dep missing / gyp ERR! stack Error
-解决：
-1. 检查 Node 版本（要求 ≥ 18，旧版升一下）
-2. 删 node_modules + package-lock.json 重装：
-   rm -rf node_modules package-lock.json
-   npm install
-3. 还不行就去看 GitHub Issues 搜报错关键词
+【报错】npm ERR! peer dep missing / gyp ERR! stack Error
+【人话】「装依赖时版本对不上（要嘛 Node 太旧，要嘛包之间打架）」
+【为什么】项目要求的 Node 版本 ≥ 18，你电脑的可能太旧；或依赖之间版本冲突
+【解决】
+  1. 查 Node 版本：node --version（≥ 18 才算新）
+     旧的话用 nvm 升：nvm install 18 && nvm use 18
+     （这句是「装一个 Node 版本管理工具」）
+  2. 删干净重装：
+     rm -rf node_modules package-lock.json
+     npm install
+     （这两句是「把之前装的扔掉，重新装一遍」）
+  3. 还不行就加 --legacy-peer-deps 绕开严格检查：
+     npm install --legacy-peer-deps
+【兜底】去 GitHub Issues 搜报错关键词（很可能别人遇到过）
 ```
 
 **失败 3：依赖装失败（Python）**
 ```
-错误：pip install 失败 / 版本冲突
-解决：
-1. 用虚拟环境（已自动创建 .venv）
-2. 升 pip：pip install --upgrade pip
-3. 看项目要求的 Python 版本：cat .python-version 或 README
+【报错】pip install 失败 / ERROR: Could not find a version that satisfies...
+【人话】「装 Python 包时找不到对应版本」
+【为什么】可能是 Python 版本不对 / pip 太旧 / 包名拼错
+【解决】
+  1. 用虚拟环境（已自动创建 .venv，你直接激活就行）：
+     source .venv/bin/activate
+     （这句是「进入一个独立的 Python 环境」）
+  2. 升 pip：pip install --upgrade pip
+  3. 看项目要求的 Python 版本：cat .python-version 或 cat README.md | head -50
+【兜底】用 conda 环境（更稳）：conda create -n myenv python=3.11 && conda activate myenv
 ```
 
 **失败 4：启动报错**
 ```
-错误：Error: listen EADDRINUSE: address already in use :::3000
-原因：3000 端口被占
-解决：
-1. 找占用进程：lsof -i :3000
-2. 杀掉：kill -9 {PID}
-3. 或改启动端口（看项目文档）
+【报错】Error: listen EADDRINUSE: address already in use :::3000
+【人话】「3000 端口被别的程序占着，你这个项目起不来」
+【为什么】上次的服务没关掉 / 有别的项目也用 3000
+【解决】
+  1. 找占用进程：lsof -i :3000（macOS/Linux）
+     （这句是「列出谁在用 3000 端口」）
+  2. 杀掉：kill -9 {PID}（把上面的进程号填进去）
+  3. 或者改启动端口（找项目里的 .env 或 config 改 PORT=3001）
+【兜底】重启电脑（最暴力但 100% 有效）
 ```
 
 **失败 5：搜不到项目**
 ```
-解决：
-1. 让用户补充描述（一个字搜不到很正常）
-2. 让用户给一篇文章链接，AI 提取项目名
-3. 换关键词（同义词、缩写）
+【报错】（没真正报错，就是搜不到结果）
+【人话】「我搜了 {平台}，没找到叫 {关键词} 的项目」
+【为什么】可能记错名字 / 项目在另一个平台 / 项目被删了
+【解决】
+  1. 让我再试一次（可能临时搜不到）：重新搜
+  2. 换关键词：同义词、缩写、官方名
+     比如「通义千问」→ 「qwen」、「QwenLM」
+  3. 给我一篇文章链接，我从文章里提取项目名
+【兜底】直接去 https://github.com/trending 看热门项目猜你想找哪个
 ```
 
 ---
