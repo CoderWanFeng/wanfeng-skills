@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 2 · 第七节 · 一图选型对比表</title>
+<style>
+  :root{--ink:#0b0d12;--paper:#f3efe6;--paper-2:#ece6d6;
+        --accent:#ff5b1f;--accent-2:#ffd23f;--green:#6cd76b;--blue:#0a3bd9;
+        --grid:rgba(11,13,18,.06);}
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  .canvas{width:1200px;height:675px;background:var(--paper);position:relative;overflow:hidden;
+          color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);color:var(--paper);
+          display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+          font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+
+  .title{position:absolute;left:40px;top:74px;z-index:3;}
+  .title .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .title .h{font-size:46px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-top:4px;}
+  .title .h em{font-style:normal;background:var(--ink);color:var(--paper);padding:0 10px;}
+
+  .matrix{position:absolute;left:40px;right:40px;top:200px;bottom:60px;
+          background:#fff;border:2.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+          display:grid;grid-template-columns:200px repeat(5,1fr);
+          grid-template-rows: 70px repeat(6, 1fr);font-size:13px;z-index:3;}
+  .matrix .cell{border-right:1.5px solid rgba(11,13,18,.15);
+                border-bottom:1.5px solid rgba(11,13,18,.15);
+                padding:8px 10px;display:flex;align-items:center;justify-content:center;
+                font-weight:700;text-align:center;line-height:1.25;}
+  .matrix .cell.label{justify-content:flex-start;background:var(--paper-2);font-weight:900;}
+  .matrix .head{background:var(--ink);color:var(--paper);font-size:14px;letter-spacing:.5px;}
+  .matrix .head.first{background:var(--accent);}
+  .matrix .pick{background:var(--accent-2);}
+  .matrix .row-strong{background:rgba(108,215,107,.25);}
+  .matrix .cell:nth-last-child(-n+6){border-bottom:none;}
+  .matrix .cell:nth-child(6n){border-right:none;}
+
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+</style>
+</head>
+<body>
+<article class="canvas" data-composition-id="fig-02-comparison-matrix" data-width="1200" data-height="675">
+  <div class="topbar">
+    <div class="left"><span class="dot"></span>SECTION 7 · 一图选型</div>
+    <div class="right">COMPARISON MATRIX</div>
+  </div>
+
+  <div class="title">
+    <div class="kicker">PICK ONE · ONE GLANCE</div>
+    <div class="h">5 个插件，<em>6 个维度</em>，一眼比完</div>
+  </div>
+
+  <section class="matrix">
+    <!-- header row -->
+    <div class="cell head first">维度</div>
+    <div class="cell head">HyperFrames</div>
+    <div class="cell head">Remotion</div>
+    <div class="cell head">HeyGen</div>
+    <div class="cell head">videocut</div>
+    <div class="cell head">video-use</div>
+
+    <!-- row 1: 类型 -->
+    <div class="cell label">类型</div>
+    <div class="cell">框架</div>
+    <div class="cell">框架</div>
+    <div class="cell">SaaS</div>
+    <div class="cell">剪辑 Agent</div>
+    <div class="cell">剪辑 Agent</div>
+
+    <!-- row 2: 原料 -->
+    <div class="cell label">原料</div>
+    <div class="cell">HTML</div>
+    <div class="cell">React</div>
+    <div class="cell">文字脚本</div>
+    <div class="cell">视频文件</div>
+    <div class="cell">视频文件</div>
+
+    <!-- row 3: 适合 -->
+    <div class="cell label">适合</div>
+    <div class="cell pick">创意动画</div>
+    <div class="cell pick">批量生成</div>
+    <div class="cell pick">数字人</div>
+    <div class="cell pick">中文口播</div>
+    <div class="cell pick">混剪</div>
+
+    <!-- row 4: 学习曲线 -->
+    <div class="cell label">学习曲线</div>
+    <div class="cell">★</div>
+    <div class="cell">★★</div>
+    <div class="cell">★</div>
+    <div class="cell">★</div>
+    <div class="cell">★</div>
+
+    <!-- row 5: 批量能力 -->
+    <div class="cell label">批量能力</div>
+    <div class="cell">★★</div>
+    <div class="cell" style="background:var(--green);">★★★</div>
+    <div class="cell">★★</div>
+    <div class="cell">★</div>
+    <div class="cell">★★</div>
+
+    <!-- row 6: 要出镜吗 -->
+    <div class="cell label">要出镜吗</div>
+    <div class="cell">不要</div>
+    <div class="cell">不要</div>
+    <div class="cell" style="background:var(--green);font-weight:900;">不要！</div>
+    <div class="cell">要（口播）</div>
+    <div class="cell">要（素材）</div>
+  </section>
+
+  <div class="footer">FIG.02 · §7 · COMPARISON</div>
+</article>
+</body>
+</html>

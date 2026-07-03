@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 5 · 总结 · 5 种创作姿势</title>
+<style>
+  :root{--ink:#0b0d12;--paper:#f3efe6;--paper-2:#ece6d6;
+        --accent:#ff5b1f;--accent-2:#ffd23f;--green:#6cd76b;--blue:#0a3bd9;
+        --grid:rgba(11,13,18,.06);}
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  .canvas{width:1200px;height:675px;background:var(--paper);position:relative;overflow:hidden;
+          color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);color:var(--paper);
+          display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+          font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+
+  /* 巨大 5 + 5 种姿势卡 */
+  .left{position:absolute;left:0;top:46px;bottom:0;width:430px;
+        display:flex;flex-direction:column;justify-content:center;padding-left:50px;}
+  .left .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .left .num{font-family:"Helvetica Neue","Inter",system-ui,sans-serif;
+             font-size:340px;line-height:.78;font-weight:900;letter-spacing:-10px;
+             color:var(--ink);position:relative;margin-top:6px;}
+  .left .num::after{content:"5";position:absolute;left:6px;top:6px;color:var(--accent);z-index:-1;}
+  .left .sub{margin-top:14px;font-size:24px;font-weight:900;line-height:1.3;}
+  .left .sub .hl{background:var(--ink);color:var(--paper);padding:0 8px;}
+
+  .right{position:absolute;left:430px;right:40px;top:120px;bottom:80px;
+         display:grid;grid-template-rows:repeat(5,1fr);gap:12px;}
+  .pose{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+        box-shadow:5px 5px 0 var(--ink);padding:0 22px;
+        display:grid;grid-template-columns:50px 200px 1fr;align-items:center;gap:18px;}
+  .pose .icon{width:40px;height:40px;border-radius:8px;background:var(--paper-2);
+              border:2px solid var(--ink);display:grid;place-items:center;}
+  .pose .verb{font-size:22px;font-weight:900;letter-spacing:-0.3px;}
+  .pose .tool{font-size:14px;font-weight:800;color:var(--accent);text-align:right;}
+  .pose:nth-child(1){background:var(--accent-2);}
+  .pose:nth-child(5){background:var(--green);}
+
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+</style>
+</head>
+<body>
+<article class="canvas" data-composition-id="fig-05-summary-five-postures" data-width="1200" data-height="675">
+  <div class="topbar">
+    <div class="left"><span class="dot"></span>总结 · 5 种创作姿势</div>
+    <div class="right">FIVE POSTURES</div>
+  </div>
+
+  <section class="left">
+    <div class="kicker">SUMMARY</div>
+    <div class="num">5</div>
+    <div class="sub">五种<span class="hl">创作姿势</span><br/>5 个插件，5 种对应</div>
+  </section>
+
+  <section class="right">
+    <div class="pose">
+      <div class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="8,7 4,12 8,17"/><polyline points="16,7 20,12 16,17"/></svg>
+      </div>
+      <div class="verb">创意动画</div>
+      <div class="tool">→ HyperFrames</div>
+    </div>
+    <div class="pose">
+      <div class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="1.8">
+          <circle cx="12" cy="12" r="2.2" fill="#0b0d12"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+        </svg>
+      </div>
+      <div class="verb">批量生产</div>
+      <div class="tool">→ Remotion</div>
+    </div>
+    <div class="pose">
+      <div class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="9" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/>
+        </svg>
+      </div>
+      <div class="verb">不想出镜</div>
+      <div class="tool">→ HeyGen</div>
+    </div>
+    <div class="pose">
+      <div class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.5" y2="15.5"/>
+          <line x1="20" y1="20" x2="8.5" y2="8.5"/>
+        </svg>
+      </div>
+      <div class="verb">中文口播</div>
+      <div class="tool">→ videocut-skills</div>
+    </div>
+    <div class="pose">
+      <div class="icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="9" height="6" rx="1"/>
+          <rect x="14" y="5" width="7" height="6" rx="1"/>
+          <rect x="3" y="13" width="6" height="6" rx="1"/>
+          <rect x="11" y="13" width="10" height="6" rx="1"/>
+        </svg>
+      </div>
+      <div class="verb">多素材混剪</div>
+      <div class="tool">→ video-use</div>
+    </div>
+  </section>
+
+  <div class="footer">FIG.05 · §11 · SUMMARY</div>
+</article>
+</body>
+</html>

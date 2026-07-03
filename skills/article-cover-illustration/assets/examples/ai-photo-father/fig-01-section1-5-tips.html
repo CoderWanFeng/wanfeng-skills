@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 1 · 第一节 · 5 个提示词诀窍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* 16:9 文章插图 · HyperFrames 风格 */
+  :root {
+    --ink:#0b0d12; --paper:#f3efe6; --paper-2:#ece6d6;
+    --accent:#ff5b1f; --accent-2:#ffd23f; --green:#6cd76b; --blue:#0a3bd9;
+    --grid: rgba(11,13,18,0.06);
+  }
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  }
+  .canvas{
+    width:1200px; height:675px; background:var(--paper); color:var(--ink);
+    position:relative; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .canvas::before{
+    content:""; position:absolute; inset:0;
+    background-image:radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+    background-size:22px 22px; z-index:0;
+  }
+
+  /* 顶栏 46px */
+  .topbar{
+    position:absolute; left:0; right:0; top:0; height:46px;
+    background:var(--ink); color:var(--paper);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 28px; font-size:13px; font-weight:700; letter-spacing:4px; z-index:5;
+  }
+  .topbar .left{display:flex; align-items:center; gap:12px;}
+  .topbar .left .dot{
+    width:9px; height:9px; background:var(--accent); border-radius:50%;
+    box-shadow:0 0 0 4px rgba(255,91,31,.18);
+  }
+  .topbar .right{color:var(--accent-2);}
+
+  /* 标题区 */
+  .title{position:absolute; left:40px; top:78px; z-index:3;}
+  .title .kicker{
+    font-size:14px; font-weight:800; letter-spacing:3px; color:var(--accent);
+  }
+  .title .h{
+    font-size:48px; font-weight:900; letter-spacing:-1px; line-height:1.15; margin-top:6px;
+  }
+  .title .h em{
+    font-style:normal; background:var(--ink); color:var(--paper); padding:0 12px;
+  }
+
+  /* 角标：人人都能用 */
+  .badge{
+    position:absolute; z-index:6; left:40px; top:200px;
+    background:var(--blue); color:#fff;
+    font-weight:900; font-size:14px; letter-spacing:2px;
+    padding:6px 12px; transform:rotate(-4deg);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+
+  /* 5 卡片横排 */
+  .cards{
+    position:absolute; left:32px; right:32px; top:240px;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:12px; z-index:3;
+  }
+  .card{
+    background:#fff; border:2.5px solid var(--ink); border-radius:12px;
+    padding:14px 12px 14px 12px; box-shadow:4px 4px 0 var(--ink);
+    position:relative; display:flex; flex-direction:column; gap:8px;
+    min-height:380px;
+    justify-content:flex-start;
+  }
+  .card::after{
+    /* 用伪元素填充底部空白，让卡片看起来不那么空 */
+    content:""; display:block; height:6px;
+  }
+  .card .num{
+    position:absolute; right:-8px; top:-14px;
+    width:32px; height:32px;
+    background:var(--accent); color:#fff; font-weight:900; font-size:16px;
+    display:grid; place-items:center; border-radius:50%;
+    border:2.5px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  }
+  .card .name{
+    font-size:15px; font-weight:900; letter-spacing:-0.3px; line-height:1.15;
+    min-height:40px;
+  }
+  .card .name em{
+    font-style:normal; background:var(--accent-2); padding:0 3px;
+  }
+  .card .example{
+    background:var(--paper-2); padding:7px 8px; border-radius:5px;
+    font-size:10.5px; line-height:1.45; color:rgba(11,13,18,0.85);
+    font-weight:600;
+  }
+  .card .example .ok{color:#0a3bd9; font-weight:900;}
+  .card .example .no{color:var(--accent); text-decoration:line-through; opacity:0.7;}
+  /* 高亮卡片（核心诀窍） */
+  .card.hot{background:var(--accent-2);}
+  .card.hot .example{background:#fff;}
+  /* 关键技巧卡片（绿色推荐） */
+  .card.pick{background:var(--green);}
+  .card.pick .example{background:#fff;}
+
+  /* 底部脚注 */
+  .footer{
+    position:absolute; left:40px; bottom:18px;
+    font-size:12px; letter-spacing:2px;
+    color:rgba(11,13,18,.55); font-weight:700; z-index:4;
+  }
+</style>
+</head>
+<body>
+  <article class="canvas" data-composition-id="fig-01-5-tips"
+           data-width="1200" data-height="675">
+
+    <div class="topbar">
+      <div class="left"><span class="dot"></span>SECTION 1 · 提示词工程</div>
+      <div class="right">FIG.01 · 5 TIPS</div>
+    </div>
+
+    <div class="title">
+      <div class="kicker">5 个提示词诀窍</div>
+      <div class="h">人人都能 <em>改一行</em> 出大片</div>
+    </div>
+
+    <div class="badge">人人都能用</div>
+
+    <section class="cards">
+      <!-- 诀窍 1: 场景具体 -->
+      <div class="card">
+        <div class="num">1</div>
+        <div class="name">场景<em>越具体</em></div>
+        <div class="example">
+          <span class="no">穿越回去玩</span><br>
+          <span class="ok">98 年夏天的院子<br>藤椅 · 吃西瓜</span>
+        </div>
+      </div>
+
+      <!-- 诀窍 2: 做什么动作 -->
+      <div class="card">
+        <div class="num">2</div>
+        <div class="name">告诉他<em>做什么动作</em></div>
+        <div class="example">
+          <span class="no">回到过去</span><br>
+          <span class="ok">95 年春节<br>他抱着 5 岁的我放鞭炮</span>
+        </div>
+      </div>
+
+      <!-- 诀窍 3: 穿着什么 -->
+      <div class="card hot">
+        <div class="num">3</div>
+        <div class="name">让他<em>穿着</em>什么</div>
+        <div class="example">
+          <span class="ok">85 年 · 白衬衫蓝裤子<br>教我骑二八杠自行车</span>
+        </div>
+      </div>
+
+      <!-- 诀窍 4: 摄影词汇 -->
+      <div class="card">
+        <div class="num">4</div>
+        <div class="name">摄影<em>词汇</em>是魔法</div>
+        <div class="example">
+          <span class="ok">复古暖色调<br>电影胶片质感 · 浅景深</span>
+        </div>
+      </div>
+
+      <!-- 诀窍 5: 保留原图特征（高亮推荐） -->
+      <div class="card pick">
+        <div class="num">5</div>
+        <div class="name">让 AI <em>保留</em>原图</div>
+        <div class="example">
+          <span class="ok">保留爸爸照片的<br>背景 · 动作 · 五官</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">FIG.01 · §1 · 5 TIPS · 人人都能用</div>
+  </article>
+</body>
+</html>

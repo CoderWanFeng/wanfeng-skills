@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 4 · 第九节 · 组合 1：知识博主完整流程</title>
+<style>
+  :root{--ink:#0b0d12;--paper:#f3efe6;--paper-2:#ece6d6;
+        --accent:#ff5b1f;--accent-2:#ffd23f;--green:#6cd76b;--blue:#0a3bd9;
+        --grid:rgba(11,13,18,.06);}
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  .canvas{width:1200px;height:675px;background:var(--paper);position:relative;overflow:hidden;
+          color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);color:var(--paper);
+          display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+          font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+  .title{position:absolute;left:40px;top:74px;z-index:3;}
+  .title .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .title .h{font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1.18;margin-top:4px;}
+  .title .h em{font-style:normal;background:var(--ink);color:var(--paper);padding:0 10px;}
+
+  .pipeline{position:absolute;left:40px;right:40px;top:230px;
+            display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr 50px 1fr;
+            gap:0;align-items:center;z-index:3;}
+  .step{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+        padding:18px 16px;box-shadow:5px 5px 0 var(--ink);position:relative;
+        min-height:240px;display:flex;flex-direction:column;gap:8px;}
+  .step .num{position:absolute;left:-12px;top:-14px;width:36px;height:36px;background:var(--accent);
+             color:#fff;font-weight:900;font-size:16px;display:grid;place-items:center;
+             border-radius:50%;border:2.5px solid var(--ink);}
+  .step .ico{width:54px;height:54px;background:var(--paper-2);border:2px solid var(--ink);
+             border-radius:10px;display:grid;place-items:center;}
+  .step .name{font-size:17px;font-weight:900;letter-spacing:-0.3px;}
+  .step .role{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:1px;}
+  .step .desc{font-size:12px;color:rgba(11,13,18,.7);line-height:1.5;font-weight:600;}
+  .step.final{background:var(--green);}
+
+  .arrow{display:grid;place-items:center;font-size:30px;font-weight:900;color:var(--ink);}
+  .arrow svg{width:40px;height:30px;}
+
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+</style>
+</head>
+<body>
+<article class="canvas" data-composition-id="fig-04-combo-knowledge-blogger" data-width="1200" data-height="675">
+  <div class="topbar">
+    <div class="left"><span class="dot"></span>SECTION 9 · 组合 1</div>
+    <div class="right">KNOWLEDGE BLOGGER PIPELINE</div>
+  </div>
+
+  <div class="title">
+    <div class="kicker">COMBO #1 · 知识博主完整流程</div>
+    <div class="h">三个插件 <em>串成流水线</em>，一条片直接出</div>
+  </div>
+
+  <section class="pipeline">
+    <!-- step 1 -->
+    <div class="step">
+      <div class="num">1</div>
+      <div class="ico">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.5" y2="15.5"/>
+          <line x1="20" y1="20" x2="8.5" y2="8.5"/>
+        </svg>
+      </div>
+      <div class="role">CLEAN</div>
+      <div class="name">videocut-skills</div>
+      <div class="desc">剪掉中文口播的口误、停顿、重复句</div>
+    </div>
+    <div class="arrow">
+      <svg viewBox="0 0 40 30" fill="none" stroke="#0b0d12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="15" x2="34" y2="15"/><polyline points="26,7 36,15 26,23"/></svg>
+    </div>
+    <!-- step 2 -->
+    <div class="step">
+      <div class="num">2</div>
+      <div class="ico">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="8,7 4,12 8,17"/><polyline points="16,7 20,12 16,17"/>
+        </svg>
+      </div>
+      <div class="role">ANIMATE</div>
+      <div class="name">HyperFrames</div>
+      <div class="desc">生成知识卡片动画 / 转场 / 标题包装</div>
+    </div>
+    <div class="arrow">
+      <svg viewBox="0 0 40 30" fill="none" stroke="#0b0d12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="15" x2="34" y2="15"/><polyline points="26,7 36,15 26,23"/></svg>
+    </div>
+    <!-- step 3 -->
+    <div class="step">
+      <div class="num">3</div>
+      <div class="ico">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="9" height="6" rx="1"/>
+          <rect x="14" y="5" width="7" height="6" rx="1"/>
+          <rect x="3" y="13" width="6" height="6" rx="1"/>
+          <rect x="11" y="13" width="10" height="6" rx="1"/>
+        </svg>
+      </div>
+      <div class="role">STITCH</div>
+      <div class="name">video-use</div>
+      <div class="desc">视频 + 卡片 + 字幕 全混在一起</div>
+    </div>
+    <div class="arrow">
+      <svg viewBox="0 0 40 30" fill="none" stroke="#0b0d12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="15" x2="34" y2="15"/><polyline points="26,7 36,15 26,23"/></svg>
+    </div>
+    <!-- step 4 -->
+    <div class="step final">
+      <div class="num" style="background:var(--ink);">✓</div>
+      <div class="ico" style="background:#fff;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="6,4 6,20 20,12" fill="#ff5b1f"/>
+        </svg>
+      </div>
+      <div class="role">DELIVER</div>
+      <div class="name">最终成片</div>
+      <div class="desc">一条完整、清爽、有动画的知识视频</div>
+    </div>
+  </section>
+
+  <div class="footer">FIG.04 · §9 · COMBO #1</div>
+</article>
+</body>
+</html>

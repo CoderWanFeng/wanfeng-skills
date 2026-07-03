@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 1 · 第三节 · Headroom vs 其他 4 种方案</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* 16:9 文章插图 · HyperFrames 风格 · 对比矩阵 */
+  :root{--ink:#0b0d12;--paper:#f3efe6;--paper-2:#ece6d6;
+        --accent:#ff5b1f;--accent-2:#ffd23f;--green:#6cd76b;--blue:#0a3bd9;
+        --grid:rgba(11,13,18,.06);}
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  .canvas{width:1200px;height:675px;background:var(--paper);position:relative;overflow:hidden;
+          color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+
+  /* 顶栏 */
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);color:var(--paper);
+          display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+          font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+
+  /* 标题 */
+  .title{position:absolute;left:40px;top:74px;z-index:3;}
+  .title .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .title .h{font-size:46px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-top:4px;}
+  .title .h em{font-style:normal;background:var(--ink);color:var(--paper);padding:0 10px;}
+  .title .h .save{color:var(--accent);}
+
+  /* 矩阵 */
+  .matrix{position:absolute;left:40px;right:40px;top:200px;bottom:60px;
+          background:#fff;border:2.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+          display:grid;grid-template-columns:200px repeat(5,1fr);
+          grid-template-rows:55px repeat(5, 1fr);font-size:12.5px;z-index:3;}
+  .matrix .cell{border-right:1.5px solid rgba(11,13,18,.15);
+                border-bottom:1.5px solid rgba(11,13,18,.15);
+                padding:7px 8px;display:flex;align-items:center;justify-content:center;
+                font-weight:700;text-align:center;line-height:1.25;}
+  .matrix .cell.label{justify-content:flex-start;background:var(--paper-2);font-weight:900;font-size:13px;grid-column:1;}
+  .matrix .head{background:var(--ink);color:var(--paper);font-size:13px;letter-spacing:.5px;}
+  .matrix .head.first{background:var(--accent);}
+  /* 推荐列（Headroom，从第 2 列开始） */
+  .matrix .pick{background:var(--accent-2);font-weight:900;grid-column:2;}
+  /* 数据单元格的列位置：col 3, 4, 5, 6 */
+  .matrix .cell.col-3{grid-column:3;}
+  .matrix .cell.col-4{grid-column:4;}
+  .matrix .cell.col-5{grid-column:5;}
+  .matrix .cell.col-6{grid-column:6;}
+  /* 推荐行的全行底色（绿色淡） */
+  .matrix .row-good{background:rgba(108,215,107,.18);}
+  /* 失败/差劲行的全行底色（红色淡） */
+  .matrix .row-bad{background:rgba(255,91,31,.08);}
+
+  .matrix .cell:nth-last-child(-n+6){border-bottom:none;}
+  .matrix .cell:nth-child(6n){border-right:none;}
+
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+</style>
+</head>
+<body>
+  <article class="canvas" data-composition-id="fig-01-headroom-vs-others"
+           data-width="1200" data-height="675">
+    <div class="topbar">
+      <div class="left"><span class="dot"></span>SECTION 3 · 4 种方案对比</div>
+      <div class="right">FIG.01 · HEADROOM VS OTHERS</div>
+    </div>
+
+    <div class="title">
+      <div class="kicker">PICK ONE · ONE GLANCE</div>
+      <div class="h">4 种方案，<em>5 个维度</em>，<span class="save">一目了然</span></div>
+    </div>
+
+    <section class="matrix">
+      <!-- header row -->
+      <div class="cell head first">对比项</div>
+      <div class="cell head pick">Headroom</div>
+      <div class="cell head col-3">手动截断</div>
+      <div class="cell head col-4">换更便宜模型</div>
+      <div class="cell head col-5">升级上下文窗口</div>
+      <!-- col 6 header 留空（用隐藏占位保持 grid 行布局） -->
+      <div class="cell head col-6" style="visibility:hidden">-</div>
+
+      <!-- row 1: Token 降幅 -->
+      <div class="cell label">Token 降幅</div>
+      <div class="cell pick">60% ~ 95%</div>
+      <div class="cell col-3">30% ~ 50%</div>
+      <div class="cell col-4">50% ~ 70%</div>
+      <div class="cell col-5">0%（反而更多）</div>
+
+      <!-- row 2: 信息丢失 -->
+      <div class="cell label">信息丢失</div>
+      <div class="cell pick">可逆 · 原文保留</div>
+      <div class="cell col-3">不可逆</div>
+      <div class="cell col-4">不可控</div>
+      <div class="cell col-5">无</div>
+
+      <!-- row 3: 接入成本 -->
+      <div class="cell label">接入成本</div>
+      <div class="cell pick">一行命令</div>
+      <div class="cell col-3">手动操作</div>
+      <div class="cell col-4">改配置</div>
+      <div class="cell col-5">改配置</div>
+
+      <!-- row 4: 回答质量 -->
+      <div class="cell label">回答质量</div>
+      <div class="cell pick">持平或更好</div>
+      <div class="cell col-3">可能下降</div>
+      <div class="cell col-4">明显下降</div>
+      <div class="cell col-5">持平</div>
+
+      <!-- row 5: 适合场景 -->
+      <div class="cell label">适合场景</div>
+      <div class="cell pick">所有 AI 编码</div>
+      <div class="cell col-3">临时应急</div>
+      <div class="cell col-4">简单任务</div>
+      <div class="cell col-5">需要长上下文</div>
+    </section>
+
+    <div class="footer">FIG.01 · §3 · HEADROOM · 4 SOLUTIONS</div>
+  </article>
+</body>
+</html>

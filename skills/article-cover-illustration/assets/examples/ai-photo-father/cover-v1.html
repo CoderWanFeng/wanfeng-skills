@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>公众号封面 v1 · 父亲节穿越合影 · 3 步讲清图像生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* 公众号头条主封面 2.35:1 (900×383) · HyperFrames 风格 */
+  :root {
+    --w: 900px;
+    --h: 383px;
+    --ink: #0b0d12;
+    --paper: #f3efe6;
+    --paper-2: #ece6d6;
+    --accent: #ff5b1f;
+    --accent-2: #ffd23f;
+    --green: #6cd76b;
+    --blue: #0a3bd9;
+    --grid: rgba(11,13,18,0.06);
+  }
+  html, body { margin: 0; padding: 0; background: #1a1f2c; }
+  body {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  }
+  .cover {
+    width: var(--w); height: var(--h);
+    position: relative; overflow: hidden;
+    background: var(--paper); color: var(--ink);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    isolation: isolate;
+  }
+  .cover::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+    background-size: 18px 18px; z-index: 0;
+  }
+  .topbar {
+    position: absolute; left: 0; right: 0; top: 0; height: 36px;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px; z-index: 5;
+    font-size: 12px; font-weight: 700; letter-spacing: 4px;
+  }
+  .topbar .left { display: flex; align-items: center; gap: 10px; }
+  .topbar .left .dot {
+    width: 8px; height: 8px;
+    background: var(--accent); border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255,91,31,0.18);
+  }
+  .topbar .right { color: var(--accent-2); }
+
+  /* 主区 */
+  .stage {
+    position: absolute; left: 0; right: 0; top: 36px; bottom: 0;
+    display: grid; grid-template-columns: 360px 1fr; z-index: 2;
+  }
+  .hero {
+    position: relative; padding: 18px 0 0 36px;
+  }
+  .hero .kicker {
+    font-size: 14px; font-weight: 800; letter-spacing: 3px;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .hero .kicker em {
+    font-style: normal; background: var(--accent-2);
+    padding: 0 6px; border-radius: 3px;
+  }
+  /* 视觉锤：穿越（160px 汉字大数字） */
+  .hero .num {
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    font-size: 110px;
+    line-height: 0.85;
+    font-weight: 900;
+    letter-spacing: -4px;
+    color: var(--ink);
+    margin-top: 8px;
+    letter-spacing: 0;
+  }
+  .hero .num.cn {
+    font-size: 120px;
+    letter-spacing: 4px;
+    font-family: "PingFang SC", "Helvetica Neue", sans-serif;
+  }
+  .hero .num::after {
+    content: "穿越";
+    position: absolute; left: 6px; top: 6px;
+    color: var(--accent); z-index: -1;
+  }
+  .hero .num-cn::after { content: "TIME TRAVEL"; top: 8px; font-size: 14px; letter-spacing: 6px; font-weight: 900; }
+  .hero .sub {
+    margin-top: 10px;
+    font-size: 22px; font-weight: 900; line-height: 1.25;
+    letter-spacing: -0.3px; color: var(--ink);
+  }
+  .hero .sub .hl {
+    background: var(--ink); color: var(--paper);
+    padding: 0 8px;
+  }
+
+  /* 右：3 卡片流水线 */
+  .grid {
+    position: relative;
+    padding: 26px 28px 16px 18px;
+    display: grid; grid-template-columns: 1fr;
+    grid-auto-rows: 1fr; gap: 8px;
+  }
+  .item {
+    position: relative;
+    background: #fff; border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    padding: 6px 14px 6px 48px;
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: 3px 3px 0 var(--ink);
+    overflow: hidden;
+  }
+  .item .ico {
+    position: absolute; left: 8px; top: 50%;
+    transform: translateY(-50%);
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border-radius: 6px; background: var(--paper-2);
+  }
+  .item .step {
+    position: absolute; right: 8px; top: 50%;
+    transform: translateY(-50%);
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 10px; font-weight: 900; letter-spacing: 2px;
+    color: var(--accent); opacity: 0.7;
+  }
+  .item .name {
+    font-size: 16px; font-weight: 900;
+    letter-spacing: -0.2px; line-height: 1.1;
+  }
+  .item .role {
+    font-size: 11px; font-weight: 700;
+    color: rgba(11,13,18,0.6); letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  /* 中间卡片高亮（绿色） */
+  .item.pick {
+    background: var(--green);
+    color: var(--ink); border-color: var(--ink);
+  }
+  .item.pick .name { font-size: 17px; }
+  .item.pick .role { color: rgba(11,13,18,0.75); }
+  .item.pick .ico { background: #fff; }
+  .item.pick .step { color: var(--ink); opacity: 1; }
+
+  /* 角标 */
+  .picked-badge {
+    position: absolute; z-index: 6;
+    right: 16px; top: 46px;
+    background: var(--accent); color: #fff;
+    font-weight: 900; font-size: 12px;
+    letter-spacing: 2px; padding: 6px 10px;
+    transform: rotate(6deg);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  /* 底部脚注（隐私版：占位符） */
+  .footer {
+    position: absolute; left: 36px; bottom: 14px;
+    font-size: 11px; letter-spacing: 2px;
+    color: rgba(11,13,18,0.55); font-weight: 700;
+    z-index: 4;
+  }
+  .footer-account {
+    position: absolute; right: 36px; bottom: 14px;
+    font-size: 11px; letter-spacing: 2px;
+    color: rgba(11,13,18,0.55); font-weight: 700;
+    z-index: 4;
+  }
+</style>
+</head>
+<body>
+  <article class="cover"
+           data-composition-id="wechat-cover-ai-photo-father"
+           data-width="900"
+           data-height="383">
+
+    <div class="topbar">
+      <div class="left"><span class="dot"></span>AI · 图像生成 · 父亲节</div>
+      <div class="right">AIHOT · 2026-06</div>
+    </div>
+
+    <div class="picked-badge">3 分钟讲清</div>
+
+    <div class="stage">
+      <!-- 左：视觉锤 -->
+      <section class="hero">
+        <div class="kicker">3 步讲清 <em>图像生成</em></div>
+        <div class="num cn">穿越</div>
+        <div class="sub">AI 从<span class="hl">噪声</span>中<br/>长出合影</div>
+      </section>
+
+      <!-- 右：3 卡片流水线 -->
+      <section class="grid">
+        <!-- Step 1: Vision Encoder（切 patch → 数字） -->
+        <div class="item">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <div class="step">STEP 01</div>
+          <div class="name">Vision Encoder</div>
+          <div class="role">切 patch · 图转数字</div>
+        </div>
+
+        <!-- Step 2: Diffusion（高亮 - 核心步骤） -->
+        <div class="item pick">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="2" fill="#0b0d12"/>
+              <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
+              <circle cx="12" cy="12" r="8" stroke-dasharray="1 3"/>
+              <circle cx="12" cy="12" r="10" stroke-dasharray="1 5"/>
+            </svg>
+          </div>
+          <div class="step">STEP 02</div>
+          <div class="name">Diffusion 扩散模型</div>
+          <div class="role">从纯噪声 · 一步步去噪 30-50 步</div>
+        </div>
+
+        <!-- Step 3: 提示词工程 -->
+        <div class="item">
+          <div class="ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="step">STEP 03</div>
+          <div class="name">提示词工程</div>
+          <div class="role">5 个诀窍 · 人人都能用</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 底部脚注：左侧 = 系列期号 / 右侧 = 账号占位符 -->
+    <div class="footer">EP.01 · 3 STEPS · 1 PHOTO</div>
+    <div class="footer-account">&lt;账号名&gt; · &lt;slogan&gt;</div>
+  </article>
+</body>
+</html>

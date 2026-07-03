@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 3 · 第八节 · 决策树：我该用哪个？</title>
+<style>
+  :root{--ink:#0b0d12;--paper:#f3efe6;--paper-2:#ece6d6;
+        --accent:#ff5b1f;--accent-2:#ffd23f;--green:#6cd76b;--blue:#0a3bd9;
+        --grid:rgba(11,13,18,.06);}
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  .canvas{width:1200px;height:675px;background:var(--paper);position:relative;overflow:hidden;
+          color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);color:var(--paper);
+          display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+          font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+  .title{position:absolute;left:40px;top:74px;z-index:3;}
+  .title .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .title .h{font-size:46px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-top:4px;}
+  .title .h em{font-style:normal;background:var(--ink);color:var(--paper);padding:0 10px;}
+
+  .root{position:absolute;left:50%;top:200px;transform:translateX(-50%);
+        background:var(--ink);color:var(--paper);font-weight:900;font-size:18px;
+        padding:14px 22px;border-radius:30px;border:2.5px solid var(--ink);
+        box-shadow:5px 5px 0 var(--accent);z-index:4;}
+  .root::after{content:"?";color:var(--accent-2);margin-left:6px;}
+
+  .branches{position:absolute;left:40px;right:40px;top:300px;
+            display:grid;grid-template-columns:repeat(5,1fr);gap:14px;z-index:3;}
+  .branch{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+          padding:14px 12px;box-shadow:4px 4px 0 var(--ink);position:relative;
+          display:flex;flex-direction:column;gap:8px;min-height:240px;}
+  .branch .q{font-size:12.5px;font-weight:700;line-height:1.4;color:var(--ink);
+             min-height:60px;}
+  .branch .arrow{font-size:14px;font-weight:900;color:var(--accent);letter-spacing:1px;}
+  .branch .a{margin-top:auto;background:var(--accent-2);color:var(--ink);
+             font-weight:900;font-size:15px;padding:8px 10px;border:2px solid var(--ink);
+             border-radius:8px;text-align:center;line-height:1.2;}
+  .branch.fast .a{background:var(--green);}
+  /* 连接线（用伪元素从根节点向下延伸） */
+  .branch::before{content:"";position:absolute;left:50%;top:-30px;width:2px;height:30px;
+                  background:var(--ink);}
+
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+</style>
+</head>
+<body>
+<article class="canvas" data-composition-id="fig-03-decision-tree" data-width="1200" data-height="675">
+  <div class="topbar">
+    <div class="left"><span class="dot"></span>SECTION 8 · 决策树</div>
+    <div class="right">WHICH ONE TO PICK</div>
+  </div>
+
+  <div class="title">
+    <div class="kicker">DECISION TREE</div>
+    <div class="h">我，到底，<em>该用哪个</em>？</div>
+  </div>
+
+  <div class="root">你的需求是什么</div>
+
+  <section class="branches">
+    <div class="branch">
+      <div class="q">想做创意动画 / 知识卡片 / 产品宣传片</div>
+      <div class="arrow">→ 选</div>
+      <div class="a">HyperFrames</div>
+    </div>
+    <div class="branch">
+      <div class="q">想做批量化、参数化的系列视频</div>
+      <div class="arrow">→ 选</div>
+      <div class="a">Remotion</div>
+    </div>
+    <div class="branch">
+      <div class="q">不想出镜，但想做有"人"的视频</div>
+      <div class="arrow">→ 选</div>
+      <div class="a">HeyGen</div>
+    </div>
+    <div class="branch">
+      <div class="q">已经录了中文口播，要去口误/卡顿</div>
+      <div class="arrow">→ 选</div>
+      <div class="a">videocut-skills</div>
+    </div>
+    <div class="branch fast">
+      <div class="q">一堆杂素材：口播 + 录屏 + Vlog</div>
+      <div class="arrow">→ 选</div>
+      <div class="a">video-use</div>
+    </div>
+  </section>
+
+  <div class="footer">FIG.03 · §8 · DECISION TREE</div>
+</article>
+</body>
+</html>

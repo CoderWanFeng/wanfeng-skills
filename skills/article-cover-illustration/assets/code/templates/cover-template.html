@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>公众号封面 v2 · 5 个 Codex 视频插件选型</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* 公众号头条主封面 2.35:1 (900×383) */
+  :root {
+    --w: 900px;
+    --h: 383px;
+    --ink: #0b0d12;
+    --paper: #f3efe6;
+    --paper-2: #ece6d6;
+    --accent: #ff5b1f;     /* 安全橙 */
+    --accent-2: #ffd23f;   /* 柠檬黄 */
+    --green: #6cd76b;      /* 选中绿 */
+    --blue: #0a3bd9;       /* IKB */
+    --grid: rgba(11,13,18,0.06);
+  }
+
+  html, body { margin: 0; padding: 0; background: #1a1f2c; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  }
+
+  .cover {
+    width: var(--w);
+    height: var(--h);
+    position: relative;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    isolation: isolate;
+  }
+
+  /* 网格点阵背景 */
+  .cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+    background-size: 18px 18px;
+    z-index: 0;
+  }
+
+  /* 顶部黑色色条 */
+  .topbar {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 36px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    z-index: 5;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
+  .topbar .left { display: flex; align-items: center; gap: 10px; }
+  .topbar .left .dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255,91,31,0.18);
+  }
+  .topbar .right { color: var(--accent-2); }
+
+  /* 主区：左大数字 5 + 右插件清单 */
+  .stage {
+    position: absolute;
+    left: 0; right: 0; top: 36px; bottom: 0;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    z-index: 2;
+  }
+
+  /* 左：超大 5 + 文案 */
+  .hero {
+    position: relative;
+    padding: 18px 0 0 36px;
+  }
+  .hero .kicker {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hero .kicker em {
+    font-style: normal;
+    background: var(--accent-2);
+    padding: 0 6px;
+    border-radius: 3px;
+  }
+  .hero .num {
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    font-size: 280px;
+    line-height: 0.78;
+    font-weight: 900;
+    letter-spacing: -8px;
+    color: var(--ink);
+    position: relative;
+    margin-top: 6px;
+  }
+  .hero .num::after{
+    /* 给 5 加一抹安全橙描边 */
+    content: "5";
+    position: absolute;
+    left: 6px; top: 6px;
+    color: var(--accent);
+    z-index: -1;
+  }
+  .hero .sub {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+  }
+  .hero .sub .hl {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 8px;
+  }
+
+  /* 右：插件徽章列表 */
+  .grid {
+    position: relative;
+    padding: 22px 28px 16px 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 10px 12px;
+  }
+
+  .item {
+    position: relative;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 8px 10px 8px 46px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 3px 3px 0 var(--ink);
+    overflow: hidden;
+  }
+  .item .ico {
+    position: absolute;
+    left: 8px; top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--paper-2);
+  }
+  .item .name {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+  }
+  .item .role {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(11,13,18,0.6);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* 第 5 项是"决策"——跨整行，绿色 */
+  .item.pick {
+    grid-column: 1 / -1;
+    background: var(--green);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .item.pick .name { font-size: 16px; }
+  .item.pick .role { color: rgba(11,13,18,0.75); }
+  .item.pick .ico { background: #fff; }
+
+  /* 角标：选我 */
+  .picked-badge {
+    position: absolute;
+    z-index: 6;
+    right: 16px; top: 46px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 6px 10px;
+    transform: rotate(6deg);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  /* 底部脚注 */
+  .footer {
+    position: absolute;
+    left: 36px; bottom: 14px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(11,13,18,0.55);
+    font-weight: 700;
+    z-index: 4;
+  }
+</style>
+</head>
+<body>
+  <article class="cover"
+           data-composition-id="wechat-cover-v2"
+           data-width="900"
+           data-height="383">
+
+    <div class="topbar">
+      <div class="left"><span class="dot"></span>CODEX · VIDEO · PLUGINS</div>
+      <div class="right">2026 选型指南</div>
+    </div>
+
+    <div class="picked-badge">一图选型</div>
+
+    <div class="stage">
+      <!-- 左：大号 5 + 主标 -->
+      <section class="hero">
+        <div class="kicker">5 个 <em>Codex</em> 视频插件</div>
+        <div class="num">5</div>
+        <div class="sub">五种<span class="hl">创作姿势</span><br/>挑一个，先开剪</div>
+      </section>
+
+      <!-- 右：5 个插件徽章 -->
+      <section class="grid">
+        <!-- HyperFrames：HTML/动画 → 用胶卷+尖括号代表 -->
+        <div class="item">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="8,7 4,12 8,17"/>
+              <polyline points="16,7 20,12 16,17"/>
+            </svg>
+          </div>
+          <div class="name">HyperFrames</div>
+          <div class="role">HTML 写视频 · 创意动画</div>
+        </div>
+
+        <!-- Remotion：React 原子 -->
+        <div class="item">
+          <div class="ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="1.8">
+              <circle cx="12" cy="12" r="2.2" fill="#0b0d12"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+            </svg>
+          </div>
+          <div class="name">Remotion</div>
+          <div class="role">React 批量生产</div>
+        </div>
+
+        <!-- HeyGen：数字人头像 -->
+        <div class="item">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="9" r="4"/>
+              <path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/>
+            </svg>
+          </div>
+          <div class="name">HeyGen</div>
+          <div class="role">数字人 · 不出镜</div>
+        </div>
+
+        <!-- videocut-skills：剪刀 -->
+        <div class="item">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <line x1="20" y1="4" x2="8.5" y2="15.5"/>
+              <line x1="20" y1="20" x2="8.5" y2="8.5"/>
+            </svg>
+          </div>
+          <div class="name">videocut-skills</div>
+          <div class="role">中文口播 · 去口误</div>
+        </div>
+
+        <!-- video-use：多素材混剪 -->
+        <div class="item pick">
+          <div class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5"  width="9"  height="6"  rx="1"/>
+              <rect x="14" y="5" width="7"  height="6"  rx="1"/>
+              <rect x="3" y="13" width="6"  height="6"  rx="1"/>
+              <rect x="11" y="13" width="10" height="6"  rx="1"/>
+            </svg>
+          </div>
+          <div class="name">video-use · 多素材一键混剪</div>
+          <div class="role">Vlog / 录屏 / 口播 / 截图 缝成一条</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">EP.01 · 5 PLUGINS · 1 PICK</div>
+  </article>
+</body>
+</html>
