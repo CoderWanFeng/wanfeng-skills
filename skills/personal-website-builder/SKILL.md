@@ -14,6 +14,17 @@ description: "通过对话引导用户创建个人网站（博客/知识库/AI �
 3. **默认推荐**：对每个问题给出推荐选项（标注 ⭐），减少用户决策成本。
 4. **可自定义**：用户说"自定义 XXX"或自由输入时，按用户输入执行。
 5. **失败兜底**：任何一步失败（目录不存在、命令报错），都要清晰告知并给出下一步建议。
+6. **关键词识别**：用户第 1 轮可能跳过类型选择直接说需求。识别关键词后直接跳到对应分支的第 2 步：
+
+| 关键词 | 跳转到 |
+|--------|--------|
+| `hexo` / `博客` / `个人博客` / `写文章` | 类型 1 |
+| `vitepress` / `文档` / `知识库` / `教程` | 类型 2 |
+| `ai 导航` / `工具导航` / `导航站` | 类型 3 |
+| `作品集` / `portfolio` | 类型 4 |
+| `简历` / `resume` / `vcard` | 类型 5 |
+
+识别后先告诉用户「我理解你想做 XXX（类型 N），对吗？」获得确认后再继续。
 
 ---
 
@@ -140,34 +151,54 @@ AI 导航网站有 2 个推荐方案：
 
 > **强制约束**：作者名**不能预填任何具体的真实人物姓名**（这个 skill 是给所有人用的，任何预设的真人名/IP 信息都会污染用户）。如果用户不填，则用 `Your Name`（英文）/`你的名字`（中文）作为占位符，并在最终提示用户「作者名用了占位符，记得去 `_config.yml` 改成自己的」。
 
+**问题 4：GitHub 用户名**（仅博客/知识库/AI 导航需要）
+
+```
+你的 GitHub 用户名是？（用于社交链接、部署配置，可留空）
+例如：「your-name」
+```
+
+> 留空则跳过 GitHub 相关链接（VitePress 的 socialLinks、Hexo 的 social 字段都不生成）。**注意**：这里填的是 GitHub 用户名（英文 slug），不是作者中文名——避免 `https://github.com/张三` 这种坏 URL。
+
 ---
 
 ### 第 4 步：选择目标目录
 
+**核心约定**：本 skill 永远在一个**新建子目录**里建项目，不直接在用户指定目录里 init。这样：
+- 避免污染用户的现有目录
+- 项目边界清晰，方便删除/迁移
+
 **必须先获取当前工作目录**，然后让用户选择：
 
 ```
-你的网站要创建到哪个目录？
+你的网站要创建到哪个位置？
 
 当前工作目录是：`{当前工作目录}`
 
 可选方案：
 1. ⭐ 在当前目录下新建子目录（推荐：./my-website/）
 2. 在当前目录下新建自定义名字的子目录
-3. 指定一个绝对路径（必须存在或可创建）
+3. 指定一个绝对路径（必须存在或可创建），在该路径下再以网站名建子目录
 
 回复数字、目录名或绝对路径都行。
 ```
 
-**目录处理规则**：
+**目录处理规则**（统一为「最终项目根 = 子目录」）：
 
-1. 用户选 1：使用 `{当前工作目录}/my-website/`（如果已存在，自动加后缀 `-2`、`-3`...）
-2. 用户选 2：询问「子目录叫什么名字？」
-3. 用户选 3：用户给路径，先 `mkdir -p` 确保存在，再创建子目录（默认用网站名作为子目录）
+| 用户选择 | 最终项目根目录 |
+|---------|---------------|
+| 1 | `{当前工作目录}/my-website/`（已存在则加 `-2`、`-3`...） |
+| 2 | `{当前工作目录}/{用户指定子目录名}/` |
+| 3 | `{用户绝对路径}/{网站名 slug}/`（先 `mkdir -p` 用户路径，再在其下建以网站名命名的子目录） |
+
+> **执行阶段的 `{项目根目录}` = 上表算出的最终路径**。所有 npm init / hexo init / vitepress init 都在这个目录里跑。
 
 **路径校验规则**：
 - 不允许路径包含 `..`（防止越界）
 - 不允许路径是根目录 `/`
+- 不允许落在 `/System`、`/usr`、`/etc`、`~/Library` 等系统/用户核心目录
+- Windows 下额外禁止 `C:\Windows`、`C:\Program Files`
+- 最终项目根目录必须为空（hexo init / vitepress init 要求），否则加 `-2`、`-3` 后缀或提示用户清空
 - 必须能成功创建（用 `mkdir -p` 测试）
 
 ---
@@ -197,12 +228,15 @@ AI 导航网站有 2 个推荐方案：
 
 ### 通用步骤（所有类型）
 
-1. **进入目标目录**，如果没有就先创建：`mkdir -p "{目标目录}"`
-2. **根据类型执行对应的创建脚本**（见下方各类型的具体步骤）
-3. **生成 README.md**（包含使用说明 + 部署方式，模板见下方）
-4. **强制动作：删除默认示例文章**（`hello-world.md` 等），用 README 第一篇替换（见下方 Step 4）
-5. **强制动作：生成双语版 README 首篇**（中文默认 + 英文跳转版，见下方 Step 5）
-6. **强制动作：启动本地预览服务器，并打开预览**（见下方 Step 6，让用户直接看到博客）
+> **记号约定**：本节统一使用 `{项目根目录}`，指第 4 步算出的最终路径。所有 init 都在这个目录里。
+
+1. **进入项目根目录**，如果没有就先创建：`mkdir -p "{项目根目录}"`
+2. **空目录校验**：`[ -z "$(ls -A {项目根目录})" ] || (echo "❌ 目录非空" && exit 1)`。非空则加 `-2`、`-3` 后缀
+3. **根据类型执行对应的创建脚本**（见下方各类型的具体步骤）
+4. **生成 README.md**（包含使用说明 + 部署方式，模板见下方）
+5. **删除默认示例文章**（`hello-world.md` 等），用 README 第一篇替换
+6. **生成双语版 README 首篇**（中文默认 + 英文跳转版）
+7. **启动本地预览**（dev server 或 open index.html，详见下方对应类型）
 
 > **关键设计原则**：本 skill 永远不让用户面对"系统默认示例 + 一脸懵"的局面。建完就打开预览，看到的就是"如何使用本博客"的中文指南（带英文跳转链接）。
 
@@ -212,8 +246,8 @@ AI 导航网站有 2 个推荐方案：
 
 ```bash
 # 进入目录
-mkdir -p "{目标目录}"
-cd "{目标目录}"
+mkdir -p "{项目根目录}"
+cd "{项目根目录}"
 
 # 初始化 npm 项目
 npm init -y
@@ -255,8 +289,8 @@ theme: butterfly
 ### 类型 2：VitePress 知识库
 
 ```bash
-mkdir -p "{目标目录}"
-cd "{目标目录}"
+mkdir -p "{项目根目录}"
+cd "{项目根目录}"
 
 # 创建 package.json
 npm init -y
@@ -291,7 +325,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/{作者}' }
+      { icon: 'github', link: 'https://github.com/{GitHub 用户名或留空则整行删除}' }
     ]
   }
 })
@@ -330,8 +364,8 @@ hero:
 ### 类型 3：Vue 3 + Vite AI 导航站
 
 ```bash
-mkdir -p "{目标目录}"
-cd "{目标目录}"
+mkdir -p "{项目根目录}"
+cd "{项目根目录}"
 
 # 创建项目（手动，不用 npm create 避免交互）
 npm init -y
@@ -342,7 +376,7 @@ npm install -D vite @vitejs/plugin-vue
 **目录结构**：
 
 ```
-{目标目录}/
+{项目根目录}/
 ├── index.html
 ├── vite.config.js
 ├── package.json
@@ -399,11 +433,17 @@ export const categories = [
 
 ### 类型 6：自定义
 
-根据用户描述，**自行判断**最合适的方案，然后执行：
-- 简单页面 → 纯 HTML/CSS
-- 需要交互 → Vue 3 + Vite
-- 内容为主 → VitePress
-- 写作为主 → Hexo
+**判断决策树**（根据用户描述的关键词自动推荐）：
+
+| 用户描述包含 | 推荐方案 |
+|-------------|---------|
+| 展示、作品集、portfolio、单页、落地页 | 纯 HTML/CSS |
+| 简历、resume、vcard | 纯 HTML/CSS |
+| 博客、写作、文章、笔记、journal | Hexo |
+| 文档、教程、知识库、API、guide | VitePress |
+| 导航、分类、筛选、列表、AI 工具、tool | Vue 3 + Vite |
+| React、Next.js | 反问用户确认 |
+| 其他模糊描述 | 反问用户细化需求 |
 
 执行前**先告诉用户你的方案**，获得确认后再创建。
 
@@ -411,9 +451,9 @@ export const categories = [
 
 ### 通用补充步骤（在所有类型 init 之后、生成 README.md 之前执行）
 
-#### Step 4 · 删除默认示例文章
+> 这些子步骤已并入「通用步骤」的 4/5/6 步，这里仅给出**具体命令**，执行者按需取用。
 
-框架 init 后通常会留下一个示例文章（Hexo 是 `hello-world.md`、VitePress 是 `docs/index.md` 或 `docs/zh/`）。**一律删除**，不要让默认示例出现在用户的博客里。
+**删除默认示例文章**：
 
 ```bash
 # Hexo
@@ -422,16 +462,23 @@ rm -f source/_posts/hello-world.md
 # VitePress：根据场景判断（首页/示例页通常替换成自己的）
 ```
 
-#### Step 5 · 生成双语版 README 第一篇文章 ⭐
+#### 生成双语版 README 第一篇文章 ⭐
 
 **核心要求**：第一篇文章**直接告诉用户这个项目怎么用**，不是 Hello World，不是示例 placeholder，而是「如何使用本博客」指南。
 
-| 元素 | 内容 |
+**动态日期占位符**（执行时替换）：
+
+| 占位符 | 替换为 |
 | --- | --- |
-| **中文版（默认显示）** | `source/_posts/welcome.md` |
-| **英文版（可跳转）** | `source/_posts/welcome-en.md` |
-| **顶部链接** | 中文版顶部加：`> [English version →](/2026/06/29/welcome-en/)` |
-| **正文内容** | 怎么启动、写文章、部署（基于框架） |
+| `{{DATE_ISO}}` | `$(date +%Y-%m-%d)` |
+| `{{DATE_PATH}}` | `$(date +%Y/%m/%d)` |
+| `{{DATE_PREFIX}}` | `$(date +%Y-%m-%d)` |
+
+> 这些占位符必须用 `date` 命令动态生成，**不要写死 2026-xx-xx**——否则隔天再用就链接全 404。
+
+**判断规则**：
+- VitePress / Vue 3 + Vite / Hugo 类似套路：第一个 markdown 文章是中文指南，第二个是英文版
+- 简历站 / 作品集类可以**只生成中文**（不需要双语，因为内容本身就是用户自己的）
 
 > **两个版本都要生成**，而不是仅生成中文。原因：本 skill 服务于所有用户，不是只服务中文用户。默认显示中文，英文用户也能跳转过去。
 
@@ -440,11 +487,11 @@ rm -f source/_posts/hello-world.md
 ```markdown
 ---
 title: 博客使用指南
-date: 2026-06-29 12:00:00
+date: {{DATE_ISO}} 12:00:00
 tags: [guide, getting-started]
 ---
 
-> [English version →](/2026/06/29/welcome-en/)
+> [English version →](/{{DATE_PATH}}/welcome-en/)
 
 # 这是你的新博客
 
@@ -452,17 +499,17 @@ tags: [guide, getting-started]
 
 ## 1. 本地预览
 
-\`\`\`bash
+```bash
 npx hexo server
-\`\`\`
+```
 
 浏览器打开 <http://localhost:4000>
 
 ## 2. 写第一篇文章
 
-\`\`\`bash
+```bash
 npx hexo new "我的第一篇博客"
-\`\`\`
+```
 
 在 `source/_posts/我的第一篇博客.md` 写正文。
 
@@ -476,7 +523,7 @@ npx hexo new "我的第一篇博客"
 ```markdown
 ---
 title: How to Use This Blog
-date: 2026-06-29 12:00:00
+date: {{DATE_ISO}} 12:00:00
 tags: [guide, getting-started]
 lang: en
 ---
@@ -487,17 +534,17 @@ This blog is built with **Hexo**. Get started in 3 steps:
 
 ## 1. Run locally
 
-\`\`\`bash
+```bash
 npx hexo server
-\`\`\`
+```
 
 Open <http://localhost:4000> in your browser.
 
 ## 2. Write your first post
 
-\`\`\`bash
+```bash
 npx hexo new "My First Post"
-\`\`\`
+```
 
 Edit `source/_posts/My-First-Post.md`.
 
@@ -506,29 +553,23 @@ Edit `source/_posts/My-First-Post.md`.
 See the Vercel / GitHub Pages section in README.md.
 ```
 
-**判断规则**：
-- VitePress / Vue 3 + Vite / Hugo 类似套路：第一个 markdown 文章是中文指南，第二个是英文版
-- 简历站 / 作品集类可以**只生成中文**（不需要双语，因为内容本身就是用户自己的）
+#### 启动本地预览并自动打开 ⭐
 
-#### Step 6 · 启动本地预览并自动打开 ⭐
+**强制动作**：项目创建完成后，**必须**自动打开预览，让用户立刻看到首页（双语 README 第一篇）。
 
-**强制动作**：项目创建完成后，**必须**自动启动本地预览服务器，并调用 `OpenPreview` 工具打开预览 URL，让用户立刻看到博客首页（双语 README 第一篇）。
+| 类型 | 命令 | 预览方式 |
+|------|------|---------|
+| Hexo | `npx hexo server`（后台） | `OpenPreview` 打开 `http://localhost:4000/` |
+| VitePress | `npx vitepress dev docs`（后台） | `OpenPreview` 打开 `http://localhost:5173/` |
+| Vue 3 + Vite | `npx vite`（后台） | `OpenPreview` 打开 `http://localhost:5173/` |
+| Hugo | `hugo server`（后台） | `OpenPreview` 打开 `http://localhost:1313/` |
+| **简历站（纯 HTML）** | 不需要 server | 直接 `open {项目根目录}/index.html` |
+| **作品集（纯 HTML）** | 不需要 server | 直接 `open {项目根目录}/index.html` |
 
-```bash
-# Hexo（后台运行）
-npx hexo server   # → http://localhost:4000/
-
-# VitePress（后台运行）
-npx vitepress dev docs   # → http://localhost:5173/
-
-# Vue 3 + Vite（后台运行）
-npx vite   # → http://localhost:5173/
-```
-
-启动成功后调用 `OpenPreview` 工具，URL 填上面对应端口。
+启动成功后调用 `OpenPreview` 工具，URL 填上面对应端口（或简历/作品集返回 file:// 路径）。
 
 **完成后第一句告诉用户**：
-- 预览已打开 → 首页就是「如何使用本博客」
+- 预览已打开 → 首页就是「如何使用本博客」（简历/作品集除外）
 - 想停就告诉我「停掉预览」
 
 ---
