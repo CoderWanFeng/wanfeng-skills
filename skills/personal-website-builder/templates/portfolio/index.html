@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{SITE_NAME}}</title>
+  <meta name="description" content="{{SITE_DESCRIPTION}}">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>{{SITE_NAME}}</h1>
+      <p class="tagline">{{SITE_DESCRIPTION}}</p>
+      <p class="author">{{AUTHOR_NAME_OR_DEFAULT}}</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="about">
+      <h2>关于我</h2>
+      <p>这里写一段简短的自我介绍。介绍你的背景、专长、兴趣爱好，让访客快速了解你。</p>
+    </section>
+
+    <section class="projects">
+      <h2>项目作品</h2>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <span class="project-number">01</span>
+          </div>
+          <div class="project-content">
+            <h3>项目标题一</h3>
+            <p>简短描述这个项目解决什么问题、用什么技术栈。可以包含 1-2 个关键亮点。</p>
+            <div class="project-tags">
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="link">查看演示 →</a>
+              <a href="#" class="link">源码 →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <span class="project-number">02</span>
+          </div>
+          <div class="project-content">
+            <h3>项目标题二</h3>
+            <p>用一句话讲清楚项目做了什么、解决了什么问题、你的角色是什么。</p>
+            <div class="project-tags">
+              <span class="tag">Vue</span>
+              <span class="tag">Node.js</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="link">查看演示 →</a>
+              <a href="#" class="link">源码 →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <span class="project-number">03</span>
+          </div>
+          <div class="project-content">
+            <h3>项目标题三</h3>
+            <p>项目描述。可以列出关键功能、技术亮点、个人贡献。</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">FastAPI</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="link">查看演示 →</a>
+              <a href="#" class="link">源码 →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2>联系我</h2>
+      <div class="contact-links">
+        {{GITHUB_OR_EMPTY}}<a href="https://github.com/{{GITHUB_USERNAME}}" class="contact-link">GitHub</a>
+        <a href="mailto:your@email.com" class="contact-link">Email</a>
+        <a href="#" class="contact-link">Twitter</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© {{YEAR}} {{AUTHOR_NAME_OR_DEFAULT}}</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# VitePress
+.DS_Store
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# IDE
+.vscode/
+.idea/
+
+# 环境
+.env
+.env.local

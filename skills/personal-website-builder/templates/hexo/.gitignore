@@ -1,0 +1,23 @@
+# Hexo
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+_multiconfig.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 环境
+.env
+.env.local
+
+# 临时
+*.tmp
+.cache/
