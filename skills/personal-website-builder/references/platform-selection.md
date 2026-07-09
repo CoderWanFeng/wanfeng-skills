@@ -2,33 +2,31 @@
 
 > 当用户对部署平台没概念时，根据他的情况自动推荐。
 
-## 决策树
+## 自动选择优先级（v2 - 2026-07）
+
+`scripts/detect-deploy-tools.sh` 按以下顺序推荐：
 
 ```
-用户想部署
+用户没指定平台（DEPLOY_PLATFORM_OVERRIDE 未设）
 │
-├─ 需要匿名部署（没账号）？
-│  ├─ 是 → Netlify 匿名（最稳）
-│  └─ 否 ↓
+├─ 中国时区 + CloudBase 已登录？→ CloudBase（国内访问最快）
 │
-├─ 目标用户在中国大陆？
-│  ├─ 是 → CloudBase（需环境 ID）
-│  └─ 否 ↓
+├─ Netlify CLI 已安装？→ Netlify（未登录自动匿名模式）
+├─ Vercel CLI 已安装？→ Vercel
+├─ Cloudflare (wrangler) 已安装？→ Cloudflare
+├─ CloudBase CLI 已安装？→ CloudBase（非例外条件）
+├─ Surge CLI 已安装？→ Surge
+├─ gh CLI 已安装？→ GitHub Pages
 │
-├─ 已有 `CLOUDFLARE_API_TOKEN`？
-│  ├─ 是 → Cloudflare Pages（生产级）
-│  └─ 否 ↓
-│
-├─ 已有 Vercel 账号？
-│  ├─ 是 → Vercel
-│  └─ 否 ↓
-│
-├─ 项目已在 GitHub？
-│  ├─ 是 → GitHub Pages 或 Vercel
-│  └─ 否 ↓
-│
-└─ 默认 → Netlify 匿名（最稳）
+└─ 都没装 → 推荐 Netlify（装上就用，最简单）
 ```
+
+**关键点**：
+- 通用 6 个平台**只看「已安装」**作为信号（不要求已登录）
+- 唯独 CloudBase **特殊**：没有匿名模式，没登录部署不了。所以例外条件需要 `installed + logged_in`
+- Netlify 即使未登录也能走 `--allow-anonymous` 路径
+
+## 按用户场景的具体推荐
 
 ## 按用户场景的具体推荐
 

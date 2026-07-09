@@ -359,6 +359,84 @@ else
   fi
 fi
 
+# Test 19-26: 部署平台优先级（v2）
+echo ""
+echo "📋 Test 19+: 部署平台优先级 v2（Netlify → Vercel → Cloudflare → CloudBase → Surge → GitHub Pages）"
+
+# 准备 fake bin 目录
+FAKE_BIN="$TEST_BASE/fake-bin"
+mkdir -p "$FAKE_BIN"
+BASE_PATH="$FAKE_BIN:/usr/bin:/bin"
+
+# 帮助函数：构造指定命令集合的 PATH，运行 detect，断言 recommended
+make_fakes() {
+  rm -rf "$FAKE_BIN"
+  mkdir -p "$FAKE_BIN"
+  for cmd in "$@"; do
+    cp /usr/bin/true "$FAKE_BIN/$cmd"
+    chmod +x "$FAKE_BIN/$cmd"
+  done
+}
+
+assert_recommended() {
+  local label="$1"
+  local extra_env="$2"
+  local expect="$3"
+  local out
+  out="$(env -i HOME="$HOME" $extra_env PATH="$BASE_PATH" bash "$SKILL_ROOT/scripts/detect-deploy-tools.sh" 2>&1)"
+  local rec
+  rec="$(echo "$out" | python3 -c 'import sys,json; print(json.load(sys.stdin)["recommended"])' 2>/dev/null || echo PARSE_FAIL)"
+  if [ "$rec" = "$expect" ]; then
+    ok "$label → recommended=$rec"
+  else
+    fail "$label → recommended=$rec (期望 $expect)"
+  fi
+}
+
+# Test 19: 全装 → netlify（优先级 1）
+make_fakes netlify vercel wrangler tcb surge gh
+assert_recommended "T19 全装" "" "netlify"
+
+# Test 20: 删 netlify → vercel（优先级 2）
+rm "$FAKE_BIN/netlify"
+assert_recommended "T20 只剩 vercel+其他" "" "vercel"
+
+# Test 21: 删 vercel → cloudflare（优先级 3）
+rm "$FAKE_BIN/vercel"
+assert_recommended "T21 只剩 cloudflare+其他" "" "cloudflare"
+
+# Test 22: 删 cloudflare → cloudbase（优先级 4，非例外条件）
+rm "$FAKE_BIN/wrangler"
+assert_recommended "T22 只剩 cloudbase+其他（非例外）" "" "cloudbase"
+
+# Test 23: 删 cloudbase → surge（优先级 5）
+rm "$FAKE_BIN/tcb"
+assert_recommended "T23 只剩 surge+gh" "" "surge"
+
+# Test 24: 删 surge → github_pages（优先级 6）
+rm "$FAKE_BIN/surge"
+assert_recommended "T24 只剩 gh" "" "github_pages"
+
+# Test 25: 删 gh → 兜底 netlify
+rm "$FAKE_BIN/gh"
+assert_recommended "T25 都没装（兜底）" "" "netlify"
+
+# Test 26: DEPLOY_PLATFORM_OVERRIDE 优先级最高
+make_fakes netlify
+assert_recommended "T26 OVERRIDE 覆盖 netlify" "DEPLOY_PLATFORM_OVERRIDE=cloudflare" "cloudflare"
+
+# Test 27: 中国 TZ + cloudbase logged_in → cloudbase（例外生效）
+make_fakes netlify tcb vercel wrangler surge gh
+mkdir -p "$HOME/.tcb"
+assert_recommended "T27 中国 TZ + cloudbase 登录 → cloudbase 抢在 netlify 前" "TZ=Asia/Shanghai" "cloudbase"
+rm -rf "$HOME/.tcb"
+
+# Test 28: 中国 TZ + cloudbase 没登录 → 不例外，推 netlify
+assert_recommended "T28 中国 TZ + cloudbase 未登录 → 例外不触发" "TZ=Asia/Shanghai" "netlify"
+
+# 清理
+rm -rf "$FAKE_BIN"
+
 echo ""
 echo "═══════════════════════════════════════"
 echo "📊 测试结果"

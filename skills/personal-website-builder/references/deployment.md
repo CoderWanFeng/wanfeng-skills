@@ -4,14 +4,14 @@
 
 ## 平台总览
 
-| 平台 | 匿名部署 | 实名认证 | 免费额度 | 国内速度 | 适用场景 |
-|------|---------|---------|---------|---------|---------|
-| **Netlify** | ✅ `--allow-anonymous` | ❌ | 100GB/月 | 一般 | ⭐ 临时演示 / 快速分享 |
-| **Surge.sh** | ✅ 首次免注册 | ❌ | 无限 `.surge.sh` | 慢 | ⭐ 极简测试 |
-| **Cloudflare Pages** | ❌ | ❌ | 500 构建/月，无限流量 | ✅ 快 | 生产级，全球 CDN |
-| **腾讯云 CloudBase** | ❌ | ✅ | 免费配额 | ✅✅ 最快 | 国内生产 |
-| **Vercel** | ❌ | ❌ | 100GB/月 | 慢 | Next.js / 现代化 |
-| **GitHub Pages** | ❌ | ❌ | 100GB/月 | 慢 | 纯静态免费 |
+| 平台 | 匿名部署 | 实名认证 | 免费额度 | 国内速度 | 自动选择优先级 | 适用场景 |
+|------|---------|---------|---------|---------|--------------|---------|
+| **Netlify** | ✅ `--allow-anonymous` | ❌ | 100GB/月 | 一般 | ⭐ 1 | 临时演示 / 快速分享 |
+| **Vercel** | ❌ | ❌ | 100GB/月 | 慢 | 2 | Next.js / 现代化 |
+| **Cloudflare Pages** | ❌ | ❌ | 500 构建/月，无限流量 | ✅ 快 | 3 | 生产级，全球 CDN |
+| **腾讯云 CloudBase** | ❌ | ✅ | 免费配额 | ✅✅ 最快 | 4（中国例外 → 1.5）| 国内生产 |
+| **Surge.sh** | ✅ 首次免注册 | ❌ | 无限 `.surge.sh` | 慢 | 5 | 极简测试 |
+| **GitHub Pages** | ❌ | ❌ | 100GB/月 | 慢 | 6 | 纯静态免费 |
 
 ## 平台自动选择
 
@@ -19,14 +19,26 @@
 ./scripts/detect-deploy-tools.sh
 ```
 
-返回 JSON，根据**已安装 CLI + 环境变量 + 登录状态 + 时区**推荐：
+返回 JSON，根据**已安装 CLI + 登录状态 + 时区**推荐（v2 - 2026-07）：
 
 ```json
 {
   "recommended": "netlify",
-  "reason": "Netlify 支持匿名部署（1 小时内认领）"
+  "reason": "Netlify 已安装，支持匿名部署（1 小时内认领）"
 }
 ```
+
+**优先级规则**（从上到下匹配，第一个满足的获胜）：
+
+1. `DEPLOY_PLATFORM_OVERRIDE` 环境变量 → 用它
+2. 中国时区 + CloudBase 已登录 → Cloudbase
+3. Netlify 已安装 → Netlify
+4. Vercel 已安装 → Vercel
+5. Cloudflare 已安装 → Cloudflare
+6. CloudBase 已安装（不在例外条件） → Cloudbase
+7. Surge 已安装 → Surge
+8. gh CLI 已安装 → GitHub Pages
+9. 兜底 → Netlify（没装任何 CLI 时也推荐，方便一条命令安装）
 
 **优先级**：
 1. 用户显式 `--platform=xxx`

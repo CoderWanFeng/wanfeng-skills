@@ -317,10 +317,19 @@ AI 导航网站有 2 个推荐方案：
 选哪个？
 ```
 
-**自动选择**：如果不指定平台，运行 `./scripts/detect-deploy-tools.sh` 智能选择：
-- 检测到 `CLOUDFLARE_API_TOKEN` → Cloudflare
-- 检测到 Vercel 登录 → Vercel
-- 默认 → Netlify 匿名（最稳）
+**自动选择**：如果不指定平台，运行 `./scripts/detect-deploy-tools.sh` 按以下优先级推荐：
+
+1. 用户显式覆盖（`DEPLOY_PLATFORM_OVERRIDE` 环境变量）→ 用它
+2. 特殊例外：中国时区 + CloudBase 已登录 → Cloudbase（国内访问快）
+3. Netlify 已安装 → Netlify（未登录自动走匿名模式）
+4. Vercel 已安装 → Vercel
+5. Cloudflare (wrangler) 已安装 → Cloudflare
+6. CloudBase 已安装但不在例外条件 → Cloudbase
+7. Surge 已安装 → Surge
+8. GitHub Pages (gh CLI) 已安装
+9. 都没装 → 推荐 Netlify（最简单，装上就用）
+
+> 详细决策树见 `references/platform-selection.md`。
 
 **执行命令**：
 
