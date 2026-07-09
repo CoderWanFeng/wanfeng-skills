@@ -1,0 +1,49 @@
+# 选题雷达当前默认配置（用户可改）
+# 模板见 ../radar-config.example.yaml
+
+# ---------- 基础 ----------
+timezone: Asia/Shanghai
+lookback_hours: 24
+top_n: 10
+
+# ---------- 关键词 / 领域 ----------
+keywords:
+  - AI
+
+exclude_keywords:
+  - 娱乐
+  - 明星
+  - 电视剧
+  - 选秀
+  - 离婚
+
+# ---------- 平台 ----------
+# v0.1 已实现：weibo / toutiao / baidu
+# 待实现：douyin / zhihu / xiaohongshu / bilibili
+platforms:
+  - weibo
+  - toutiao
+  - baidu
+
+# ---------- 评分权重 ----------
+weights:
+  hotness: 0.6
+  relevance: 0.4
+
+# ---------- 记忆去重 ----------
+dedup:
+  enabled: true
+  window_days: 7
+  memory_file: memory/dedup-history.jsonl
+
+# ---------- 竞品监控（可选） ----------
+competitor_monitor:
+  enabled: false
+  accounts: []
+  platform: xiaohongshu
+
+# ---------- 路径 ----------
+paths:
+  project_root: .
+  output_dir: workflow/每日热点/
+  memory_dir: memory/

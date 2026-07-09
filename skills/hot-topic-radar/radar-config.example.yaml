@@ -1,0 +1,52 @@
+# 选题雷达配置示例
+# 复制为 ../radar-config.yaml 后按需修改
+
+# ---------- 基础 ----------
+timezone: Asia/Shanghai          # 时区（默认北京时间）
+lookback_hours: 24                # 拉数据时间窗（小时）
+top_n: 10                         # 输出 TOP N 条候选
+
+# ---------- 关键词 / 领域 ----------
+# 多个关键词用 OR 逻辑；领域关键词做相关度匹配
+keywords:
+  - AI
+
+# 排除关键词（命中则直接过滤掉）
+exclude_keywords:
+  - 娱乐
+  - 明星
+  - 电视剧
+
+# ---------- 平台 ----------
+# 启用的平台列表，按需增删
+platforms:
+  - weibo         # 微博热搜
+  - douyin        # 抖音热搜
+  - zhihu         # 知乎热榜
+  - xiaohongshu   # 小红书热门
+  - bilibili      # B 站热门
+  - toutiao       # 今日头条
+  - baidu         # 百度热搜
+
+# ---------- 评分权重 ----------
+weights:
+  hotness: 0.6       # 热度权重（原始热搜排名）
+  relevance: 0.4     # 相关度权重（命中关键词的强度）
+
+# ---------- 记忆去重 ----------
+dedup:
+  enabled: true
+  window_days: 7      # N 天内已推过的热点不再出现
+  memory_file: memory/dedup-history.jsonl
+
+# ---------- 竞品监控（可选） ----------
+competitor_monitor:
+  enabled: false      # 默认关闭，需要时手动启用
+  accounts: []        # 账号列表，如 ["机器之心", "量子位"]
+  platform: xiaohongshu
+
+# ---------- 路径 ----------
+paths:
+  project_root: .                 # 项目根目录（脚本相对路径基准）
+  output_dir: workflow/每日热点/  # 候选清单输出目录
+  memory_dir: memory/             # 记忆/去重文件目录
