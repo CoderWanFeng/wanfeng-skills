@@ -47,8 +47,12 @@ except ImportError:
 # ---------- 常量 ----------
 BASE = "https://aihot.virxact.com"
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; topic-selector/1.0)",
-    "Accept": "application/json",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Referer": "https://aihot.virxact.com/",
 }
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_CONFIG = SCRIPT_DIR.parent / "topic-config.yaml"
@@ -88,8 +92,34 @@ def http_get(path: str, params: dict | None = None) -> dict:
     if params:
         url += "?" + urllib.parse.urlencode(params)
     req = urllib.request.Request(url, headers=HEADERS)
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return json.loads(r.read())
+    import ssl
+    import socket
+    ssl_ctx = ssl.create_default_context()
+    last_err = None
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=30, context=ssl_ctx) as r:
+                raw = r.read()
+                # 处理 gzip / deflate / br 压缩
+                enc = r.headers.get("Content-Encoding", "").lower()
+                if enc == "gzip":
+                    import gzip
+                    raw = gzip.decompress(raw)
+                elif enc == "deflate":
+                    import zlib
+                    raw = zlib.decompress(raw)
+                elif enc == "br":
+                    try:
+                        import brotli
+                        raw = brotli.decompress(raw)
+                    except ImportError:
+                        pass  # brotli 未装时跳过（极少见）
+                return json.loads(raw)
+        except (socket.timeout, ssl.SSLError, ConnectionError) as e:
+            last_err = e
+            sys.stderr.write(f"[WARN] 网络异常（{attempt + 1}/3）：{e}\n")
+            continue
+    raise RuntimeError(f"AIHOT 网络请求 3 次失败：{last_err}")
 
 
 # ---------- 时间 ----------
