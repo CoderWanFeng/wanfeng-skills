@@ -46,6 +46,26 @@ fig-NN-sectionX-keyword.png
 └── ...
 ```
 
+### 多平台文件命名（v2+ 新增）
+
+当一篇文章同时发到多平台时，**每个平台单独命名**以避免混淆：
+
+```
+task/<topic-slug>/imgs/
+├── wechat-cover-v1.html / .png       ← 公众号封面
+├── xhs-cover-v1.html / .png          ← 小红书封面
+├── douyin-frame-v1.html / .png       ← 抖音视频帧
+├── og-cover-v1.html / .png           ← OG Card
+├── fig-01-section3-keyword.html      ← 通用配图（不区分平台）
+└── ...
+```
+
+**规则**：
+
+- `wechat-` / `xhs-` / `douyin-` / `zhihu-` / `bilibili-` / `weibo-` / `og-` / `twitter-` 前缀标识平台
+- `cover` / `figure` / `frame` 标识产物类型
+- 通用配图（不是某个平台专属）不加平台前缀
+
 - 子目录没有就**手动创建**（`mkdir -p`）
 - 默认输出格式 `.png`（2× DPI）
 

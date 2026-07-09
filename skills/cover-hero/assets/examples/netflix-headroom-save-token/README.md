@@ -5,6 +5,26 @@
 > **生成时间**：2026-06-23
 > **范例渲染**：2026-06-30
 
+## v4 多平台建议（NEW · 2026-07）
+
+按当前 skill 的 8 个平台分发，这个对比型范例**最适合 4 平台版本**：
+
+| 平台 | 命令 | 关键改动 |
+|---|---|---|
+| **公众号** | `--platform wechat` | 默认范例就是此版本（2.35:1 横向）|
+| **知乎** | `--platform zhihu` | 文章配图 / 专栏头图（16:9 横向，标准模式）|
+| **B站** | `--platform bilibili` | 视频封面（16:10，标准模式）|
+| **Twitter Card** | `--platform twitter` | 链接预览（2:1 标准模式）|
+
+```bash
+# 一键 4 平台
+node assets/code/src/pick-template.js --platform wechat,zhihu,bilibili,twitter \
+  --type cover --output imgs/
+```
+
+> ⚠️ **不做 Twitter Card 的代价**：文章分享到推特时没有 OG 预览图 → 缩略图被裁切 → 链接点击率低 30-50%。
+> v4 已支持 8 平台，预设就 12 种 ratio + 3 风格档位 + 2 套自动适配层，**多平台分发零额外工作**。
+
 ## 文件清单
 
 | 文件 | 用途 | 大小 |

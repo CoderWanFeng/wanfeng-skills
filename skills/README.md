@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | [**aihot-topic-selector**](aihot-topic-selector/) | 从 AIHOT 热点数据里每天自动选题 | 自媒体日常选题、内容运营 | 「今天 AI 有什么热点」「按热点选个题」 | — |
 | [**hot-topic-radar**](hot-topic-radar/) | 7×24h 监控全网热搜，按关键词过滤 + 热度打分 | 自媒体选题雷达、跨平台聚合 | 「监控 XX 话题」「全网热搜」「今天值得跟什么」 | — |
-| [**article-cover-illustration**](article-cover-illustration/) | 给公众号文章做封面 + 正文配图（HyperFrames 风格） | 公众号配图、长文视觉 | 「做公众号封面」「配张图」「头图」 | [👉 封面侠](https://qclaw.qq.com/as/BQ2Cw50sNfcy) |
+| [**cover-hero**](cover-hero/) | 给公众号文章做封面 + 正文配图（HyperFrames 风格） | 公众号配图、长文视觉 | 「做公众号封面」「配张图」「头图」 | [👉 封面侠](https://qclaw.qq.com/as/BQ2Cw50sNfcy) |
 | [**knowledge-short-video**](knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | 「做条知识视频」「短视频口播稿」 | — |
 | [**personal-website-builder**](personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | 「我想做个博客」「搭个个人网站」「建个简历站」 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | 「帮我推到 GitHub」「开源搭子」「拉一下 llama.cpp 跑起来」 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
@@ -25,13 +25,13 @@
 ```
 每日选题 → 写文章 → 配图
   ↓         ↓        ↓
-hot-topic-radar / 人工  article-cover-illustration
+hot-topic-radar / 人工  cover-hero
 aihot-topic-selector
 ```
 
 - **[aihot-topic-selector](aihot-topic-selector/)** — AI 领域专属：每天从 AIHOT 拉热点，按 2 问选 1 条，建 task 目录
 - **[hot-topic-radar](hot-topic-radar/)** — 全网通用：自定义关键词 + 多平台 + 记忆去重，适合任何垂直领域
-- **[article-cover-illustration](article-cover-illustration/)** — 配图：6 套模板 + 严格视觉 DNA + Puppeteer 渲染
+- **[cover-hero](cover-hero/)** — 配图：6 套模板 + 严格视觉 DNA + Puppeteer 渲染
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
 
 ### 🌐 个人项目 / 建站
@@ -50,7 +50,7 @@ aihot-topic-selector
 |---|---|
 | 我要做自媒体，从哪开始找选题？ | [hot-topic-radar](hot-topic-radar/) |
 | AI 领域怎么选今天的话题？ | [aihot-topic-selector](aihot-topic-selector/) |
-| 文章写完了，给它配个封面 | [article-cover-illustration](article-cover-illustration/) |
+| 文章写完了，给它配个封面 | [cover-hero](cover-hero/) |
 | 我想做短视频，怎么起步？ | [knowledge-short-video](knowledge-short-video/) |
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
@@ -86,7 +86,7 @@ skills/<skill-name>/
     ↓
 [人工写作]
     ↓
-[article-cover-illustration] 配图
+[cover-hero] 配图
     ↓
 [发布]
 ```
@@ -139,7 +139,7 @@ skills/<skill-name>/
 |---|---|---|
 | aihot-topic-selector | ✅ 稳定 | 2026-07 |
 | hot-topic-radar | ✅ 稳定 | 2026-07 |
-| article-cover-illustration | ✅ 稳定 | 2026-07 |
+| cover-hero | ✅ 稳定 | 2026-07 |
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定（已优化可用性） | 2026-07-03 |

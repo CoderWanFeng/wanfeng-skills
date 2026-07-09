@@ -1,0 +1,17 @@
+/* theatrical.css · 抖音适配层
+ * 9:16 / 16:9 视频封面/帧 · 戏剧风格
+ *
+ * 调整：
+ * - 顶栏加高（56px）让顶栏文字突出
+ * - 视觉锤字号超大（240px，吸睛第一秒）
+ * - 主标字号加大（64px）
+ * - 主标宽度限制 80%（避免长文本打断戏剧感）
+ * - 角标旋转 -3deg（更大戏剧感）
+ * - 卡片硬阴影加大（8px）制造立体
+ */
+
+.top-bar { height: 56px !important; }
+.hammer .big { font-size: 240px !important; }
+.info .title { font-size: 64px !important; max-width: 80%; }
+.badge { transform: rotate(-3deg) !important; }
+.card { box-shadow: 8px 8px 0 #0b0d12 !important; }

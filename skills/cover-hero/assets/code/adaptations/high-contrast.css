@@ -1,0 +1,16 @@
+/* high-contrast.css · 小红书适配层
+ * 3:4 / 9:16 笔记封面 · 强吸睛
+ *
+ * 调整：
+ * - 顶栏加高（44px）让信息在小屏更清晰
+ * - 圆点纹理加密（24px 间距）
+ * - 主标字号加大（56px）
+ * - 卡片描边 3px（默认 2.5px，加强存在感）
+ * - 强调色改小红书品牌红 `#ff2d55`
+ */
+
+.top-bar { height: 44px !important; }
+body { background-size: 24px 24px !important; }
+.info .title { font-size: 56px !important; }
+.card { border-width: 3px !important; }
+:root { --accent: #ff2d55 !important; }
