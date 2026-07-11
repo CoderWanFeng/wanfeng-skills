@@ -82,6 +82,25 @@ const TYPE_TO_TEMPLATE = {
   frame: 'cover-template.html',
 };
 
+// ============= 平台专用模板（v5 新增）=============
+// 某些平台（小红书 / 抖音）有专用模板，layout 是竖版（flex column），
+// 比通用 cover-template 套适配层效果好（后者会崩布局）。
+const PLATFORM_TO_TEMPLATE = {
+  'xhs':         'xhs-cover.html',     // 小红书 3:4
+  'xhs-story':   'douyin-cover.html',  // 小红书 9:16（沿用抖音竖版布局）
+  'douyin':      'douyin-cover.html',  // 抖音 9:16
+  'douyin-wide': 'cover-template.html',// 抖音横屏 16:9（用通用横版）
+};
+
+function getTemplateName(platformKey, productType) {
+  // 平台专用模板优先（v5）
+  if (platformKey && PLATFORM_TO_TEMPLATE[platformKey]) {
+    return PLATFORM_TO_TEMPLATE[platformKey];
+  }
+  // 否则用通用模板
+  return TYPE_TO_TEMPLATE[productType] || TYPE_TO_TEMPLATE.cover;
+}
+
 // ============= 风格档位覆盖 =============
 
 const STYLE_OVERRIDES = {
@@ -105,7 +124,7 @@ function parseArgs() {
   const opts = {
     platform: null, type: 'cover', style: 'default', output: null,
     width: null, height: null, ratio: null, baseWidth: null, baseHeight: null,
-    label: null, article: null, interactive: false,
+    label: null, article: null, interactive: false, allPlatforms: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -122,6 +141,7 @@ function parseArgs() {
     else if (arg === '--label' && args[i + 1]) { opts.label = args[++i]; }
     else if (arg === '--article' && args[i + 1]) { opts.article = args[++i]; }
     else if (arg === '--interactive' || arg === '-i') { opts.interactive = true; }
+    else if (arg === '--all-platforms') { opts.allPlatforms = true; }
     else if (arg === '--help' || arg === '-h') { printHelp(); process.exit(0); }
   }
   return opts;
@@ -132,18 +152,27 @@ function printHelp() {
   console.log('  # 1. 预设平台');
   console.log('  node pick-template.js --platform wechat --type cover --output <html>');
   console.log('');
-  console.log('  # 2. 自定义尺寸（NEW · v4）');
+  console.log('  # 2. 自定义尺寸（v4）');
   console.log('  node pick-template.js --width 1440 --height 600 --label landing --type cover --output <html>');
   console.log('  node pick-template.js --ratio "21:9" --base-width 1920 --label wide-hero --type cover --output <html>');
   console.log('');
-  console.log('  # 3. 多平台一键（NEW · v4）');
+  console.log('  # 3. 多平台一键（v4）');
   console.log('  node pick-template.js --platform wechat,xhs,douyin --type cover --output imgs/');
   console.log('');
-  console.log('  # 4. 自动读 MD frontmatter（NEW · v4）');
+  console.log('  # 4. 自动读 MD frontmatter（v4）');
   console.log('  node pick-template.js --article task/<slug>/<slug>.md');
   console.log('');
-  console.log('  # 5. 交互模式（NEW · v4）');
+  console.log('  # 5. 交互模式（v4）');
   console.log('  node pick-template.js -i');
+  console.log('');
+  console.log('  # 6. 一键 8 平台（v5.3 新增）');
+  console.log('  node pick-template.js --all-platforms --output imgs/');
+  console.log('     自动跑：wechat / xhs / douyin / zhihu / bilibili / weibo / og / twitter');
+  console.log('     产物：<output>/<platform>/cover-v1.html  按平台分子目录');
+  console.log('');
+  console.log('  # 7. 输出路径规则（v5.3）');
+  console.log('  --output <dir>/        → 目录，按平台分 <dir>/<platform>/cover-v1.html');
+  console.log('  --output <dir>/foo.html → 文件路径，原样输出（不分子目录）');
   console.log('');
   console.log('平台 (--platform):');
   for (const [k, v] of Object.entries(PLATFORMS)) {
@@ -351,13 +380,54 @@ async function interactiveMode() {
   generate(opts);
 }
 
+// ===== 输出路径解析（v5.2 新增 · 自动按平台分目录）=====
+
+/**
+ * 决定输出路径
+ * @param {string} platformKey - 平台 key（wechat / xhs / douyin / custom 等）
+ * @param {object} opts - 命令行参数
+ * @returns {string} 完整输出路径
+ *
+ * 规则：
+ * 1. --output 以 .html/.htm 结尾 → 文件路径，原样输出（用户显式指定）
+ * 2. --output 是目录（或无后缀）→ 按平台分子目录输出 `<dir>/<platform>/cover-v1.html`
+ * 3. custom 平台（无 platformKey）→ 输出 `<dir>/custom-<wxh>-cover-v1.html`（不分目录）
+ * 4. fig 类型（如 `fig-01-v1.html`）→ 仍按平台分目录，命名用 fig-NN
+ */
+function resolveOutputPath(platformKey, opts) {
+  const output = opts.output;
+  // 判定：--output 是文件路径（带 .html/.htm 后缀）vs 目录路径
+  const hasFileExt = /\.(html?|png|svg)$/i.test(output);
+  const hasDirSlash = output.endsWith('/') || output.endsWith('\\');
+  const isFilePath = hasFileExt && !hasDirSlash;
+
+  // 1. 用户显式指定文件路径 → 原样输出
+  if (isFilePath) {
+    return output;
+  }
+
+  // 2. custom 平台（无 platformKey，custom 是特殊）→ 不分目录
+  if (!platformKey || platformKey === 'custom') {
+    const name = opts.label
+      ? `${opts.label}-${opts.type}-v1.html`
+      : `custom-${opts.dims?.width || ''}x${opts.dims?.height || ''}-${opts.type}-v1.html`.replace('x-', '-');
+    return path.join(output, name);
+  }
+
+  // 3. 平台子目录（v5.2 新增约定）
+  // 注意：fig-01-v1.html 这种不是 <platform>- 前缀，也进平台子目录
+  const typePrefix = opts.type === 'cover' ? '' : `${opts.type}-`;
+  const fileName = `${typePrefix}cover-v1.html`;
+  return path.join(output, platformKey, fileName);
+}
+
 // ===== 单平台生成 =====
 function generateSingle(opts) {
   const spec = buildSpec(opts);
   const { platformKey, platform, dims, mode, label, compositionId } = spec;
 
-  // 选模板
-  const templateName = TYPE_TO_TEMPLATE[opts.type];
+  // 选模板：v5 平台专用模板优先（如 xhs → xhs-cover.html）
+  const templateName = getTemplateName(platformKey, opts.type);
   const templatePath = path.resolve(__dirname, '..', 'templates', templateName);
   if (!fs.existsSync(templatePath)) {
     console.error(`❌ 模板不存在: ${templatePath}`);
@@ -372,22 +442,8 @@ function generateSingle(opts) {
   // 设置尺寸 + data 标签
   html = setDimensions(html, dims.width, dims.height, platformKey, opts.type, label);
 
-  // 输出路径：判断 --output 是文件还是目录
-  let outPath;
-  const output = opts.output;
-  // 判定为"文件"：有 .html/.htm/.png/.svg 后缀 → 文件
-  // 判定为"目录"：以 / 结尾 OR 没有文件后缀
-  const hasFileExt = /\.(html?|png|svg)$/i.test(output);
-  const hasDirSlash = output.endsWith('/') || output.endsWith('\\');
-  const isFilePath = hasFileExt && !hasDirSlash;
-
-  if (platformKey === 'custom') {
-    const name = opts.label ? `${opts.label}-${opts.type}-v1.html` : `custom-${dims.width}x${dims.height}-${opts.type}-v1.html`;
-    outPath = isFilePath ? output : path.join(output, name);
-  } else {
-    const name = `${platformKey}-${opts.type}-v1.html`;
-    outPath = isFilePath ? output : path.join(output, name);
-  }
+  // 输出路径：v5.2 自动按平台分目录
+  const outPath = resolveOutputPath(platformKey, { ...opts, dims });
 
   const outDir = path.dirname(outPath);
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
@@ -474,8 +530,26 @@ async function main() {
   if (!opts.type) opts.type = 'cover';
 
   // 没传任何参数 → 打印帮助
-  if (!opts.platform && !opts.article && !opts.interactive && Object.keys(opts).every(k => opts[k] === null || (Array.isArray(opts[k]) && opts[k].length === 0))) {
+  if (!opts.platform && !opts.article && !opts.interactive && !opts.allPlatforms && Object.keys(opts).every(k => opts[k] === null || (Array.isArray(opts[k]) && opts[k].length === 0))) {
     printHelp();
+    return;
+  }
+
+  // --all-platforms 模式（v5.2 新增）：一键 8 平台
+  if (opts.allPlatforms) {
+    if (!opts.output) {
+      console.error('❌ --all-platforms 必须指定 --output 目录');
+      console.error('   例: pick-template.js --all-platforms --output imgs/');
+      process.exit(1);
+    }
+    if (opts.platform) {
+      console.error('⚠ --all-platforms 会覆盖 --platform，跳过自定义值');
+    }
+    // 8 个预设平台（排除 custom + size 变体 xhs-story / douyin-wide / weibo-fig）
+    // 完整 8 = 公众号 / 小红书 / 抖音 / 知乎 / B站 / 微博 / OG Card / Twitter Card
+    const allPlatforms = ['wechat', 'xhs', 'douyin', 'zhihu', 'bilibili', 'weibo', 'og', 'twitter'];
+    console.log(`[--all-platforms] 一键生成 ${allPlatforms.length} 平台 → ${opts.output}`);
+    generateMulti(allPlatforms, opts);
     return;
   }
 

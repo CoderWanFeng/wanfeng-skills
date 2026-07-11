@@ -94,8 +94,10 @@ cover-hero/
 │   │   ├── src/
 │   │   │   ├── render-cover.js         ← Puppeteer 渲染器（HTML → PNG）
 │   │   │   └── pick-template.js        ← 多平台模板选择器（CLI）
-│   │   └── templates/                  ← 6 套空白 HTML 模板
-│   │       ├── cover-template.html
+│   │   └── templates/                  ← 8 套空白 HTML 模板（v5 +2 套竖版专用）
+│   │       ├── cover-template.html         横版通用（公众号 / 知乎 / B站 / 微博 / OG / Twitter）
+│   │       ├── xhs-cover.html             ⭐ v5 小红书 3:4 专用
+│   │       ├── douyin-cover.html          ⭐ v5 抖音 9:16 专用
 │   │       ├── fig-template-1-card-row.html
 │   │       ├── fig-template-2-matrix.html
 │   │       ├── fig-template-3-decision-tree.html
@@ -156,7 +158,7 @@ cover-hero/
 - [x] ✅ **pick-template.js 加交互模式（`-i` 跑入问答）**（v4 完成）
 - [x] ✅ **增加 CI：渲染产物自动检查（主标字数 / 安全区 / 文件大小 / 尺寸）**（v4 quality-check.js 完成）
 - [x] ✅ **增加 assets/examples/ 的范例 README**（v4 加 v3 平台信息章节）
-- [ ] 增加 templates/xhs-cover.html / douyin-frame.html 等**专用模板**（当前共用 cover-template + 适配层）— **保留待用**（v4 适配层已覆盖 80% 场景，专用模板是 nice-to-have）
+- [x] ✅ **增加 templates/xhs-cover.html / douyin-frame.html 等专用模板**（v5 完成，layout 重新设计为竖版 flex column）
 
 ---
 
@@ -185,7 +187,7 @@ cover-hero/
 | 交互模式 | 无 | **`-i` 进入问答**，适合命令行不熟的用户 |
 | 渲染路径 | `render-cover.js` 单文件 | `render-cover.js` + `quality-check.js` 两个职责清晰 |
 
-## 最终文件清单（v4）
+## 最终文件清单（v5）
 
 ```
 cover-hero/
@@ -236,12 +238,177 @@ cover-hero/
 v3 之前用户**完全靠人工对照** platforms.md 检查主标字数、安全区、文件大小。
 v4 之后**渲染完自动 4 项检查**，不通过会显示 ⚠ 但**不阻塞**（用户可继续发布）。
 
-## 后续可选优化（v4 之后的新清单）
+---
 
-- [ ] 增加 templates/xhs-cover.html / douyin-frame.html 等**专用模板**（nice-to-have，适配层已覆盖 80%）
+## v5 · 竖版平台专用模板（2026-07）
+
+| 步骤 | 状态 | 备注 |
+|---|---|---|
+| 1. 新增 `templates/xhs-cover.html`（3:4 1080×1440）| ✅ 完成 | 顶栏 44px / flex column 布局 / 卡片竖列 |
+| 2. 新增 `templates/douyin-cover.html`（9:16 1080×1920）| ✅ 完成 | 顶栏 56px / flex column / 视觉锤 280px / 卡片立体阴影 |
+| 3. pick-template.js 加 `PLATFORM_TO_TEMPLATE` 映射 | ✅ 完成 | xhs→xhs-cover.html, xhs-story/douyin→douyin-cover.html, 其他→cover-template.html |
+| 4. 端到端验证（context-window-100m 任务）| ✅ 完成 | 3 平台自检全过 + 视觉效果完美 |
+| 5. progress.md 更新（v5 段落）| ✅ 完成 | 本节 |
+
+## 关键变化对比（v4 → v5）
+
+| 项 | v4 | v5 |
+|---|---|---|
+| 竖版平台模板 | 共用 cover-template + CSS 适配层 | **专用模板**（xhs-cover.html / douyin-cover.html）|
+| 竖版布局 | 横版 grid 套 3:4/9:16 崩布局（卡片撑高、顺序错乱）| **flex column 重设计**（顶栏 / hero / 卡片 三段式）|
+| 视觉锤尺寸（小红书）| 130px（硬塞横版 hero）| **180px**（专门 3:4 视觉比例）|
+| 视觉锤尺寸（抖音）| 110px | **280px**（戏剧感，超大吸睛）|
+| 端到端测试 | 套横版崩（需要用户手动改 HTML）| **pick-template.js 一键出，0 手动修** |
+
+## v5 测试结果（context-window-100m 任务）
+
+```
+=== v5 --article 自动生成 3 平台 ===
+✓ wechat-cover-v1.html   (cover-template.html)    1800×766
+✓ xhs-cover-v1.html      (xhs-cover.html)        2160×2880
+✓ douyin-cover-v1.html   (douyin-cover.html)     2160×3840
+
+=== 4 项自检结果 ===
+✓ 尺寸：3 平台 PNG 输出 = data-width × 2 × data-height × 2
+✓ 主标字数：wechat ≤14 / xhs ≤20 / douyin ≤8
+✓ 文件大小：≤ 2MB（公众号/抖音）/ ≤ 5MB（其他）
+✓ 安全区：wechat/xhs/douyin 无要求，OG/Twitter 需标 safe-area
+```
+
+## 后续可选优化（v5 之后的新清单）
+
+## 后续可选优化（v5 之后的新清单）
+
 - [ ] pick-template.js 加 `--all-platforms` 一键 8 平台
 - [ ] pick-template.js 加 `--html-head` 注入自定义 head（meta og:image 等）
 - [ ] quality-check.js 加视觉对比检查（截封面 PNG 跟 examples 对比，找模板漂移）
 - [ ] quality-check.js 接入 GitHub Actions CI（PR 时自动跑）
+- [ ] 给 fig-template 也加平台专用版本（fig-xhs / fig-douyin，5 个 fig 模板现在都共用 cover-template 的横版布局，竖版可能也崩）
 
-如未来要做，按需提取单条做即可，不要一次性把上面 5 项都补齐。
+---
+
+## v5.1 · 任务目录约定（2026-07）
+
+| 步骤 | 状态 | 备注 |
+|---|---|---|
+| 1. 实战任务跑 v5 后发现 cover 跨平台输出平铺混乱 | ✅ 完成 | 跑 `todo/wanfeng-skills-readme-cover/imgs/` |
+| 2. 提"每个平台建子目录"约定 | ✅ 完成 | 平台子目录（`wechat/`, `xhs/`, `douyin/`） |
+| 3. SKILL.md 加 v5.1 任务目录约定章节 | ✅ 完成 | 5 规则：平台子目录 / fig 进平台子目录 / HTML+PNG 配对 / vN 迭代 / 实战示例 |
+| 4. README.md 加 v5.1 章节 | ✅ 完成 | 同步约定 |
+| 5. **用户实操发现 fig 没进 wechat 子目录**（fix 文档 + 真实目录） | ✅ 完成 | fig 也放平台子目录里，因为 fig 通常是为某个平台做的 |
+
+## 关键变化对比（v5 → v5.1）
+
+| 项 | v5 | v5.1 |
+|---|---|---|
+| 任务目录结构 | 平铺（5 个文件混在一起）| 平台子目录 + fig 根目录 |
+| 删除某平台 | 需手动识别 + 删（易误删）| 直接 `rm -rf wechat/` |
+| 添加某平台 | 手动 mkdir + 移动文件 | `mkdir og/ && cp` |
+| fig 跨平台复用 | 文件名冲突风险 | fig 独立编号 `fig-NN-v1`，多平台共用 |
+
+## 实战对比（v5 → v5.1）
+
+```
+v5 产物（跑完 v5 + 自己组织）         v5.1 产物（按约定自动）
+imgs/                                imgs/
+├── wechat-cover-v1.html              ├── wechat/
+├── xhs-cover-v1.html                 │   ├── cover-v1.html
+├── douyin-cover-v1.html              │   ├── cover-v1.png
+├── wechat-cover-v1.png               │   ├── fig-01/
+├── xhs-cover-v1.png                  │   │   ├── cover-v1.html
+├── douyin-cover-v1.png                │   │   └── cover-v1.png
+├── fig-01-v1.html                    │   └── fig-02/
+├── fig-01-v1.png                     │       ├── cover-v1.html
+├── fig-02-v1.html                    │       └── cover-v1.png
+└── fig-02-v1.png                     ├── xhs/
+                                      │   ├── cover-v1.html
+                                      │   └── cover-v1.png
+                                      └── douyin/
+                                          ├── cover-v1.html
+                                          └── cover-v1.png
+```
+
+## v5.1 后续选项（未做）
+
+- pick-template.js 支持 `--output-dir <dir>/<subdir>/` 自动按平台分子目录（用户连手动组织都省了）
+- v5.1 没改 pick-template.js，只文档化约定（轻量 + 渐进引入）
+
+---
+
+## v5.2 · 全 8 平台实战 + README 文档化（2026-07）
+
+| 步骤 | 状态 | 备注 |
+|---|---|---|
+| 1. 实战发现只跑了 3 平台，README 缺 5 个 | ✅ 完成 | 跑 `todo/wanfeng-skills-readme-cover/imgs/` |
+| 2. SKILL.md 补 8 平台子目录约定 | ✅ 完成 | 完整目录树（8 平台 + fig-01/fig-02）|
+| 3. README.md 同步 8 平台约定 | ✅ 完成 | 实战示例改为"v5.2 全 8 平台"|
+| 4. progress.md 补 v5.2 段 | ✅ 完成 | 本节 |
+| 5. 跑剩下 5 个平台（xhs-story / douyin-wide / zhihu / bilibili / weibo / weibo-fig / og / twitter）| ✅ 完成 | 11 平台子目录，各 cover 自检全 ✓ |
+
+## 8 平台实战清单
+
+| 平台 | 比例 | cover 模板 | 适配层 |
+|---|---|---|---|
+| wechat | 2.35:1 | cover-template | standard |
+| xhs | 3:4 | xhs-cover | high-contrast |
+| douyin | 9:16 | douyin-cover | theatrical |
+| xhs-story | 9:16 | douyin-cover | high-contrast |
+| douyin-wide | 16:9 | cover-template | theatrical |
+| zhihu | 16:9 | cover-template | standard |
+| bilibili | 16:10 | cover-template | standard |
+| weibo | 5:4 | cover-template | standard |
+| weibo-fig | 16:9 | cover-template | standard |
+| og | 1.91:1 | cover-template | standard |
+| twitter | 2:1 | cover-template | standard |
+
+## 关键变化对比（v5.1 → v5.2）
+
+| 项 | v5.1 | v5.2 |
+|---|---|---|
+| 平台子目录约定 | 写文档（只跑 3 平台示范）| 跑全 8+ 平台 + fig 跨平台 |
+| fig 归属 | 之前说"fig 放根目录"（错）| 全部进平台子目录（wechat/fig-01/ 等）|
+| README.md 平台覆盖 | 仅 3 个（公众号 / 小红书 / 抖音）| 11 个子目录（含 2 种尺寸变体）|
+
+## v5.2 后续选项（未做）
+
+- pick-template.js 支持 `--output-dir <dir>/<subdir>/` 自动按平台分子目录（目前要手 mv 到子目录）
+- pick-template.js 加 `--all-platforms` 一键 8 平台（目前要跑 8 次）
+- v5.3 候选：把 fig 跨平台渲染（同一 fig 内容按平台适配）|
+
+## v5.3 · CLI 自动分目录 + 一键全平台（2026-07）
+
+> 把 v5.1/v5.2 的**文档约定**落到 `pick-template.js` 代码里，两个改动全实现并测过。
+
+| 步骤 | 状态 | 备注 |
+|---|---|---|
+| A. `--output` 目录时自动分平台子目录 | ✅ 完成 | 新增 `resolveOutputPath(platformKey, opts)`：`.html` 后缀=文件原样输出；目录路径 → `<dir>/<platform>/cover-v1.html` |
+| B. `--all-platforms` 一键 8 平台 | ✅ 完成 | main() 加分支：必须配 `--output <dir>`，覆盖 `--platform`（警告），跑 wechat/xhs/douyin/zhihu/bilibili/weibo/og/twitter |
+| C. parseArgs 加 `--all-platforms` flag | ✅ 完成 | opts.allPlatforms 默认 false |
+| D. printHelp 补方式 6/7 说明 | ✅ 完成 | 新增一键全平台 + 输出路径规则 |
+| E. SKILL.md 加 v5.3 段 + 方式 2.5 | ✅ 完成 | A/B 用法 + 组合 --article |
+| F. README.md 版本升 v5.3 + 能力表 + CLI 示例 | ✅ 完成 | 本节 |
+
+## 实现要点（v5.3）
+
+- **A · 输出路径判定**：`isFilePath = /\.(html?|png|svg)$/i.test(output) && !endsWith('/')`
+  - 文件路径 → 原样输出（用户显式覆盖用）
+  - 目录路径 → 平台分子目录（custom 平台除外，custom 仍平铺 `<dir>/custom-WxH-cover-v1.html`）
+  - fig 类型进 `<dir>/<platform>/fig-NN-cover-v1.html`（typePrefix 逻辑）
+- **B · --all-platforms**：复用 `generateMulti()`，8 平台不含 custom / 尺寸变体（xhs-story / douyin-wide / weibo-fig）
+
+## 测试结果（v5.3）
+
+| 用例 | 命令 | 结果 |
+|---|---|---|
+| A 目录路径 | `--platform wechat --output /tmp/test-A/` | ✓ `/tmp/test-A/wechat/cover-v1.html` |
+| A 文件路径 | `--platform wechat --output /tmp/test-A/custom-name.html` | ✓ `/tmp/test-A/custom-name.html`（原样）|
+| B 一键 8 平台 | `--all-platforms --output /tmp/test-B/` | ✓ 8 子目录全生成 |
+| B + article | `--article foo.md --all-platforms --output /tmp/test-B2/` | ✓ 8 子目录 + 警告覆盖 platform |
+
+## 关键变化对比（v5.2 → v5.3）
+
+| 项 | v5.2 | v5.3 |
+|---|---|---|
+| 平台分子目录 | 手动约定（要手 mv）| CLI 自动（`--output <dir>/`）|
+| 全平台生成 | 跑 8 次 or `--platform a,b,c...` | `--all-platforms` 一条命令 |
+| 输出路径语义 | `--output` 只当文件/平铺目录 | 目录=分子目录，`.html`=文件原样 |

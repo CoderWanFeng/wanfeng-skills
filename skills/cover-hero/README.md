@@ -2,10 +2,11 @@
 
 > **目录名**：`cover-hero/`
 > **中文名**：封面侠
-> **版本**：v4 · 多平台增强（2026-07）
+> **版本**：v5.3 · CLI 自动分目录 + 一键全平台（2026-07）
 
 > 为**多平台**文章 / 内容生成 HyperFrames 视觉风格的封面 + 配图。
 > 封装：手写 HTML + Puppeteer 渲染 + **多平台模板选择器**（8 个平台 + 任意自定义尺寸）。
+> v5 起小红书 / 抖音有**专用竖版模板**（不再套横版崩布局）。
 > 不调 AI 生图，零 token 消耗。
 
 ## 一句话总结
@@ -19,6 +20,8 @@
 | 自动读 MD frontmatter | `pick-template.js --article <md>` | 新用户首选路径，少打 N 个参数 |
 | 交互问答模式 | `pick-template.js -i` | 命令行不熟用户逐步选 |
 | 多平台一键 | `--platform wechat,xhs,douyin` | 一次跑 3 个平台 |
+| **一键全 8 平台**（v5.3） | `--all-platforms --output imgs/` | 无需列平台名，自动跑 8 平台 |
+| **`--output` 目录自动分子目录**（v5.3） | `--output imgs/` → `imgs/<platform>/cover-v1.html` | 目录路径自动按平台分目录（带 `.html` 后缀则原样输出）|
 | **任意自定义尺寸** | `--width 1440 --height 600` / `--ratio "21:9"` | landing page / App Store 截图 / 飞书头图等非 12 平台尺寸 |
 | 渲染后自动自检 | `render-cover.js` 跑完自动打印 4 项检查 | 不用人工对照 platforms.md |
 | 平台适配层拆 CSS | `assets/code/adaptations/*.css` | 用户改 CSS 永久生效，不被覆盖 |
@@ -68,6 +71,13 @@ node assets/code/src/pick-template.js --platform wechat --type cover --output im
 
 # 多平台一键
 node assets/code/src/pick-template.js --platform wechat,xhs,douyin --type cover --output imgs/
+
+# 一键全 8 平台（v5.3）— 自动按平台分子目录 imgs/<platform>/cover-v1.html
+node assets/code/src/pick-template.js --all-platforms --output imgs/
+
+# --output 是目录（无 .html 后缀）→ 自动进 <platform>/ 子目录；带 .html → 原样输出
+node assets/code/src/pick-template.js --platform wechat --output imgs/          # → imgs/wechat/cover-v1.html
+node assets/code/src/pick-template.js --platform wechat --output imgs/foo.html  # → imgs/foo.html
 
 # 自定义尺寸（任意 ratio）
 node assets/code/src/pick-template.js --width 1440 --height 600 --label app-banner --type cover --output imgs/
@@ -143,17 +153,49 @@ cover-hero/
 │   │   │   ├── high-contrast.css       小红书
 │   │   │   └── theatrical.css          抖音
 │   │   └── templates/                  ← 6 套空白 HTML 模板
-│   │       ├── cover-template.html
+│   │       ├── cover-template.html        横版通用（公众号 / 知乎 / B站 / 微博 / OG / Twitter）
+│   │       ├── xhs-cover.html            ⭐ v5 小红书 3:4 专用
+│   │       ├── douyin-cover.html         ⭐ v5 抖音 9:16 专用
 │   │       ├── fig-template-1-card-row.html
 │   │       ├── fig-template-2-matrix.html
 │   │       ├── fig-template-3-decision-tree.html
 │   │       ├── fig-template-4-pipeline.html
 │   │       └── fig-template-5-summary.html
 │   └── examples/                       ← 历史范例（v4 README 加多平台建议）
-│       ├── ai-photo-father/
-│       └── netflix-headroom-save-token/
-└── progress.md                         ← 封装进度记录（v1→v2→v3→v4）
+└── progress.md                         ← 封装进度记录（v1→v2→v3→v4→v5）
 ```
+
+## 任务目录约定（v5.1 推荐）
+
+跑 `pick-template.js` 后，产物按以下结构组织：
+
+```
+<task>/imgs/                       ← 任务名/imgs/ 是默认输出目录
+├── wechat/                        ← 公众号 2.35:1（横版）
+│   ├── cover-v1.html + .png
+│   ├── fig-01/                    ← 公众号配图（16:9 横版）
+│   │   └── cover-v1.html + .png
+│   └── fig-02/
+│       └── cover-v1.html + .png
+├── xhs/                           ← 小红书 3:4（竖版）
+├── xhs-story/                     ← 小红书 9:16（故事图）
+├── douyin/                        ← 抖音 9:16（竖版）
+├── douyin-wide/                   ← 抖音横屏 16:9
+├── zhihu/                         ← 知乎 16:9
+├── bilibili/                      ← B 站 16:10
+├── weibo/                         ← 微博 5:4
+├── weibo-fig/                     ← 微博配图 16:9
+├── og/                            ← OG Card 1.91:1（链接预览）
+└── twitter/                       ← Twitter Card 2:1
+```
+
+**规则**：
+- **每个平台一个子目录**（`wechat/`, `xhs/`, `douyin/` 等共 8+ 个）
+- **fig 放平台子目录里**（`wechat/fig-01/`、`xhs/fig-01/` 等）：fig 通常是为某个平台做的
+- **HTML 源 + PNG 产物配对**在每个子目录里
+- **fig 命名 = `cover-v1`**（不是 `fig-01-v1`）：fig 也是为该平台做的图，统一叫 `cover-v1`
+- **vN 迭代**：版本号清晰，回滚方便
+- **实战示例**：`todo/wanfeng-skills-readme-cover/imgs/` 就是这个结构（v5.2 起全 8 平台）
 
 ## 核心约束（不可妥协）
 
