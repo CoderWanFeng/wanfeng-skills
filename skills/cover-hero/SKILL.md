@@ -1,6 +1,6 @@
 ---
 name: cover-hero
-description: 为多平台文章 / 内容生成 HyperFrames 视觉风格的封面 + 配图。支持公众号、小红书、抖音、知乎、B站、微博、OG Card、Twitter Card 8 个平台 + 任意自定义尺寸（--width/--height/--ratio）。v5 起小红书 / 抖音有专用竖版模板（不再套横版崩布局），每个平台自动适配尺寸 + 风格档位 + 渲染后自检（字数 / 文件大小 / 尺寸 / 安全区）。封装 HTML 手写 + Puppeteer 渲染 + 平台适配层（独立 CSS 文件）；8 套空白模板（v5 +2 套竖版）、严格的命名规范、不可改动的视觉 DNA。支持 `--article` 自动读 MD frontmatter、`-i` 交互模式、多平台一键（`--platform wechat,xhs,douyin`）；v5.3 起 `--all-platforms` 一键全 8 平台 + `--output <dir>/` 自动按平台分子目录。当用户提到"做封面"、"配图"、"做头图"、"做信息图"、"小红书封面"、"抖音封面"、"视频帧"且文章主题明确时立即触发。
+description: 为多平台文章 / 内容生成 HyperFrames 视觉风格的封面 + 配图。支持公众号、小红书、抖音、知乎、B站、微博、OG Card、Twitter Card 8 个平台 + 任意自定义尺寸（--width/--height/--ratio）。v5 起小红书 / 抖音有专用竖版模板（不再套横版崩布局），每个平台自动适配尺寸 + 风格档位 + 渲染后自检（字数 / 文件大小 / 尺寸 / 安全区 / 卡片数）。封装 HTML 手写 + Puppeteer 渲染 + 平台适配层（独立 CSS 文件）；8 套空白模板（v5 +2 套竖版）、严格的命名规范、不可改动的视觉 DNA。支持 `--article` 自动读 MD frontmatter、`-i` 交互模式、多平台一键（`--platform wechat,xhs,douyin`）；v5.3 起 `--all-platforms` 一键全 8 平台 + `--output <dir>/` 自动按平台分子目录；v5.4 起免手改 HTML —— `--kicker/--hammer/--sub`、frontmatter `cards` 缩进列表、交互模式逐步问内容，全部自动注入模板。当用户提到"做封面"、"配图"、"做头图"、"做信息图"、"小红书封面"、"抖音封面"、"视频帧"且文章主题明确时立即触发。
 ---
 
 # cover-hero · 封面侠（多平台封面 & 配图）
@@ -154,27 +154,48 @@ node assets/code/src/pick-template.js --platform wechat,xhs,douyin --type cover 
 node assets/code/src/pick-template.js --all-platforms --output task/foo/imgs/
 
 # === 方式 3：v4 新增 · 自动读 MD frontmatter（推荐）===
-#  MD 头部加：
+#  MD 头部加（v5.4 起可含 kicker / hammer / sub / cards）：
 #    ---
 #    type: tutorial
 #    platform: wechat xhs douyin
+#    kicker: 6 个 <em>AI Skill</em>
+#    hammer: 6 合一
+#    sub: <span class="hl">6 合一</span>·1 仓库<br/>让 AI 干活
+#    cards:
+#      - name: aihot-topic
+#        role: 热点选题
+#        step: SKILL 01
+#      - name: cover-hero
+#        role: 封面 + 配图
+#        step: SKILL 03
+#        pick: true          # 高亮这张（绿色）
+#      - name: opensource
+#        role: 开源管家
+#        step: SKILL 06
 #    ---
 node assets/code/src/pick-template.js --article task/foo/foo.md
 
 # === 方式 4：v4 新增 · 交互问答（适合新手）===
 node assets/code/src/pick-template.js -i
-# 逐步问：平台 → 类型 → 风格 → 输出路径 → 是否自定义尺寸
+# 逐步问：平台 → 类型 → 风格 → 输出路径 → 内容（kicker/hammer/sub/卡片）→ 是否自定义尺寸
 
 # === 方式 5：v4 新增 · 自定义尺寸（任意平台外的 ratio）===
 node assets/code/src/pick-template.js --width 1440 --height 600 --label landing-hero --type cover --output task/foo/imgs/
 node assets/code/src/pick-template.js --ratio "21:9" --base-width 1920 --label wide-hero --type cover --output task/foo/imgs/
+
+# === 方式 6：v5.4 新增 · 命令行直接注入内容（免手改 HTML）===
+node assets/code/src/pick-template.js --platform xhs \
+  --kicker "6 个 <em>AI Skill</em>" --hammer "6 合一" \
+  --sub 'AI 从<span class="hl">噪声</span>中<br/>长出合影' \
+  --output task/foo/imgs/
+#  kicker/sub 可含原始 HTML（<em>/<span class="hl">/<br/>）；卡片走 frontmatter 或 -i
 
 # === 渲染所有 HTML（v4 自动跑自检）===
 cd task/foo/imgs/
 for f in *.html; do
   node ../../../assets/code/src/render-cover.js "$f"
 done
-# 渲染后自动打印 4 项自检报告：尺寸 / 主标字数 / 文件大小 / 安全区
+# 渲染后自动打印 5 项自检报告：尺寸 / 主标字数 / 文件大小 / 安全区 / 卡片数（v5.4）
 ```
 
 **迭代节奏**：每轮只改一处（字号 / 间距 / 配色 / 文案 / 图标），开下一版 vN+1。
@@ -365,6 +386,48 @@ node pick-template.js --all-platforms --output imgs/
 - 会覆盖 `--platform`（同时传会警告并跳过自定义值）
 - 只跑 8 个核心平台（不含 custom / xhs-story / douyin-wide / weibo-fig 尺寸变体）
 - 可与 `--article` 组合：`--article foo.md --all-platforms --output imgs/`
+
+---
+
+## v5.4 · 内容注入链路 + 竖版布局修复
+
+> 解决两个实战问题：**(1) 抖音/小红书封面文字重叠 + 上下大留白**；**(2) 换内容必须手工改 HTML（没有选择步骤）**。
+
+### 模板层修复（xhs-cover.html / douyin-cover.html）
+
+| 问题 | 原因 | 修法 |
+|---|---|---|
+| 视觉锤文字重叠 | 手改 HTML 时留了两个 `data-hammer`，`.num::after` 取到旧占位值叠加 | `injectContent` 整段替换 `.num`（含 `data-hammer`），保证单一属性 |
+| hero 与 cards 间大留白 | `.hero` / `.cards` 都写死 `height` + 绝对定位，中间留"无人区" | `.cover` 改 `flex-column`；`.hero` = `flex:0 0 auto`（内容撑高）；`.cards` = `flex:1 1 auto`（撑满剩余） |
+
+### 内容注入（pick-template.js · injectContent）
+
+三种入口，全部免手改 HTML：
+
+```bash
+# 1) 命令行直接注入
+node pick-template.js --platform xhs \
+  --kicker "6 个 <em>AI Skill</em>" --hammer "6 合一" \
+  --sub 'AI 从<span class="hl">噪声</span>中<br/>长出合影' --output imgs/
+
+# 2) frontmatter（含 cards 缩进列表，见方式 3）
+node pick-template.js --article foo.md --all-platforms --output imgs/
+
+# 3) 交互模式逐步问（新增内容问答步骤）
+node pick-template.js -i
+```
+
+**注入字段**：
+- `kicker`（顶标小字，可含 `<em>`）
+- `hammer`（视觉锤大字，整段替换 `.num` + `data-hammer`）
+- `sub`（主副标，可含 `<br/>` / `<span class="hl">`；横版模板自动映射到 `.h`）
+- `cards`（卡片数组，每张 `name` / `role` / `step` / `icon` / `pick`；`pick: true` 高亮为绿色）
+
+未提供的字段保留模板占位，不动。`cards` frontmatter 是 YAML 缩进列表子集（只认 `name`/`role`/`step`/`icon`/`pick` 五个键）。
+
+### 自检新增卡片数检查
+
+竖版模板渲染后多一项：`✓ N 张卡片（1-5 合理区间）`，超 5 张或空提示 ⚠（不阻塞）。
 
 ---
 

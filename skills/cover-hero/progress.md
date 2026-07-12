@@ -412,3 +412,55 @@ imgs/                                imgs/
 | 平台分子目录 | 手动约定（要手 mv）| CLI 自动（`--output <dir>/`）|
 | 全平台生成 | 跑 8 次 or `--platform a,b,c...` | `--all-platforms` 一条命令 |
 | 输出路径语义 | `--output` 只当文件/平铺目录 | 目录=分子目录，`.html`=文件原样 |
+
+## v5.4 · 内容注入链路 + 竖版布局修复（2026-07）
+
+> 实战反馈两个问题：抖音/小红书封面 (1) 视觉锤文字重叠 (2) 上下大留白；另外制作过程没有"选择内容"的步骤（全靠手改 HTML）。
+
+| 步骤 | 状态 | 备注 |
+|---|---|---|
+| 1. xhs/douyin 模板 flex 自然流 | ✅ 完成 | `.cover` flex-column；`.hero` flex:0 0 auto；`.cards` flex:1 1 auto；删绝对定位写死高度 |
+| 2. pick-template.js 加 injectContent | ✅ 完成 | kicker/hammer/sub/cards 注入；hammer 整段替换 .num 根治 data-hammer 冲突 |
+| 3. parseArticle 加 kicker/sub/cards 解析 | ✅ 完成 | 新增 parseCardsBlock + applyCardKV（YAML 缩进列表子集）|
+| 4. main() 传新字段 + parseArgs 加 --kicker/--hammer/--sub | ✅ 完成 | 三种入口：CLI flag / frontmatter / 交互 |
+| 5. interactiveMode 加内容问答 | ✅ 完成 | 输出路径后问 kicker/hammer/sub/卡片（可跳过）|
+| 6. quality-check.js 加卡片数检查 | ✅ 完成 | 竖版渲染后多一项 `✓ N 张卡片（1-5）`|
+| 7. 横版 cover-template .sub 注入验证 | ✅ 完成 | injectContent 同时支持 .sub 和 .h |
+| 8. SKILL/README/progress 文档 | ✅ 完成 | 本节 |
+
+## 根因分析（v5.4）
+
+**问题 1 · 文字重叠**
+- 现象：`.num` 大字上方叠加半透明的旧占位文字（红/橙）
+- 根因：手改 HTML 时保留了两个 `data-hammer` 属性（`data-hammer="穿越" data-hammer="6 合一"`），`.num::after { content: attr(data-hammer) }` 取第一个值"穿越"→ 与用户填的"6 合一"叠加
+- 修法：`injectContent` 用 `<div class="num" ...>[\s\S]*?</div>` 整段替换，只写一个 `data-hammer`
+
+**问题 2 · 上下大留白**
+- 现象：hero 与 cards 之间 150px+ 空白，cards 离底部也大空
+- 根因：`.hero { position:absolute; height:620px }` + `.cards { position:absolute; bottom:120px; height:560px }` 都写死，中间没人管
+- 修法：`.cover` 改 `display:flex; flex-direction:column`；顶栏 `flex:0 0 auto`；hero `flex:0 0 auto`（内容撑）；cards `flex:1 1 auto`（撑满剩余）
+
+**问题 3 · 没有选择步骤**
+- 现象：换内容必须手工编辑 HTML 里的 kicker/num/sub/卡片
+- 根因：v4/v5 的 `--article` 解析了 hammer 却从没注入模板（`generateSingle` 没用 opts.hammer）；模板文案全硬编码
+- 修法：injectContent 打通链路 + 3 种输入入口（CLI/frontmatter/交互）
+
+## 测试结果（v5.4）
+
+| 用例 | 命令 | 结果 |
+|---|---|---|
+| 模板布局（无注入）| `--platform xhs/douyin --output /tmp/p1/` → render | ✓ hero↔cards 无缝、无重叠、卡片撑满 |
+| CLI 注入 | `--platform xhs --kicker/--hammer/--sub` | ✓ HTML 三段替换、data-hammer 单一 |
+| frontmatter + cards | `--article test.md --platform xhs` | ✓ kicker/hammer/sub/3 卡片全注入、pick 高亮 |
+| 横版 .sub 注入 | `--platform wechat --sub ...` | ✓ .sub 替换（cover-template）|
+| 卡片数自检 | render 竖版 | ✓ "3 张卡片（1-5）"；横版显示"无 .cards 区块" |
+
+## 关键变化对比（v5.3 → v5.4）
+
+| 项 | v5.3 | v5.4 |
+|---|---|---|
+| 换内容 | 手工编辑 HTML | --kicker/--hammer/--sub / frontmatter cards / -i 问答 |
+| 视觉锤 | 手填易留双 data-hammer 重叠 | injectContent 整段替换，单一属性 |
+| 竖版布局 | 绝对定位写死高度 → 留白 | flex 自然流，hero 撑内容 + cards 撑剩余 |
+| 渲染自检 | 4 项 | 5 项（+卡片数）|
+| 交互模式 | 平台/类型/风格/输出/尺寸 | +内容（kicker/hammer/sub/卡片）|

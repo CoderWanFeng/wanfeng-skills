@@ -2,7 +2,7 @@
 
 > **目录名**：`cover-hero/`
 > **中文名**：封面侠
-> **版本**：v5.3 · CLI 自动分目录 + 一键全平台（2026-07）
+> **版本**：v5.4 · 内容注入链路 + 竖版布局修复（2026-07）
 
 > 为**多平台**文章 / 内容生成 HyperFrames 视觉风格的封面 + 配图。
 > 封装：手写 HTML + Puppeteer 渲染 + **多平台模板选择器**（8 个平台 + 任意自定义尺寸）。
@@ -22,6 +22,10 @@
 | 多平台一键 | `--platform wechat,xhs,douyin` | 一次跑 3 个平台 |
 | **一键全 8 平台**（v5.3） | `--all-platforms --output imgs/` | 无需列平台名，自动跑 8 平台 |
 | **`--output` 目录自动分子目录**（v5.3） | `--output imgs/` → `imgs/<platform>/cover-v1.html` | 目录路径自动按平台分目录（带 `.html` 后缀则原样输出）|
+| **内容注入·命令行**（v5.4） | `--kicker/--hammer/--sub` | 免手改 HTML，直接注入顶标/视觉锤/主副标 |
+| **内容注入·frontmatter**（v5.4） | `cards:` 缩进列表 + `kicker/hammer/sub` | 一份 MD 出全平台，卡片 `pick: true` 高亮 |
+| **交互模式填内容**（v5.4） | `-i` 逐步问 kicker/hammer/sub/卡片 | 新手也能填内容，不碰 HTML |
+| **竖版布局修复**（v5.4） | xhs/douyin 模板 flex 自然流 | 修文字重叠 + 上下大留白 |
 | **任意自定义尺寸** | `--width 1440 --height 600` / `--ratio "21:9"` | landing page / App Store 截图 / 飞书头图等非 12 平台尺寸 |
 | 渲染后自动自检 | `render-cover.js` 跑完自动打印 4 项检查 | 不用人工对照 platforms.md |
 | 平台适配层拆 CSS | `assets/code/adaptations/*.css` | 用户改 CSS 永久生效，不被覆盖 |
@@ -82,13 +86,26 @@ node assets/code/src/pick-template.js --platform wechat --output imgs/foo.html  
 # 自定义尺寸（任意 ratio）
 node assets/code/src/pick-template.js --width 1440 --height 600 --label app-banner --type cover --output imgs/
 node assets/code/src/pick-template.js --ratio "21:9" --base-width 1920 --label wide-hero --type cover --output imgs/
+
+# 注入内容（v5.4）— 免手改 HTML，kicker/sub 可含原始 HTML
+node assets/code/src/pick-template.js --platform xhs \
+  --kicker "6 个 <em>AI Skill</em>" --hammer "6 合一" \
+  --sub 'AI 从<span class="hl">噪声</span>中<br/>长出合影' --output imgs/
 ```
 
 ### 方式 3：交互模式（适合新手）
 
 ```bash
 node assets/code/src/pick-template.js -i
-# 逐步问：平台 → 类型 → 风格 → 输出路径 → 是否自定义尺寸
+# 逐步问：平台 → 类型 → 风格 → 输出路径 → 内容（kicker/hammer/sub/卡片）→ 是否自定义尺寸
+```
+
+### 方式 4：一份 MD 出全平台（v5.4 · 推荐）
+
+```bash
+# foo.md frontmatter 里写 platform / kicker / hammer / sub / cards（缩进列表）
+node assets/code/src/pick-template.js --article foo.md --all-platforms --output imgs/
+# 卡片 pick: true 的那张会高亮为绿色
 ```
 
 ## 平台支持（8 个 + 任意自定义）

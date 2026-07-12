@@ -119,6 +119,22 @@ function checkSafeArea(html, platform) {
   return { name: '安全区', passed: false, message: `⚠ ${platform} 平台应在中央 1200×600 加 safe-area 标记（详见 reference/platforms.md）` };
 }
 
+function checkCards(html) {
+  // 只检查含 .cards 区块的模板（竖版 xhs / douyin）
+  const cardsBlock = html.match(/<section\s+class="cards">([\s\S]*?)<\/section>/);
+  if (!cardsBlock) {
+    return { name: '卡片数', passed: true, message: `ℹ 无 .cards 区块（横版模板）` };
+  }
+  const count = (cardsBlock[1].match(/class="item(\s+pick)?"/g) || []).length;
+  if (count >= 1 && count <= 5) {
+    return { name: '卡片数', passed: true, message: `✓ ${count} 张卡片（1-5 合理区间）` };
+  }
+  if (count === 0) {
+    return { name: '卡片数', passed: false, message: `⚠ .cards 区块为空（应有 1-5 张卡片）` };
+  }
+  return { name: '卡片数', passed: false, message: `⚠ ${count} 张卡片 > 5，竖版易挤（建议 ≤ 5）` };
+}
+
 /**
  * 跑所有自检
  * @param {string} htmlPath - 源 HTML 路径
@@ -134,6 +150,7 @@ function runChecks(htmlPath, pngPath, platform, dims) {
     checkTitleLength(html, platform),
     checkFileSize(pngPath, platform),
     checkSafeArea(html, platform),
+    checkCards(html),
   ];
   return checks;
 }

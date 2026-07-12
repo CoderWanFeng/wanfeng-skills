@@ -29,6 +29,7 @@
     background: var(--paper); color: var(--ink);
     box-shadow: 0 30px 80px rgba(0,0,0,0.5);
     isolation: isolate;
+    display: flex; flex-direction: column;
   }
   .cover::before {
     content: ""; position: absolute; inset: 0;
@@ -38,7 +39,7 @@
 
   /* 顶栏 56px（抖音专用） */
   .topbar {
-    position: absolute; left: 0; right: 0; top: 0; height: 56px;
+    flex: 0 0 auto; height: 56px;
     background: var(--ink); color: var(--paper);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 40px;
@@ -53,13 +54,12 @@
   }
   .topbar .right { color: var(--accent-2); }
 
-  /* ===== 9:16 竖版布局：戏剧风 ===== */
+  /* ===== 9:16 竖版布局：戏剧风（flex 自然流）===== */
 
-  /* Hero 区：上半部分（顶栏下方到中部，更大更戏剧） */
+  /* Hero 区：上半部分（高度由内容决定，更大更戏剧） */
   .hero {
-    position: absolute;
-    left: 0; right: 0; top: 56px; height: 980px;
-    padding: 100px 60px 0 60px;
+    flex: 0 0 auto;
+    padding: 90px 60px 40px 60px;
     z-index: 2;
   }
   .hero .kicker {
@@ -96,11 +96,12 @@
     padding: 0 14px;
   }
 
-  /* 卡片区：下半部分（3 张纵列，立体阴影） */
+  /* 卡片区：下半部分（撑满 hero 之后的剩余高度，立体阴影） */
   .cards {
-    position: absolute;
-    left: 60px; right: 60px; top: 1080px; height: 660px;
+    flex: 1 1 auto;
+    margin: 0 60px 130px 60px;
     display: flex; flex-direction: column; gap: 22px;
+    min-height: 0;
     z-index: 2;
   }
   .item {
