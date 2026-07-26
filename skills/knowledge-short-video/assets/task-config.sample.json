@@ -1,0 +1,93 @@
+{
+  "_comment": "任务配置 · Step 0 一次性问用户，存到这里",
+  "_usage": "复制到 <task>/task-config.json（任务根目录），按用户回答填字段。任务目录命名：YYYYMMDD_HHMMSS_<任务名>",
+  "_default_policy": "用户没指定就用 _default 值；同任务变体之间必须保持一致",
+
+  "_step0_questions": {
+    "_comment": "Step 0 必须问完这 4 个开关再开始写稿",
+    "1_cover_style": "封面/视觉用哪种风格？默认 swiss-grid（账号统一）。其他选项：warm-grain（暖色杂志） / nyt-graph（纽约时报图解） / embedded-captions（人物出镜+字幕）。",
+    "2_ip_info": "是否放 IP 信息（@<用户IP名> + <slogan>）？默认 false。如果放，用户提供自己的 IP 名称和 slogan。",
+    "3_follow_cta": "结尾是否引导关注？默认 false（不要硬塞 CTA，靠内容涨粉）。如果放，用户提供自己的引导话术（可选预设：'关注我，下期接着聊'）。",
+    "4_tts": "配音用系统默认 TTS 还是自定义大模型？默认 = 系统默认 TTS 开箱即用。自定义 = 提供 [4 个参数 / API 文档链接 / 客户端代码路径] 任选 1。"
+  },
+
+  "_defaults": {
+    "cover_style": "swiss-grid",
+    "ip_info": false,
+    "follow_cta": false,
+    "tts": "default"
+  },
+
+  "cover_style": "swiss-grid",
+  "ip_info": false,
+  "follow_cta": false,
+
+  "_cover_style_comment": "4 选 1：swiss-grid（默认）/ warm-grain / nyt-graph / embedded-captions。详情见 assets/style-options.md",
+  "_ip_info_comment": "true = 封面/视频脚注放 @<用户IP名> + <slogan>（由用户提供）；false = 不放",
+  "_follow_cta_comment": "true = 结尾加引导关注话术（由用户提供，可选预设：'关注我，下期接着聊'）；false = 结尾只用 实操/转发/思考 3 类收尾",
+
+  "tts": {
+    "_comment": "tts 选 default 或 custom。选 custom 时 4 选 1：preset / config_json / doc_path / client_code_path",
+    "mode": "default",
+
+    "_when_custom": {
+      "_comment": "用户提供以下 4 选 1 都行",
+      "preset": "azure | aliyun | volcengine | self_hosted | other",
+      "config_json_inline": {
+        "_comment": "直接粘贴 JSON 进来",
+        "tts_endpoint": "",
+        "tts_api_key_env": "",
+        "tts_voice": "",
+        "tts_speed": 1.0,
+        "emotion_support": true,
+        "emotion_format": "[emotion]"
+      },
+      "config_doc_path": "./tts-docs/your-tts-api.md",
+      "config_client_code_path": "./tts-clients/your-tts-client.py"
+    }
+  },
+
+  "_examples": {
+    "_comment": "完整填写示例（用户分别回答 4 个开关）",
+
+    "default_all": {
+      "cover_style": "swiss-grid",
+      "ip_info": false,
+      "follow_cta": false,
+      "tts": { "mode": "default" }
+    },
+
+    "custom_tts_only": {
+      "cover_style": "swiss-grid",
+      "ip_info": false,
+      "follow_cta": false,
+      "tts": {
+        "mode": "custom",
+        "_when_custom": {
+          "preset": "azure",
+          "config_json_inline": {
+            "tts_endpoint": "https://eastasia.tts.speech.microsoft.com/cognitiveservices/v1",
+            "tts_api_key_env": "AZURE_SPEECH_KEY",
+            "tts_voice": "zh-CN-XiaoxiaoNeural",
+            "tts_speed": 1.0,
+            "emotion_support": false,
+            "emotion_format": "[emotion]"
+          }
+        }
+      }
+    },
+
+    "with_doc": {
+      "cover_style": "warm-grain",
+      "ip_info": true,
+      "follow_cta": true,
+      "tts": {
+        "mode": "custom",
+        "_when_custom": {
+          "preset": "self_hosted",
+          "config_doc_path": "./tts-docs/gpt-sovits-api.md"
+        }
+      }
+    }
+  }
+}

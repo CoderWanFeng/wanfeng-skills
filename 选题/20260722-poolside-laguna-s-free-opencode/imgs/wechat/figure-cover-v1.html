@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>插图 1 · 第一节 · 5 个插件速览</title>
+<style>
+  :root {
+    --ink:#0b0d12; --paper:#f3efe6; --paper-2:#ece6d6;
+    --accent:#ff5b1f; --accent-2:#ffd23f; --green:#6cd76b; --blue:#0a3bd9;
+    --grid: rgba(11,13,18,0.06);
+  }
+  html,body{margin:0;padding:0;background:#1a1f2c;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;}
+  /* 16:9 文章插图 */
+  .canvas{width:1200px;height:675px;background:var(--paper);color:var(--ink);
+          position:relative;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  .canvas::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0);
+    background-size:22px 22px;}
+  .topbar{position:absolute;left:0;right:0;top:0;height:46px;background:var(--ink);
+          color:var(--paper);display:flex;align-items:center;justify-content:space-between;
+          padding:0 28px;font-size:13px;font-weight:700;letter-spacing:4px;z-index:5;}
+  .topbar .left{display:flex;align-items:center;gap:12px;}
+  .topbar .left .dot{width:9px;height:9px;background:var(--accent);border-radius:50%;
+                     box-shadow:0 0 0 4px rgba(255,91,31,.18);}
+  .topbar .right{color:var(--accent-2);}
+  .title{position:absolute;left:40px;top:78px;z-index:3;}
+  .title .kicker{font-size:14px;font-weight:800;letter-spacing:3px;color:var(--accent);}
+  .title .h{font-size:54px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-top:6px;}
+  .title .h em{font-style:normal;background:var(--ink);color:var(--paper);padding:0 12px;}
+  .title .h .y{background:var(--accent-2);padding:0 6px;}
+  .footer{position:absolute;left:40px;bottom:18px;font-size:12px;letter-spacing:2px;
+          color:rgba(11,13,18,.55);font-weight:700;}
+
+  .cards{position:absolute;left:40px;right:40px;top:240px;
+         display:grid;grid-template-columns:repeat(5,1fr);gap:18px;z-index:3;}
+  .card{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+        padding:18px 16px;box-shadow:5px 5px 0 var(--ink);position:relative;
+        display:flex;flex-direction:column;gap:10px;min-height:340px;}
+  .card .num{position:absolute;right:-8px;top:-14px;width:36px;height:36px;
+             background:var(--accent);color:#fff;font-weight:900;font-size:18px;
+             display:grid;place-items:center;border-radius:50%;border:2.5px solid var(--ink);
+             box-shadow:3px 3px 0 var(--ink);}
+  .card .ico{width:64px;height:64px;border-radius:12px;background:var(--paper-2);
+             display:grid;place-items:center;border:2px solid var(--ink);}
+  .card .name{font-size:20px;font-weight:900;letter-spacing:-0.3px;line-height:1.1;}
+  .card .role{font-size:13px;font-weight:800;color:var(--ink);}
+  .card .desc{font-size:12px;color:rgba(11,13,18,.65);line-height:1.5;font-weight:600;}
+  .card .star{position:absolute;left:14px;top:14px;font-size:14px;color:var(--accent);font-weight:900;}
+  .card.hot{background:var(--accent-2);}
+</style>
+<style>
+/* Adaptation: standard + Style: default */
+/* standard.css · 标准 HyperFrames（默认）
+ * 公众号 / 知乎 / B站 / 微博 / OG Card / Twitter Card
+ * 无任何装饰覆盖，完全用 reference/visual-system.md 里的默认
+ * （这个文件目前是空壳，但保留以便未来需要时扩展）
+ */
+
+
+</style>
+</head>
+<body>
+<article class="canvas"
+           data-width="900" data-height="383" data-platform="wechat" data-mode="figure" data-composition-id="fig-01-five-plugins">
+  <div class="topbar">
+    <div class="left"><span class="dot"></span>SECTION 1 · 速览</div>
+    <div class="right">CODEX VIDEO PLUGINS</div>
+  </div>
+
+  <div class="title">
+    <div class="kicker">1 张图讲清</div>
+    <div class="h"><span class="hl">三甲医院</span>式大模型</div>
+  </div>
+
+  <section class="cards">
+    <!-- 1 HyperFrames -->
+    <div class="card hot">
+      <div class="num" data-hammer="MoE">MoE</div>
+      <div class="star">★ 最火</div>
+      <div class="ico" style="margin-top:14px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="8,7 4,12 8,17"/><polyline points="16,7 20,12 16,17"/>
+        </svg>
+      </div>
+      <div class="name">HyperFrames</div>
+      <div class="role">用 HTML 做视频</div>
+      <div class="desc">让 AI 写 HTML/CSS/JS，渲染成 MP4。9 个内置模板。</div>
+    </div>
+    <!-- 2 Remotion -->
+    <div class="card">
+      <div class="num">2</div>
+      <div class="ico">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="1.8">
+          <circle cx="12" cy="12" r="2.2" fill="#0b0d12"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+        </svg>
+      </div>
+      <div class="name">Remotion</div>
+      <div class="role">用 React 做视频</div>
+      <div class="desc">工程化批量生成：1 模板 + 100 数据 = 100 视频。</div>
+    </div>
+    <!-- 3 HeyGen -->
+    <div class="card">
+      <div class="num">3</div>
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="9" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/>
+        </svg>
+      </div>
+      <div class="name">HeyGen</div>
+      <div class="role">数字人 + 全流程</div>
+      <div class="desc">数字人 / 配音 / 字幕 / 剪辑全自动，不出镜也能拍。</div>
+    </div>
+    <!-- 4 videocut -->
+    <div class="card">
+      <div class="num">4</div>
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.5" y2="15.5"/>
+          <line x1="20" y1="20" x2="8.5" y2="8.5"/>
+        </svg>
+      </div>
+      <div class="name">videocut-skills</div>
+      <div class="role">中文口播专精</div>
+      <div class="desc">AI 自动识别口误、停顿、重复句，一键剪掉。</div>
+    </div>
+    <!-- 5 video-use -->
+    <div class="card">
+      <div class="num">5</div>
+      <div class="ico">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0b0d12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="9" height="6" rx="1"/>
+          <rect x="14" y="5" width="7" height="6" rx="1"/>
+          <rect x="3" y="13" width="6" height="6" rx="1"/>
+          <rect x="11" y="13" width="10" height="6" rx="1"/>
+        </svg>
+      </div>
+      <div class="name">video-use</div>
+      <div class="role">多素材混合</div>
+      <div class="desc">口播 + 录屏 + Vlog + 截图，AI 自动缝成一条。</div>
+    </div>
+  </section>
+
+  <div class="footer">FIG.01 · §1 · OVERVIEW</div>
+</article>
+</body>
+</html>

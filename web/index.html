@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>晚枫 Skill 库 · 让 AI 真正干活的工作流集合</title>
+  <meta name="description" content="晚枫 Skill 库是一个面向内容创作、热点选题、视觉生成、短视频制作、个人建站、开源协作与免费 AI 模型查找的可复用 AI Skill 集合。">
+  <style>
+    :root {
+      --bg: #080a0f;
+      --bg-soft: #10141f;
+      --card: rgba(255, 255, 255, .075);
+      --card-strong: rgba(255, 255, 255, .12);
+      --line: rgba(255, 255, 255, .15);
+      --text: #f5f7fb;
+      --muted: rgba(245, 247, 251, .68);
+      --muted-2: rgba(245, 247, 251, .48);
+      --brand: #78ffb7;
+      --brand-2: #6ee7ff;
+      --brand-3: #ffdf6e;
+      --hot: #ff6b9d;
+      --shadow: 0 30px 90px rgba(0, 0, 0, .45);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(120, 255, 183, .18), transparent 34%),
+        radial-gradient(circle at 88% 4%, rgba(110, 231, 255, .16), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(255, 107, 157, .12), transparent 34%),
+        linear-gradient(180deg, #080a0f 0%, #0b1020 45%, #080a0f 100%);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .36;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -30%;
+      pointer-events: none;
+      background:
+        conic-gradient(from 120deg at 50% 50%, transparent, rgba(120, 255, 183, .08), transparent, rgba(110, 231, 255, .08), transparent);
+      filter: blur(60px);
+      animation: drift 18s linear infinite;
+      z-index: -3;
+    }
+
+    @keyframes drift {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 10;
+      margin-top: 16px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: rgba(8, 10, 15, .62);
+      backdrop-filter: blur(22px);
+      border-radius: 999px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .24);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #07100c;
+      box-shadow: 0 0 28px rgba(120, 255, 183, .38);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .hero {
+      position: relative;
+      padding: 92px 0 62px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.07fr .93fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(120, 255, 183, .34);
+      background: rgba(120, 255, 183, .08);
+      border-radius: 999px;
+      color: rgba(230, 255, 242, .92);
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: inset 0 0 18px rgba(120, 255, 183, .05);
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--brand);
+      box-shadow: 0 0 0 8px rgba(120, 255, 183, .14), 0 0 24px rgba(120, 255, 183, .8);
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(46px, 7vw, 88px);
+      line-height: .94;
+      letter-spacing: -.08em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #fff, #dfffea 34%, #a9f3ff 68%, #ffe894);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-weight: 800;
+      transition: .22s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #07100c;
+      border-color: transparent;
+      box-shadow: 0 18px 44px rgba(120, 255, 183, .2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 70px rgba(120, 255, 183, .28);
+    }
+
+    .btn-ghost {
+      color: var(--text);
+      background: rgba(255, 255, 255, .055);
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, .1);
+    }
+
+    .hero-card {
+      position: relative;
+      min-height: 520px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .04)),
+        rgba(255, 255, 255, .05);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(22px);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background:
+        radial-gradient(circle at 25% 18%, rgba(120, 255, 183, .35), transparent 27%),
+        radial-gradient(circle at 82% 12%, rgba(110, 231, 255, .24), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(255, 223, 110, .15), transparent 32%);
+      opacity: .72;
+      z-index: 0;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 36px;
+      border: 1px dashed rgba(255, 255, 255, .2);
+      border-radius: 50%;
+      animation: spin 22s linear infinite;
+      z-index: 1;
+    }
+
+    .orbit:nth-child(2) {
+      inset: 86px 54px;
+      animation-duration: 16s;
+      animation-direction: reverse;
+      opacity: .65;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .terminal {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 22px;
+      background: rgba(5, 8, 13, .72);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .terminal-top {
+      display: flex;
+      gap: 7px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      background: var(--hot);
+    }
+
+    .dot:nth-child(2) {
+      background: var(--brand-3);
+    }
+
+    .dot:nth-child(3) {
+      background: var(--brand);
+    }
+
+    .terminal-body {
+      padding: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: rgba(230, 255, 242, .9);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .cmd {
+      color: var(--brand);
+    }
+
+    .hero-badge {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 142px;
+      height: 142px;
+      left: 50%;
+      top: 43%;
+      transform: translate(-50%, -50%);
+      border-radius: 38px;
+      background: linear-gradient(135deg, rgba(120, 255, 183, .96), rgba(110, 231, 255, .92));
+      color: #07100c;
+      box-shadow: 0 30px 90px rgba(110, 231, 255, .22), 0 0 80px rgba(120, 255, 183, .3);
+      font-weight: 950;
+      letter-spacing: -.08em;
+      font-size: 54px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, .055);
+      backdrop-filter: blur(18px);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 34px;
+      letter-spacing: -.05em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      padding: 62px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(32px, 4.5vw, 56px);
+      line-height: 1;
+      letter-spacing: -.06em;
+    }
+
+    .section-desc {
+      max-width: 430px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .skill-card {
+      position: relative;
+      min-height: 300px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .105), rgba(255, 255, 255, .04)),
+        rgba(255, 255, 255, .045);
+      overflow: hidden;
+      transition: .24s ease;
+    }
+
+    .skill-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, var(--accent), transparent 38%);
+      opacity: .22;
+      transition: .24s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, .3);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .055)),
+        rgba(255, 255, 255, .06);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .3);
+    }
+
+    .skill-card:hover::before {
+      opacity: .34;
+    }
+
+    .skill-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 256px;
+    }
+
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    .icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .16);
+      font-size: 24px;
+    }
+
+    .tag {
+      padding: 6px 9px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .skill-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+
+    .skill-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .skill-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 22px;
+    }
+
+    .pill {
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      color: rgba(245, 247, 251, .74);
+      font-size: 12px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .flow-card {
+      position: relative;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, .055);
+      min-height: 220px;
+    }
+
+    .flow-num {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #07100c;
+      font-weight: 950;
+      margin-bottom: 28px;
+    }
+
+    .flow-card h3 {
+      margin: 0 0 10px;
+      letter-spacing: -.04em;
+      font-size: 21px;
+    }
+
+    .flow-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, .055);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel h3 {
+      margin: 0 0 18px;
+      font-size: 26px;
+      letter-spacing: -.05em;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .route strong {
+      color: var(--brand-2);
+    }
+
+    .route span {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .principle {
+      padding: 16px 12px;
+      min-height: 110px;
+      display: flex;
+      align-items: end;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .13);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .035));
+      color: rgba(245, 247, 251, .82);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .cta {
+      padding: 34px;
+      border: 1px solid rgba(120, 255, 183, .26);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 10% 20%, rgba(120, 255, 183, .2), transparent 34%),
+        radial-gradient(circle at 90% 10%, rgba(110, 231, 255, .16), transparent 32%),
+        rgba(255, 255, 255, .06);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .cta h2 {
+      max-width: 730px;
+    }
+
+    .cta p {
+      max-width: 700px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 18px;
+    }
+
+    .code-card {
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 22px;
+      background: rgba(0, 0, 0, .32);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: rgba(230, 255, 242, .88);
+      line-height: 1.8;
+      overflow: auto;
+    }
+
+    .footer {
+      padding: 34px 0 48px;
+      color: var(--muted-2);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .matrix,
+      .cta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .flow {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .principles {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .hero-card {
+        min-height: 430px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        align-items: flex-start;
+        border-radius: 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+
+      .stats,
+      .skill-grid,
+      .flow,
+      .principles {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .route {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        min-height: 360px;
+      }
+
+      .hero-badge {
+        width: 112px;
+        height: 112px;
+        border-radius: 30px;
+        font-size: 42px;
+      }
+
+      .terminal {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+      }
+
+      .terminal-body {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav shell">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark">枫</span>
+        <span>wanfeng-skills</span>
+      </a>
+      <div class="nav-links">
+        <a href="#skills">Skill 一览</a>
+        <a href="#flows">推荐链路</a>
+        <a href="#choose">如何选择</a>
+        <a href="#principles">设计原则</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero shell">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span>只介绍 /skills 目录里的 AI Skill</div>
+          <h1><span class="gradient-text">让 AI 从聊天，变成工作流。</span></h1>
+          <p class="hero-copy">
+            晚枫 Skill 库是一组可复用、可组合、面向真实任务的 AI 工作流。它覆盖热点选题、封面配图、知识短视频、个人建站、开源协作与免费模型查找，让 AI 不只是回答问题，而是按步骤把事情推进到交付。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#skills">浏览 7 个 Skill</a>
+            <a class="btn btn-ghost" href="#choose">按场景选择</a>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <strong>7</strong>
+              <span>个稳定 Skill</span>
+            </div>
+            <div class="stat">
+              <strong>4</strong>
+              <span>条推荐工作链路</span>
+            </div>
+            <div class="stat">
+              <strong>3</strong>
+              <span>核心应用场景</span>
+            </div>
+            <div class="stat">
+              <strong>1</strong>
+              <span>套对话式原则</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card" aria-label="Skill workflow illustration">
+          <div class="orbit"></div>
+          <div class="orbit"></div>
+          <div class="hero-badge">AI</div>
+          <div class="terminal">
+            <div class="terminal-top">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="cmd">skills/</span> hot-topic-radar → 找今天值得跟的热点</div>
+              <div><span class="cmd">skills/</span> cover-hero → 生成封面与正文配图</div>
+              <div><span class="cmd">skills/</span> knowledge-short-video → 口播稿到视频流程</div>
+              <div><span class="cmd">skills/</span> opensource-housekeeper → 发布与运行开源项目</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="skills" class="shell">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Skill Library</p>
+          <h2>7 个 Skill，各管一件具体的事</h2>
+        </div>
+        <p class="section-desc">
+          每个子目录都是一个独立 skill，对应一个明确工作流。它们相互正交，可以单独使用，也可以串成完整生产链路。
+        </p>
+      </div>
+
+      <div class="skill-grid">
+        <article class="skill-card" style="--accent: rgba(110, 231, 255, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🔥</div>
+              <span class="tag">AI 热点</span>
+            </div>
+            <h3>aihot-topic-selector</h3>
+            <p>从 AIHOT 热点数据里每天自动选题，适合 AI 自媒体日常找题、筛题和建立选题任务目录。</p>
+            <div class="skill-meta">
+              <span class="pill">每日选题</span>
+              <span class="pill">AI 内容运营</span>
+              <span class="pill">2026-07 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(255, 107, 157, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">📡</div>
+              <span class="tag">全网雷达</span>
+            </div>
+            <h3>hot-topic-radar</h3>
+            <p>7×24h 监控全网热搜，按关键词过滤、领域相关性打分、热度排序，输出今天值得跟的选题清单。</p>
+            <div class="skill-meta">
+              <span class="pill">微博/抖音/知乎等</span>
+              <span class="pill">记忆去重</span>
+              <span class="pill">2026-07 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(120, 255, 183, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🎨</div>
+              <span class="tag">视觉生成</span>
+            </div>
+            <h3>cover-hero</h3>
+            <p>给公众号文章、多平台内容生成封面与正文配图，使用手写 HTML、Puppeteer 渲染与 HyperFrames 风格系统。</p>
+            <div class="skill-meta">
+              <span class="pill">公众号封面</span>
+              <span class="pill">小红书/抖音</span>
+              <span class="pill">2026-07 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(255, 223, 110, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🎬</div>
+              <span class="tag">短视频</span>
+            </div>
+            <h3>knowledge-short-video</h3>
+            <p>知识类短视频全流程：从口播稿、视觉规格、动画设计、TTS 到最终渲染，适合知识科普与内容账号。</p>
+            <div class="skill-meta">
+              <span class="pill">口播稿</span>
+              <span class="pill">动画渲染</span>
+              <span class="pill">v2.2 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(173, 130, 255, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🌐</div>
+              <span class="tag">个人建站</span>
+            </div>
+            <h3>personal-website-builder</h3>
+            <p>通过对话引导创建个人网站，支持博客、知识库、AI 导航、作品集与简历站，降低从 0 到上线的门槛。</p>
+            <div class="skill-meta">
+              <span class="pill">博客</span>
+              <span class="pill">作品集</span>
+              <span class="pill">2026-06 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(255, 154, 82, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🚀</div>
+              <span class="tag">开源协作</span>
+            </div>
+            <h3>opensource-housekeeper</h3>
+            <p>一站式开源管家，帮助发布本地项目到 GitHub、AtomGit、Gitee，也能拉取网上项目并在本地跑起来。</p>
+            <div class="skill-meta">
+              <span class="pill">发布项目</span>
+              <span class="pill">运行开源项目</span>
+              <span class="pill">v2 稳定</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" style="--accent: rgba(110, 231, 255, .85)">
+          <div class="skill-content">
+            <div class="skill-top">
+              <div class="icon">🧠</div>
+              <span class="tag">免费模型</span>
+            </div>
+            <h3>free-ai-models</h3>
+            <p>搜罗全网可免费使用的大模型，覆盖直接使用、软件内置免费切换、平台免费额度与 API 额度信息。</p>
+            <div class="skill-meta">
+              <span class="pill">GPT/Claude/Gemini</span>
+              <span class="pill">免费额度</span>
+              <span class="pill">v1 稳定</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="flows" class="shell">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Workflow</p>
+          <h2>把 Skill 串起来，就是生产线</h2>
+        </div>
+        <p class="section-desc">
+          Skill 之间可以自由组合：找选题、做视觉、做视频、建网站、发开源项目，各自独立但能自然衔接。
+        </p>
+      </div>
+
+      <div class="flow">
+        <article class="flow-card">
+          <span class="flow-num">01</span>
+          <h3>自媒体内容生产</h3>
+          <p>hot-topic-radar 找题，人工写作，cover-hero 配图，最后发布。</p>
+        </article>
+        <article class="flow-card">
+          <span class="flow-num">02</span>
+          <h3>AI 热点内容链路</h3>
+          <p>aihot-topic-selector 聚焦 AI 圈热点，再进入图文或短视频创作。</p>
+        </article>
+        <article class="flow-card">
+          <span class="flow-num">03</span>
+          <h3>知识短视频生产</h3>
+          <p>热点选题之后，用 knowledge-short-video 完成口播稿、视觉与渲染。</p>
+        </article>
+        <article class="flow-card">
+          <span class="flow-num">04</span>
+          <h3>个人项目上线</h3>
+          <p>personal-website-builder 创建网站，再用 opensource-housekeeper 推送到开源平台。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="choose" class="shell">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Decision Map</p>
+          <h2>不知道用哪个？按目标选</h2>
+        </div>
+      </div>
+
+      <div class="matrix">
+        <div class="panel">
+          <h3>你想做的事</h3>
+          <div class="route-list">
+            <div class="route">
+              <strong>找热点选题</strong>
+              <span>用 hot-topic-radar；如果只关注 AI 圈，用 aihot-topic-selector。</span>
+            </div>
+            <div class="route">
+              <strong>文章配封面</strong>
+              <span>用 cover-hero，适合公众号、小红书、抖音等多平台视觉。</span>
+            </div>
+            <div class="route">
+              <strong>做知识视频</strong>
+              <span>用 knowledge-short-video，从口播稿一路推进到视频制作。</span>
+            </div>
+            <div class="route">
+              <strong>搭个人网站</strong>
+              <span>用 personal-website-builder，按对话选择博客、知识库、作品集或简历站。</span>
+            </div>
+            <div class="route">
+              <strong>发布或运行开源项目</strong>
+              <span>用 opensource-housekeeper，适合新手把项目推到平台或把网上项目跑起来。</span>
+            </div>
+            <div class="route">
+              <strong>找免费 AI 模型</strong>
+              <span>用 free-ai-models，查直接免费用、软件内置免费和平台额度。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>目录结构共识</h3>
+          <div class="code-card">
+            <div>skills/&lt;skill-name&gt;/</div>
+            <div>├── SKILL.md</div>
+            <div>├── reference/</div>
+            <div>├── scripts/</div>
+            <div>├── templates/</div>
+            <div>├── assets/</div>
+            <div>├── README.md</div>
+            <div>└── progress.md / config</div>
+          </div>
+          <p style="margin:18px 0 0;color:var(--muted);line-height:1.7">
+            SKILL.md 是核心定义：它说明何时触发、怎么对话、如何执行。reference、scripts、templates 和 assets 则提供更详细的资料、脚本、模板与静态资源。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="principles" class="shell">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Principles</p>
+          <h2>这套 Skill 的共同设计原则</h2>
+        </div>
+        <p class="section-desc">
+          所有 Skill 都优先考虑用户友好、步骤清晰、失败可恢复，让新手也能跟着完成任务。
+        </p>
+      </div>
+
+      <div class="principles">
+        <div class="principle">纯对话式</div>
+        <div class="principle">一问一答</div>
+        <div class="principle">默认推荐</div>
+        <div class="principle">人话解释</div>
+        <div class="principle">失败兜底</div>
+        <div class="principle">零假设</div>
+        <div class="principle">不强推</div>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="cta">
+        <div class="cta-grid">
+          <div>
+            <p class="section-kicker">Ready</p>
+            <h2>从一个问题开始，让 AI 帮你把任务推进下去。</h2>
+            <p>
+              想做内容，就先开热点雷达；想做视觉，就找封面侠；想做网站或开源项目，也有对应 Skill。这个库的价值不是“多一个提示词”，而是把常见任务沉淀成可以重复执行的流程。
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#skills">回到 Skill 一览</a>
+              <a class="btn btn-ghost" href="#flows">查看推荐链路</a>
+            </div>
+          </div>
+          <div class="code-card">
+            <div><span class="cmd">入口：</span>/Users/wanfeng/code/wanfeng-skills/skills</div>
+            <div><span class="cmd">核心：</span>每个子目录一个独立 Skill</div>
+            <div><span class="cmd">适合：</span>内容创作 / 建站 / 开源协作 / AI 工具查找</div>
+            <div><span class="cmd">状态：</span>7 个 Skill 已稳定可用</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <div>wanfeng-skills · 一个只介绍 skills 目录内容的 Skill 库展示网站</div>
+  </footer>
+</body>
+</html>

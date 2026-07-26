@@ -1,6 +1,6 @@
 ---
 name: "opensource-housekeeper"
-description: "零基础用户的一站式开源管家：既能「发布」本地项目到 GitHub/AtomGit/Gitee，也能「拉取」网上开源项目到本地装依赖跑起来。覆盖注册、SSH、推送、迭代全流程，GitHub 拉不动自动切国内镜像。适用于代码、文档、图片、笔记等任何项目。Invoke when user wants to publish OR clone/run a project on an open-source platform (GitHub, AtomGit, or Gitee) but is unfamiliar with git / open-source workflow."
+description: "零基础用户的一站式开源管家：既能「发布」本地项目到 GitHub/AtomGit/Gitee，也能「拉取」网上开源项目到本地装依赖跑起来，还能在发布或拉取后顺手「生成」结构化的 `wiki/` 项目文档（风格参考 popdf repowiki，默认中文并可选同步英文）。覆盖注册、SSH、推送、迭代、文档全流程，GitHub 拉不动自动切国内镜像。适用于代码、文档、图片、笔记等任何项目。Invoke when user wants to publish OR clone/run a project on an open-source platform (GitHub, AtomGit, or Gitee) but is unfamiliar with git / open-source workflow, OR wants to generate a structured project wiki / repowiki documentation for an existing project."
 ---
 
 # 开源搭子（OpenSource Housekeeper）
@@ -61,7 +61,7 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 
 ---
 
-## 总体流程（两条主线）
+## 总体流程（三条主线）
 
 ```
 【主线 A：发布】本地项目 → 推到 GitHub/AtomGit/Gitee
@@ -77,9 +77,16 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
   Step A3 搜索定位（如果是名字/新闻 → 去各平台搜）
   Step A4 二次确认（搜到多个候选 → 总结每个的能力让用户选）
   Step A5 拉取 + 装依赖 + 启动开发服务
+
+【主线 C：生成文档】已有项目 → 生成 wiki/ 项目知识库
+  → 复用 repowiki-generator skill：调 scripts/analyze_project.py 扫描
+  → 先问用户生成哪种语言（默认中文 / 中英双语 / 只英文）
+  → 按 references/doc-templates.md 逐篇撰写
+  → 调用 scripts/generate_metadata.py 生成 metadata
+  → 写入 {项目路径}/wiki/zh/（若双语则同时写 wiki/en/）并自检
 ```
 
-> **第 0 步必须先问**：用户到底想「发」还是「拉」。两种场景的命令完全不同，不分流就会做错。
+> **第 0 步必须先问**：用户到底想「发」「拉」还是「生成文档」。三种场景的动作完全不同，不分流就会做错。
 
 ---
 
@@ -88,10 +95,11 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 **开场**（第一句话必须问清楚方向）：
 
 ```
-你好，我是「开源搭子」。我能帮你两件事：
+你好，我是「开源搭子」。我能帮你三件事：
 
 【1】把「你本地已有的项目」发布到 GitHub / AtomGit / Gitee
 【2】把「网上的开源项目」拉到本地，装依赖，跑起来玩
+【3】给「已有的项目」（本地 / 刚发布的 / 刚拉下来的）生成完整的项目文档
 
 你这次想做哪个？回复数字即可。
 ```
@@ -100,7 +108,8 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 |---|---|
 | 「1」「发布」「推上去」「开源我的项目」 | 主线 A |
 | 「2」「拉」「下载」「clone」「我想跑一下 XX」 | 主线 B |
-| 含糊不清 | 用具体例子再问一次：「比如『把 my-tool 推到 GitHub』是 A；『帮我拉一下 llama.cpp 跑起来』是 B」 |
+| 「3」「生成文档」「生成 wiki」「写 README」「整理项目文档」 | 收尾步骤·生成项目文档（直接调 [repowiki-generator](../repowiki-generator/SKILL.md)） |
+| 含糊不清 | 用具体例子再问一次：「比如『把 my-tool 推到 GitHub』是 A；『帮我拉一下 llama.cpp 跑起来』是 B；『给 my-tool 生成一份 wiki』是 C」 |
 
 > **不要默认走 A**。即便用户没说「发布」，也不代表就是想发布。
 
@@ -1205,7 +1214,7 @@ head -200 README.md
 
 ---
 
-## 🎉 成功完成对话
+## 🎉 成功完成对话（主线 A · 发布）
 
 ```
 🎉 恭喜！你的项目已经成功开源！
@@ -1225,6 +1234,125 @@ head -200 README.md
 
 下次再开新项目，可以直接跟我说「开源搭子」一键搞定！
 ```
+
+---
+
+## 📚 收尾步骤 · 生成项目文档（可选）
+
+> **触发场景**：用户说「生成文档」「给这个项目生成文档」「生成 wiki」「生成项目知识库」「写 README」「整理项目文档」。
+> **目的**：复用 [repowiki-generator](../repowiki-generator/SKILL.md) skill，把刚发布或刚拉下来的项目自动整理成一份结构化的仓库知识库（风格参考 popdf 的 repowiki）。
+
+### 触发检测（每轮对话尾段扫一次）
+
+任意一句满足即触发：
+
+- 「生成文档 / 写文档 / 生成 wiki / 生成知识库」
+- 「生成项目 README / 生成快速入门 / 生成 API 文档」
+- 「整理项目文档 / 生成 wiki 文档」
+- 「analyze and document this project / generate project documentation」
+- 「给这个项目做份文档」
+
+### 三种触发方式（按用户当前状态分流）
+
+| 用户当前状态 | 走哪条路 | 说明 |
+|---|---|---|
+| 刚走完主线 A（已成功 push） | 路 A | 项目已在 `{项目路径}`，直接调 repowiki-generator |
+| 刚走完主线 B（已成功 clone） | 路 B | 项目在 `~/opensource/{项目名}/`，直接调 repowiki-generator |
+| 单独说「给 XX 项目生成文档」（带路径） | 路 C | 先确认路径存在 → 再调 repowiki-generator |
+
+### 对话模板（开场白）
+
+```
+顺便提一句：你刚 {发布/拉下来} 的项目，要不要顺手生成一份完整的项目文档？
+
+我会给你出一份结构化的项目知识库（风格参考 popdf repowiki）：
+- 项目概述 / 快速入门 / 安装指南
+- 核心功能详解 + mermaid 架构图
+- API 参考 / 开发者指南
+- 自动收集代码引用 + 章节来源
+
+产物会落到：{项目路径}/wiki/zh/
+
+1. ⭐ 生成
+2. 跳过（之后我自己做）
+3. 我想改改模板（告诉我改哪里）
+```
+
+### 接到「生成」后的执行步骤
+
+> **重要**：这一步是**调用** repowiki-generator skill，不是把它的内容复制过来执行。
+
+1. **明确项目根路径**：
+   - 主线 A 后：`{用户在 Step 0 提供的项目路径}`
+   - 主线 B 后：`~/opensource/{项目名}`
+   - 路 C：用户提供的路径，先 `ls -la` 验证存在
+
+2. **先问生成哪种语言**（默认中文，必须询问一次）：
+   ```
+   文档要生成哪种语言？
+   1. ⭐ 只生成中文（默认）        → wiki/zh/
+   2. 中文 + 英文都生成（同步双语）  → wiki/zh/ + wiki/en/
+   3. 只生成英文                  → wiki/en/
+   ```
+   用户不回答就默认只生成中文。
+
+3. **调起 repowiki-generator**：
+   ```
+   加载 skill：repowiki-generator
+   输入参数：
+     project_root = {确认的路径}
+     lang = zh（默认）/ en / zh+en（按上一步用户选择）
+     out_dir = {确认的路径}/wiki/<lang>
+     modules / api_groups = 自动推断
+   ```
+
+4. **执行 6 阶段流程**（详见 [repowiki-generator/SKILL.md](../repowiki-generator/SKILL.md)）：
+   - 阶段 0：读 [references/format-spec.md](../repowiki-generator/references/format-spec.md) 与 [doc-templates.md](../repowiki-generator/references/doc-templates.md)，并确认语言
+   - 阶段 1：跑 [analyze_project.py](../repowiki-generator/scripts/analyze_project.py) 扫描项目
+   - 阶段 2：按 [output-structure.md](../repowiki-generator/references/output-structure.md) 裁剪文档树
+   - 阶段 3：按 [doc-templates.md](../repowiki-generator/references/doc-templates.md) 逐篇撰写（双语则先中文再翻英）
+   - 阶段 4：跑 [generate_metadata.py](../repowiki-generator/scripts/generate_metadata.py) 生成 metadata
+   - 阶段 5：写入 `wiki/<lang>/` 并按 [format-spec.md](../repowiki-generator/references/format-spec.md) 末尾的校验清单自检
+
+5. **完成后告知用户**：
+   ```
+   📚 文档已生成！
+
+   📁 位置：{项目路径}/wiki/zh/（双语还会有 wiki/en/）
+   📄 文档数：{N} 篇
+   📊 代码引用：{M} 条（自动收集）
+   🗂️  目录结构：
+      ├── meta/repowiki-metadata.json
+      └── content/
+          ├── 项目概述.md
+          ├── 快速入门.md
+          ├── 安装指南.md
+          ├── 命令行使用.md
+          ├── 核心功能详解/
+          ├── API参考/
+          └── 开发者指南/
+
+   💡 你可以：
+   1. 在代码编辑器里打开 wiki/ 看效果
+   2. 改改里面不满意的地方（都是纯 Markdown）
+   3. 把 wiki/ 加进 git（它本身是文档，可以一并 push）
+   ```
+
+### 接到「跳过」的兜底
+
+如果用户暂时不想要，但以后又想做，告诉用户：
+
+```
+好的。哪天想生成文档了，直接说「给 {项目路径} 生成文档」我就帮你跑。
+（关键词：生成文档 / 生成 wiki / 生成知识库 / generate project documentation）
+```
+
+### 注意事项
+
+- **不要强制**：项目文档生成是可选动作，绝不在用户没同意时自动跑（避免给小白增加认知负担）。
+- **项目路径必须真实存在**：调起 repowiki-generator 前先 `ls -la {路径}`，路径不存在就反问。
+- **不要清空已有 `wiki/`**：如果目标路径已有 wiki 内容，先问用户「保留 / 覆盖 / 合并」。
+- **生成失败的兜底**：如果某个文档生成失败（如 mermaid 语法错误），不要全盘放弃，标记失败项让用户单独处理。
 
 ---
 

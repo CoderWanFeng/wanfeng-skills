@@ -1,0 +1,24 @@
+# 选题指南配置模板
+# 复制为 ../topic-config.yaml 后按需修改
+
+# 每日热点目录（相对 project_root）
+daily_dir: workflow/每日热点/
+
+# 选题阶段最低 AIHOT 评分
+# - 选题阶段用 ≥ 50 过滤
+# - 公众号阶段再用 ≥ 70 二次过滤（见 todo/公众号/文章/公众号内容的创作指南.md）
+min_score: 50
+
+# 拉数据时间窗（小时）
+# 默认 30 小时：容错时区 + 当天凌晨跨日
+lookback_hours: 30
+
+# 标题去重阈值（0-100，rapidfuzz.fuzz.ratio）
+# 100 = 完全相同才去重；90 = 允许 10% 差异（推荐）
+fuzzy_match_threshold: 90
+
+# 选题时区
+timezone: Asia/Shanghai
+
+# 项目根目录（脚本相对路径基准）
+project_root: .

@@ -1,0 +1,49 @@
+{
+  "_comment": "TTS 配置样例 · 用户自定义配音大模型时填写",
+  "_usage": "复制到 <task>/05-Audio/tts-config.json，按你的引擎填 4 个必填项 + 3 个可选项",
+  "_warning": "API Key 必须用环境变量名（如 MY_TTS_API_KEY），不要直接写 key",
+
+  "tts_endpoint": "https://your-tts.example.com/v1/synthesize",
+  "tts_api_key_env": "MY_TTS_API_KEY",
+  "tts_voice": "your-voice-id-here",
+  "tts_speed": 1.0,
+
+  "tts_model": "default",
+  "emotion_support": true,
+  "emotion_format": "[emotion]",
+
+  "_examples": {
+    "_comment": "几个常见引擎的填法示例（去掉下划线开头的键再填值）",
+
+    "azure": {
+      "tts_endpoint": "https://<region>.tts.speech.microsoft.com/cognitiveservices/v1",
+      "tts_api_key_env": "AZURE_SPEECH_KEY",
+      "tts_voice": "zh-CN-XiaoxiaoNeural",
+      "tts_speed": 1.0,
+      "tts_model": "default",
+      "emotion_support": false,
+      "emotion_format": "[emotion]"
+    },
+
+    "aliyun": {
+      "tts_endpoint": "wss://nls-gateway-cn-shanghai.aliyuncs.com/v1/tts",
+      "tts_api_key_env": "ALIYUN_ACCESS_KEY",
+      "tts_voice": "zhitian_zh",
+      "tts_speed": 0,
+      "tts_model": "sambert",
+      "emotion_support": true,
+      "emotion_format": "[emotion]"
+    },
+
+    "minimax_optional": {
+      "_comment": "示例：如果你想用 MiniMax 而非系统默认，按此填（一般情况下不用手动填，Step 5.1 自动走系统默认）",
+      "tts_endpoint": "https://api.MiniMax.chat/v1/t2a_v2",
+      "tts_api_key_env": "MiniMax_API_KEY",
+      "tts_voice": "your-minimax-voice-id",
+      "tts_speed": 1.0,
+      "tts_model": "speech-01-turbo",
+      "emotion_support": true,
+      "emotion_format": "[emotion]"
+    }
+  }
+}
