@@ -5,13 +5,14 @@
 
 ---
 
-## 📚 Skill 一览（7 个）
+## 📚 Skill 一览（8 个）
 
 | Skill | 用途 | 适用场景 | 触发词举例 | 在线体验 |
 |---|---|---|---|---|
 | [**aihot-topic-selector**](aihot-topic-selector/) | 从 AIHOT 热点数据里每天自动选题 | 自媒体日常选题、内容运营 | 「今天 AI 有什么热点」「按热点选个题」 | — |
 | [**hot-topic-radar**](hot-topic-radar/) | 7×24h 监控全网热搜，按关键词过滤 + 热度打分 | 自媒体选题雷达、跨平台聚合 | 「监控 XX 话题」「全网热搜」「今天值得跟什么」 | — |
 | [**cover-hero**](cover-hero/) | 给公众号文章做封面 + 正文配图（HyperFrames 风格） | 公众号配图、长文视觉 | 「做公众号封面」「配张图」「头图」 | [👉 封面侠](https://qclaw.qq.com/as/BQ2Cw50sNfcy) |
+| [**mp-saver**](mp-saver/) | 不登录保存公众号文章为单文件 MHTML（HTML + base64 内嵌图片，离线可看）。v2.0 起零依赖（只用 Python 标准库 urllib） | 公众号文章收藏、批量存档、喂 LLM | 「保存公众号文章」「下载公众号文章」「不登录存公众号」 | — |
 | [**knowledge-short-video**](knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | 「做条知识视频」「短视频口播稿」 | — |
 | [**personal-website-builder**](personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | 「我想做个博客」「搭个个人网站」「建个简历站」 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | 「帮我推到 GitHub」「开源搭子」「拉一下 llama.cpp 跑起来」 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
@@ -24,15 +25,22 @@
 ### 🔍 内容创作 / 自媒体
 
 ```
-每日选题 → 写文章 → 配图
-  ↓         ↓        ↓
-hot-topic-radar / 人工  cover-hero
+每日选题 → 写文章 → 配图 → 发布
+  ↓         ↓        ↓      ↓
+hot-topic-radar / 人工  cover-hero  公众号
 aihot-topic-selector
+```
+
+```
+要保存别人写的公众号文章（不登录）？
+  ↓
+mp-saver
 ```
 
 - **[aihot-topic-selector](aihot-topic-selector/)** — AI 领域专属：每天从 AIHOT 拉热点，按 2 问选 1 条，建 task 目录
 - **[hot-topic-radar](hot-topic-radar/)** — 全网通用：自定义关键词 + 多平台 + 记忆去重，适合任何垂直领域
 - **[cover-hero](cover-hero/)** — 配图：6 套模板 + 严格视觉 DNA + Puppeteer 渲染
+- **[mp-saver](mp-saver/)** — 公众号文章保存器：v2.0 纯 HTTP 版 → MHTML 单文件，不登录、双击可看；v2.0 起只需 Python 标准库
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
 
 ### 🌐 个人项目 / 建站
@@ -56,6 +64,7 @@ aihot-topic-selector
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想跑一下网上的开源项目 | [opensource-housekeeper](opensource-housekeeper/) |
+| 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
 
 ---
@@ -119,6 +128,16 @@ skills/<skill-name>/
 [改代码 / 学习 / 部署]
 ```
 
+### 链路 5 · 公众号文章存档 + 转 Markdown
+
+```
+[mp-saver] 把 mp.weixin.qq.com/s/... 保存为 MHTML 单文件
+    ↓
+[doc-speedreader] 把 .mhtml 转成 .md
+    ↓
+[喂给 LLM / 笔记软件 / RAG]
+```
+
 ---
 
 ## ⚙️ 共同设计原则
@@ -142,6 +161,7 @@ skills/<skill-name>/
 | aihot-topic-selector | ✅ 稳定 | 2026-07 |
 | hot-topic-radar | ✅ 稳定 | 2026-07 |
 | cover-hero | ✅ 稳定 | 2026-07 |
+| mp-saver | ✅ v2.0 稳定（纯 HTTP 零依赖） | 2026-08-13 |
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定（已优化可用性） | 2026-07-03 |

@@ -74,6 +74,31 @@
 
 ## 💬 Chat 客户端
 
+### OpenCode（编程代理 CLI）
+
+- **官方页面**：[opencode.ai](https://opencode.ai)
+- **数据日期**：2026-07-16（官方 Zen 页直抓）
+- **免费模型**（通过 [OpenCode Zen](https://opencode.ai/zen) 网关，**8 个 Free 限免**）：
+
+| 模型 | 简介 |
+|---|---|
+| **DeepSeek V4 Flash Free** | DeepSeek 极速版 |
+| **Nemotron 3 Ultra Free** | NVIDIA 旗舰 |
+| **LongCat-2.0 Free** | 美团 LongCat |
+| **Ling-3.0-tiny Free** | 蚂蚁 Ling |
+| **MiMo-V2.5 Free** | 小米 MiMo |
+| **Laguna S 2.1 Free** | — |
+| **North Mini Code Free** | 代码向小模型 |
+| **Big Pickle** | 匿名隐身 |
+
+- **白嫖步骤**：
+  1. 安装 OpenCode CLI（[github.com/anomalyco/opencode](https://github.com/anomalyco/opencode)）
+  2. 打开 [opencode.ai/zen](https://opencode.ai/zen) 注册 + 充值 $20
+  3. 复制 API key → 在 OpenCode 跑 `/connect` → 选 OpenCode Zen → 粘贴
+  4. 跑 `/models` 选 Free 模型
+- **限制**：⚠️ 8 个 Free 模型仅限免（数据可能用于改进）+ 需先充 $20
+- **国内能用**：⚠️ Zen 端点在美国，需海外网络
+
 ### Cherry Studio
 
 - **官方页面**：[cherry-ai.com](https://cherry-ai.com)
@@ -153,6 +178,7 @@
 | **Roo Code** | OpenRouter Free / DeepSeek | — | ✅（推荐） | ✅ |
 | **Continue** | OpenRouter Free / DeepSeek | — | ✅（推荐） | ✅ |
 | **Trae** | Claude / GPT-4o / DeepSeek | 限量 | ❌ | ✅ |
+| ⭐ **OpenCode**（CLI） | Zen 网关 8 个 Free 模型 | 限免 + 需充 $20 | ❌（自带 Zen key） | ⚠️ |
 | **Cherry Studio** | 智谱 / DeepSeek / 通义 | — | ✅ | ✅ |
 | **ChatBox** | 智谱 / DeepSeek / 通义 | — | ✅ | ✅ |
 | **LibreChat** | 自部署 + 接 API | — | ✅ | ✅ |
@@ -195,3 +221,14 @@
 - [platform-quota.md](platform-quota.md) — 各大平台免费 API 额度
 - [direct-free.md](direct-free.md) — 直接免费用的网站/App
 - [data-update.md](data-update.md) — 数据更新机制
+
+---
+
+## 📝 Changelog
+
+| 日期 | 事件 |
+|---|---|
+| 2026-07-29 | OpenAI 启动 **ChatGPT for Academic Researchers**（学术研究 1 年免费 Codex + GPT-5.6） |
+| 2026-07-16 | **OpenCode** 上线 Zen 模型网关 + 8 个 Free 模型（编程代理白嫖新渠道） |
+| 2026-07-04 | **NVIDIA build.nvidia.com** 上线 Nemotron-3-Ultra 等 Free Endpoint API |
+| 2026-03-07 | OpenAI 启动 **Codex for Open Source**（开源维护者 6 个月 ChatGPT Pro） |

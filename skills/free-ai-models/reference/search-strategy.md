@@ -35,6 +35,7 @@
 | `Continue` | ✅ | Continue + 第三方 API |
 | `Trae` | ✅ | Trae 专属清单 |
 | `Windsurf` `Codeium` | ✅ | Windsurf 专属清单 |
+| `OpenCode` `Zen` | ✅ | OpenCode Zen 8 个 Free 模型 |
 | `Cherry Studio` `ChatBox` | ✅ | 国产 Chat 客户端 |
 | `VS Code` `JetBrains` `IDE` | ✅ | 编程 IDE 插件 |
 | `LibreChat` `NextChat` `LobeChat` | ✅ | 开源 Chat 客户端 |
@@ -48,6 +49,17 @@
 | `额度` `配额` `限制` | ✅ | 平台免费 API 额度 |
 | `免费用` `免费调用` `免费 token` | ✅ | 平台免费 API 额度 |
 | `百万` `千万` | ✅ | token 额度单位 |
+
+### 路由到「特殊白嫖渠道」（身份/资格型免费）
+
+| 关键词 | 触发 | 路由到 |
+|---|---|---|
+| `opencode` `Zen` `编程代理精选模型` | ✅ | OpenCode Zen（8 个 Free 模型） |
+| `nvidia` `nemotron` `build.nvidia` `NIM` | ✅ | NVIDIA NIM 免费试用 API |
+| `codex` `codex 一年` `codex 1年` `codex 免费 1 年` `科研免费` `academic researchers` | ✅ | Codex 学术科研 1 年免费 |
+| `codex 开源` `开源维护者` `codex 半年` `codex 免费 6 个月` `codex for open source` | ✅ | Codex 开源 6 个月免费 |
+| `我是科研` `我是博士后` `我是教职` `arXiv` | ✅ | Codex 学术 1 年（资格提示） |
+| `我维护开源` `我有个开源项目` | ✅ | Codex 开源 6 个月（资格提示） |
 
 ### 路由到「本地模型」
 
@@ -183,7 +195,11 @@
 | "学生免费" | Cursor Student Pack（.edu 邮箱）+ GitHub Student Pack |
 | "教育邮箱免费" | JetBrains AI / Cursor Pro / GitHub Copilot |
 | "1 元体验" | 阿里云百炼「新人首单 0 元」+ 火山引擎「邀请新人」 |
-| "对比 Claude 和 DeepSeek" | 见下方"对比模板" |
+| 对比 Claude 和 DeepSeek | 见下方"对比模板" |
+| "opencode 免费模型" | OpenCode Zen 8 个 Free 模型（DeepSeek V4 Flash Free / Nemotron 3 Ultra Free / LongCat-2.0 Free / Ling-3.0-tiny Free / MiMo-V2.5 Free / Laguna S 2.1 Free / North Mini Code Free / Big Pickle） |
+| "英伟达免费大模型" "nvidia nemotron 免费" | NVIDIA build.nvidia.com Free Endpoint（Nemotron-3-Ultra-550B / GLM-5.2 / DeepSeek-V4-Pro / Thinkingmachines Inkling） |
+| "codex 免费 1 年" "codex 科研免费" | ChatGPT for Academic Researchers（限 faculty / postdoc + arXiv 论文 + 7 学科 + SheerID 验证） |
+| "codex 免费 6 个月" "开源维护者免费" | Codex for Open Source（限开源项目核心维护者 + 滚动审核 + 可能获 $25K API credits） |
 
 ---
 
