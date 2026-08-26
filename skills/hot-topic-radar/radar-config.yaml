@@ -18,12 +18,14 @@ exclude_keywords:
   - 离婚
 
 # ---------- 平台 ----------
-# v0.1 已实现：weibo / toutiao / baidu
-# 待实现：douyin / zhihu / xiaohongshu / bilibili
+# 已实现：weibo / toutiao / baidu / zhihu / bilibili
+# 待实现：douyin（_signature 反爬） / xiaohongshu（风控严）
 platforms:
   - weibo
   - toutiao
   - baidu
+  - zhihu
+  - bilibili
 
 # ---------- 评分权重 ----------
 weights:

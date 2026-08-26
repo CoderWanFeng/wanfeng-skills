@@ -113,10 +113,46 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 
 # ---------- 网络 ----------
+def _available_encodings() -> str:
+    """根据已安装的解压库返回可处理的 Accept-Encoding 值。
+
+    gzip/deflate 由标准库支持，brotli 需第三方包；
+    未装 brotli 时不再声明 br，避免服务器返回 br 却无法解压。
+    """
+    encs = ["gzip", "deflate"]
+    try:
+        import brotli  # noqa: F401
+        encs.append("br")
+    except ImportError:
+        pass
+    return ", ".join(encs)
+
+
+def safe_decode(raw: bytes) -> str:
+    """对原始字节做多编码兜底解码，优先 utf-8。
+
+    网络响应偶发声明与实际不符或解压残留，逐个尝试常见中文编码，
+    全部失败时用 replace 兜底，保证下游 json.loads 不抛 UnicodeDecodeError。
+    """
+    for enc in ("utf-8", "utf-8-sig", "gbk", "latin-1"):
+        try:
+            return raw.decode(enc)
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace")
+
+
 def http_get(url: str, headers: dict | None = None, timeout: int = 20) -> bytes:
-    """带重试 + gzip 解压的 HTTP GET。"""
+    """带重试 + 自动解压的 HTTP GET。
+
+    Accept-Encoding 按已安装的解压库动态声明，防止声明了 br 却解不开；
+    返回未解码的原始字节，调用方用 safe_decode 兜底解码后再 json.loads。
+    """
     ssl_ctx = ssl.create_default_context()
     req_headers = {**DEFAULT_PLATFORM_HEADERS, **(headers or {})}
+    # 调用方未显式指定编码时，按本机能力动态声明，避免 br 解压失败
+    if not (headers and headers.get("Accept-Encoding")):
+        req_headers["Accept-Encoding"] = _available_encodings()
     req = urllib.request.Request(url, headers=req_headers)
     last_err = None
     for attempt in range(3):
@@ -135,6 +171,7 @@ def http_get(url: str, headers: dict | None = None, timeout: int = 20) -> bytes:
                         import brotli
                         raw = brotli.decompress(raw)
                     except ImportError:
+                        # 理论不会走到这里（未声明 br），兜底：原样返回
                         pass
                 return raw
         except (socket.timeout, ssl.SSLError, ConnectionError) as e:
@@ -145,9 +182,8 @@ def http_get(url: str, headers: dict | None = None, timeout: int = 20) -> bytes:
 
 
 # ---------- 平台抓取 ----------
-# 已实现：weibo / toutiao / baidu
-# 待实现：douyin（_signature 反爬） / zhihu（需登录态） /
-#        xiaohongshu（风控严） / bilibili（-352 风控）
+# 已实现：weibo / toutiao / baidu / zhihu / bilibili
+# 待实现：douyin（_signature 反爬） / xiaohongshu（风控严）
 
 def fetch_baidu(cfg: dict) -> list[dict]:
     """
@@ -262,8 +298,38 @@ def fetch_douyin(cfg: dict) -> list[dict]:
 
 
 def fetch_zhihu(cfg: dict) -> list[dict]:
-    """知乎热榜。⚠️ 待实现：https://www.zhihu.com/billboard 当前需登录态。"""
-    return []
+    """
+    知乎热榜。
+    接口：https://api.zhihu.com/topstory/hot-list?limit=50&reverse_order=0
+    数据：data[] = [{target: {title, excerpt, url, id}, detail_text, ...}]
+
+    说明：网页版 https://www.zhihu.com/billboard 需登录态，
+          但移动端 api.zhihu.com 公开可调，无需 cookie；Referer 带 web 域即可。
+    """
+    url = "https://api.zhihu.com/topstory/hot-list?limit=50&reverse_order=0"
+    raw = http_get(url, headers={"Referer": "https://www.zhihu.com/hot"})
+    payload = json.loads(safe_decode(raw))
+    items: list[dict] = []
+    for idx, entry in enumerate(payload.get("data", []), 1):
+        target = entry.get("target", {}) or {}
+        title = (target.get("title") or "").strip()
+        if not title:
+            continue
+        # detail_text 形如 "1234 万热度"，非整数时置 0
+        detail = entry.get("detail_text", 0)
+        hot = int(detail) if isinstance(detail, int) else 0
+        qid = target.get("id", "")
+        items.append(
+            {
+                "title": title,
+                "url": target.get("url", "") or f"https://www.zhihu.com/question/{qid}",
+                "rank": idx,
+                "hot": hot,
+                "timestamp": "",
+                "excerpt": (target.get("excerpt") or "").strip(),
+            }
+        )
+    return items
 
 
 def fetch_xiaohongshu(cfg: dict) -> list[dict]:
@@ -272,8 +338,33 @@ def fetch_xiaohongshu(cfg: dict) -> list[dict]:
 
 
 def fetch_bilibili(cfg: dict) -> list[dict]:
-    """B 站热门。⚠️ 待实现：当前 -352 风控，需带 cookie。"""
-    return []
+    """
+    B 站热搜。
+    接口：https://app.bilibili.com/x/v2/search/trending/ranking?limit=50
+    数据：data.list[] = [{keyword, show_name, hot_score, ...}]
+
+    说明：网页端 API 有 -352 风控需带 cookie，
+          APP 端 app.bilibili.com 公开可调，无需 cookie。
+    """
+    url = "https://app.bilibili.com/x/v2/search/trending/ranking?limit=50"
+    raw = http_get(url, headers={"Referer": "https://www.bilibili.com/"})
+    payload = json.loads(safe_decode(raw))
+    items: list[dict] = []
+    for idx, entry in enumerate(payload.get("data", {}).get("list", []) or [], 1):
+        # keyword 为主标题，缺时回退 show_name
+        title = (entry.get("keyword") or entry.get("show_name") or "").strip()
+        if not title:
+            continue
+        items.append(
+            {
+                "title": title,
+                "url": "https://search.bilibili.com/all?keyword=" + urllib.parse.quote(title),
+                "rank": idx,
+                "hot": int(entry.get("hot_score", 0) or 0),
+                "timestamp": "",
+            }
+        )
+    return items
 
 
 PLATFORM_HANDLERS = {
