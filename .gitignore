@@ -1,5 +1,6 @@
-todo/*
-test/*
-workflow/*
-.trae/*
+# 本地目录，不入库（目录形式：连目录本身及未来新建的嵌套层级一并排除）
+todo/
+test/
+workflow/
+.trae/
 .qoder
