@@ -5,7 +5,7 @@
 
 ---
 
-## 📚 Skill 一览（8 个）
+## 📚 Skill 一览（9 个）
 
 | Skill | 用途 | 适用场景 | 触发词举例 | 在线体验 |
 |---|---|---|---|---|
@@ -17,6 +17,7 @@
 | [**personal-website-builder**](personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | 「我想做个博客」「搭个个人网站」「建个简历站」 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | 「帮我推到 GitHub」「开源搭子」「拉一下 llama.cpp 跑起来」 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**free-ai-models**](free-ai-models/) | 搜罗全网可以免费使用的大模型（直接用 / 软件内置 / 平台免费额度） | 找免费 GPT/Claude/Gemini、找软件里能白嫖的模型、找永久免费 API | 「免费大模型」「GPT 免费吗」「Cursor 里哪个免费」「API 免费额度」 | — |
+| [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（MiniMax 克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | 「做个数字人视频」「让我的照片说话」「用我的声音念这段话」「做一条十秒口播」 | — |
 
 ---
 
@@ -42,6 +43,7 @@ mp-saver
 - **[cover-hero](cover-hero/)** — 配图：6 套模板 + 严格视觉 DNA + Puppeteer 渲染
 - **[mp-saver](mp-saver/)** — 公众号文章保存器：v2.0 纯 HTTP 版 → MHTML 单文件，不登录、双击可看；v2.0 起只需 Python 标准库
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
+- **[wanfeng-digital-human](wanfeng-digital-human/)** — 数字人：一段素材 + 一句话，出 4–10 秒会说话的短片（克隆音色 + 自动字幕）
 
 ### 🌐 个人项目 / 建站
 
@@ -61,6 +63,7 @@ mp-saver
 | AI 领域怎么选今天的话题？ | [aihot-topic-selector](aihot-topic-selector/) |
 | 文章写完了，给它配个封面 | [cover-hero](cover-hero/) |
 | 我想做短视频，怎么起步？ | [knowledge-short-video](knowledge-short-video/) |
+| 我想用我的脸和声音做口播短片 | [wanfeng-digital-human](wanfeng-digital-human/) |
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想跑一下网上的开源项目 | [opensource-housekeeper](opensource-housekeeper/) |
@@ -166,6 +169,7 @@ skills/<skill-name>/
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定（已优化可用性） | 2026-07-03 |
 | free-ai-models | ✅ v1 稳定 | 2026-07-12 |
+| wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
 
 ---
 

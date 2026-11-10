@@ -8,7 +8,7 @@
 
 ## ✨ 这是什么？
 
-本仓库沉淀了 **6 个相互独立、可自由组合**的 AI Skill。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
+本仓库沉淀了 **7 个相互独立、可自由组合**的 AI Skill。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
 
 设计原则：**纯对话、一问一答、人话解释、零假设、不强推**。
 
@@ -24,6 +24,7 @@
 | [**knowledge-short-video**](skills/knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | — |
 | [**personal-website-builder**](skills/personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](skills/opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
+| [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | — |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
 
@@ -132,6 +133,7 @@ skills/<skill-name>/
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定 | 2026-07-03 |
+| wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
 
 ---
 

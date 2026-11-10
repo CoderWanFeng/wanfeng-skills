@@ -50,7 +50,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    "Accept-Encoding": "gzip, deflate, br",
+    # 不主动声明 Accept-Encoding：避免服务端返回 gzip/br 后 brotli 解码缺失炸掉
     "Connection": "keep-alive",
     "Referer": "https://aihot.virxact.com/",
 }

@@ -1,0 +1,23 @@
+# 密钥与个人素材，绝不入库
+.env
+.env.*
+!.env.example
+
+# 生成产物与用户素材
+output/
+input/
+*.mp4
+*.mov
+*.m4a
+*.mp3
+*.srt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 系统
+.DS_Store

@@ -1,0 +1,7 @@
+{
+  "_comment": "可选配置。删掉本文件也能跑（用代码里的默认值）。",
+  "checkin": true,
+  "travel": true,
+  "blindbox": true,
+  "max_box_per_run": 2
+}

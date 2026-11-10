@@ -1,0 +1,9 @@
+# Python 依赖（Python 3.9+，建议 3.10 以上）
+# 安装：pip3 install -r requirements.txt
+requests>=2.28,<3
+
+# 系统依赖不在 pip 里，需要单独安装：
+#   macOS:  brew install ffmpeg
+#   Ubuntu: sudo apt install ffmpeg
+#   Windows: 下载 ffmpeg 并把 bin/ 加入 PATH
+# 验证：ffmpeg -version && ffprobe -version
