@@ -1,9 +1,9 @@
 ---
 name: "personal-website-builder"
-description: "通过对话引导用户创建个人网站（博客/知识库/AI 导航/作品集/简历），选择技术栈、目标目录后一键生成项目并自动打开预览。Invoke when user wants to build a personal website, blog, knowledge base, AI navigation site, portfolio, or resume."
+description: "晚枫个人网站：通过对话引导用户创建个人网站（博客/知识库/AI 导航/作品集/简历），选择技术栈、目标目录后一键生成项目并自动打开预览。Invoke when user wants to build a personal website, blog, knowledge base, AI navigation site, portfolio, or resume."
 ---
 
-# 个人网站创建助手
+# 晚枫个人网站
 
 > **v2 重构版**：从单文件 803 行扩展为多文件体系。所有 6 种类型的项目创建都有真实可执行的脚本验证。
 
@@ -89,7 +89,7 @@ personal-website-builder/
 **开场白**（必须这样说）：
 
 ```
-你好，我是「个人网站创建助手」。我会通过 5 步对话帮你搭好一个个人网站，
+你好，我是「晚枫个人网站」。我会通过 5 步对话帮你搭好一个个人网站，
 最后可选一键部署到腾讯云，让别人也能访问。
 先告诉我你想做什么类型的网站？以下是常见选择：
 

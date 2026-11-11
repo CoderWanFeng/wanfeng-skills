@@ -57,8 +57,9 @@ IGNORE_DIRS = {
     ".ruff_cache",
     "htmlcov",
     "coverage",
-    ".qoder",  # 兼容旧版产物目录
-    "wiki",  # 不扫描自身的产物（生成的 wiki 输出目录）
+    ".qoder",  # Qoder IDE 项目配置目录（含旧版 repowiki 产物）
+    ".wanfeng-wiki",  # 本 skill 的产物目录，不扫描
+    "wiki",  # 兼容更早的旧版产物目录名
 }
 
 IGNORE_FILES = {

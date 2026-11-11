@@ -1,11 +1,11 @@
 ---
 name: repowiki-generator
-description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格参考 popdf 的 repowiki）。当用户希望 (1) 为当前项目生成仓库 Wiki / 项目知识库；(2) 把代码仓库结构化整理为可浏览的 Markdown 文档；(3) 输出项目概述、核心功能、API 参考、开发者指南；(4) 在某个项目下生成 `repowiki-metadata.json` 元数据；(5) 让 AI Agent 自动读懂项目整体架构并写出带 mermaid 图、cite 块、章节来源的 Markdown 文档时，使用此 skill。触发关键词：生成 repowiki、生成项目 wiki、生成仓库文档、生成项目知识库、输出项目概述、生成 API 参考文档、整理项目文档、repowiki、生成 wiki 文档、为项目生成文档、生成项目 README、生成开发者指南、生成安装文档、生成快速入门、为任意项目生成 wiki、analyze and document this project、generate project documentation。
+description: 晚枫知识库：为任意项目生成结构化的仓库 Wiki 知识库文档（输出到 `.wanfeng-wiki/<lang>/`，风格参考 popdf 的 repowiki）。当用户希望 (1) 为当前项目生成仓库 Wiki / 项目知识库；(2) 把代码仓库结构化整理为可浏览的 Markdown 文档；(3) 输出项目概述、核心功能、API 参考、开发者指南；(4) 在某个项目下生成 `repowiki-metadata.json` 元数据；(5) 让 AI Agent 自动读懂项目整体架构并写出带 mermaid 图、cite 块、章节来源的 Markdown 文档时，使用此 skill。触发关键词：生成 repowiki、生成项目 wiki、生成仓库文档、生成项目知识库、输出项目概述、生成 API 参考文档、整理项目文档、repowiki、生成 wiki 文档、为项目生成文档、生成项目 README、生成开发者指南、生成安装文档、生成快速入门、为任意项目生成 wiki、analyze and document this project、generate project documentation。
 ---
 
-# repowiki-generator
+# 晚枫知识库
 
-为任意项目生成结构与风格参考 [popdf repowiki](file:///Users/wanfeng/code/po-projects/popdf/.qoder/repowiki/zh) 的仓库知识库，输出到目标项目自身的 `wiki/<lang>/` 目录下。
+为任意项目生成结构与风格参考 popdf repowiki 的仓库知识库（格式规范见 [`references/format-spec.md`](references/format-spec.md)），输出到目标项目自身的 `.wanfeng-wiki/<lang>/` 目录下。
 
 ## 适用场景
 
@@ -13,7 +13,7 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 - 用户希望以 popdf repowiki 作为参考模板输出结构化文档
 - 用户希望文档中包含 mermaid 架构图、`<cite>` 引用块、章节来源标注
 - 用户希望覆盖：项目概述、快速入门、安装指南、命令行使用、核心功能详解、API 参考、开发者指南
-- 用户希望产物可直接放入 `wiki/zh/content/`，并附带 `repowiki-metadata.json`
+- 用户希望产物可直接放入 `.wanfeng-wiki/zh/content/`，并附带 `repowiki-metadata.json`
 
 ## 不适用场景
 
@@ -25,22 +25,24 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 
 ### 阶段 0：读取参考与定位目标
 
+0. **检查前置计划**：若 `<project_root>/.wanfeng-wiki/wiki_plan.yaml` 存在，先读它并严格遵守 —— `scope.include` / `scope.exclude` 决定扫描范围，`repowiki.notes` 是不可违背的强先验，`repowiki.documents` 是页面白名单（页面标题与层级以白名单为准，不再自行规划页面）。
+
 1. **读取参考规范**：先打开 [`references/format-spec.md`](references/format-spec.md) 与 [`references/doc-templates.md`](references/doc-templates.md)，确认 repowiki 的目录结构、Markdown 语法、引用格式、mermaid 模式。
 2. **确认目标项目根目录**：从用户输入中解析目标项目路径。默认参数 `project_root` = 用户当前工作目录或会话上下文中提到的项目根目录；如果用户未指定，向用户询问一次。
 3. **确认语言（必须询问用户一次）**：默认只生成中文 `zh`。在开始撰写前，向用户提问一次，确定生成范围：
 
    ```
    文档语言你想怎么生成？
-   1. ⭐ 只生成中文（默认）        → 产出 wiki/zh/
-   2. 中文 + 英文都生成（同步双语）  → 产出 wiki/zh/ + wiki/en/
-   3. 只生成英文                  → 产出 wiki/en/
+   1. ⭐ 只生成中文（默认）        → 产出 .wanfeng-wiki/zh/
+   2. 中文 + 英文都生成（同步双语）  → 产出 .wanfeng-wiki/zh/ + .wanfeng-wiki/en/
+   3. 只生成英文                  → 产出 .wanfeng-wiki/en/
    ```
 
    | 用户选择 | `lang` 取值 | 输出目录 |
    |------|------|------|
-   | 1（默认 / 未回答） | `zh` | `wiki/zh/` |
-   | 2（双语） | `zh` + `en` | `wiki/zh/` 与 `wiki/en/` |
-   | 3（只英文） | `en` | `wiki/en/` |
+   | 1（默认 / 未回答） | `zh` | `.wanfeng-wiki/zh/` |
+   | 2（双语） | `zh` + `en` | `.wanfeng-wiki/zh/` 与 `.wanfeng-wiki/en/` |
+   | 3（只英文） | `en` | `.wanfeng-wiki/en/` |
 
    > 双语模式下，先完整生成中文版，再据此翻译出英文版；英文版的 `<cite>` 引用路径、行号、mermaid 结构与中文版保持一致，仅正文文案翻译。技术名词、代码标识符、文件名、API 名称在两种语言下都保持原样。
 
@@ -73,6 +75,8 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 - 元数据：`meta/repowiki-metadata.json`
 
 > 注意：并非每个项目都需要全部顶层文档——按项目实际功能裁剪。例如纯 CLI 工具不需要 GUI/Web 文档；纯前端项目不需要命令行文档。
+>
+> 若存在前置计划 `wiki_plan.yaml` 且含 `repowiki.documents` 白名单，则以白名单中的页面标题与层级为准，跳过上面的自动规划。
 
 ### 阶段 3：按模板撰写文档
 
@@ -95,7 +99,7 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 
 ### 阶段 5：写入与校验
 
-1. 在目标项目的 `wiki/<lang>/` 下创建完整目录结构
+1. 在目标项目的 `.wanfeng-wiki/<lang>/` 下创建完整目录结构
 2. 写入所有 `.md` 文档与 `meta/repowiki-metadata.json`
 3. 校验清单：
    - [ ] 每个文档都有 `<cite>` 引用块
@@ -134,7 +138,7 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 |------|---------|------|
 | `project_root` | 当前工作目录 | 目标项目根路径 |
 | `lang` | `zh` | 文档语言；`zh`（默认）/ `en` / `zh`+`en`（双语），开始前询问用户 |
-| `out_dir` | `<project_root>/wiki/<lang>` | 输出目录 |
+| `out_dir` | `<project_root>/.wanfeng-wiki/<lang>` | 输出目录 |
 | `modules` | 自动推断 | 核心功能大类，决定 `核心功能详解/` 下的子目录 |
 | `api_groups` | 自动推断 | API 大类，决定 `API参考/` 下的子目录 |
 
@@ -145,7 +149,7 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 调用完成后，应当在目标项目根目录下生成如下结构（以 Python 库项目为例）：
 
 ```
-<project_root>/wiki/zh/
+<project_root>/.wanfeng-wiki/zh/
 ├── meta/
 │   └── repowiki-metadata.json
 └── content/
@@ -179,5 +183,5 @@ description: 为任意项目生成结构化的 `wiki/` 知识库文档（风格�
 - **行号必须真实存在**：使用 `L1-L100` 格式时，确保目标文件至少有 100 行；否则改为 `L1-L<实际行数>` 或省略行号。
 - **不要复制 popdf 内容**：模板与格式可以复用，但所有内容必须基于目标项目实际代码生成，不允许复读 popdf 的具体业务描述。
 - **不创建冗余文档**：项目没有 GUI 就不要写 `GUI使用指南.md`；项目没有 Web 前端就不要写 `Web界面使用.md`；项目没有 CLI 入口就不要写 `命令行使用.md`。
-- **不修改项目源代码**：本 skill 只在 `wiki/` 目录下创建文件，绝不允许触碰源代码。
+- **不修改项目源代码**：本 skill 只在 `.wanfeng-wiki/` 目录下创建文件，绝不允许触碰源代码。
 - **保持中立语气**：客观描述架构与功能，不写营销文案或主观评价。

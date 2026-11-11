@@ -5,7 +5,7 @@
 ## 完整结构
 
 ```
-<project_root>/wiki/<lang>/
+<project_root>/.wanfeng-wiki/<lang>/
 ├── meta/
 │   └── repowiki-metadata.json
 └── content/

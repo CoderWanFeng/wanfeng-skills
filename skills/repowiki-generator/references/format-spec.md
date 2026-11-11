@@ -1,13 +1,13 @@
 # repowiki 格式规范详解
 
-本文档是 popdf repowiki（其真实目录为 popdf 的 `.qoder/repowiki/zh/`）格式规范的提炼与抽象，用于指导 AI Agent 在任意目标项目下生成同风格、同结构的 wiki 内容，输出目录统一为 `wiki/`。
+本文档是 popdf repowiki 格式规范的提炼与抽象，用于指导 AI Agent 在任意目标项目下生成同风格、同结构的 wiki 内容，输出目录统一为 `.wanfeng-wiki/`。
 
-参考来源：[popdf repowiki](file:///Users/wanfeng/code/po-projects/popdf/.qoder/repowiki/zh)。
+参考来源：popdf repowiki。若本地存在 popdf 仓库，可对照其历史产物 `popdf/.qoder/repowiki/zh/`（旧目录名，内容结构与本规范的 `.wanfeng-wiki/` 完全一致）；不存在时以本文档为准。
 
 ## 1. 顶层目录结构
 
 ```
-<project_root>/wiki/<lang>/
+<project_root>/.wanfeng-wiki/<lang>/
 ├── meta/
 │   └── repowiki-metadata.json        # 元数据：项目代码片段索引
 └── content/                          # 所有 Markdown 文档

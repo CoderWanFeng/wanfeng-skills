@@ -1,6 +1,6 @@
-# repowiki-generator
+# 晚枫知识库
 
-为任意项目生成结构与风格参考 [popdf repowiki](file:///Users/wanfeng/code/po-projects/popdf/.qoder/repowiki/zh) 的仓库知识库，输出到目标项目自身的 `wiki/<lang>/` 目录下。默认生成中文 `wiki/zh/`，生成前会询问是否同步生成英文。
+为任意项目生成结构与风格参考 popdf repowiki 的仓库知识库（格式规范见 [`references/format-spec.md`](references/format-spec.md)），输出到目标项目自身的 `.wanfeng-wiki/<lang>/` 目录下。默认生成中文 `.wanfeng-wiki/zh/`，生成前会询问是否同步生成英文。
 
 ## 适用场景
 
@@ -45,7 +45,7 @@ Agent 将：
 2. 按 `references/output-structure.md` 设计文档树
 3. 按 `references/doc-templates.md` 撰写每个 .md
 4. 调用 `scripts/generate_metadata.py` 生成 `meta/repowiki-metadata.json`
-5. 写入 `<project>/wiki/zh/`（若选双语则同时写 `<project>/wiki/en/`）
+5. 写入 `<project>/.wanfeng-wiki/zh/`（若选双语则同时写 `<project>/.wanfeng-wiki/en/`）
 
 ### 单独使用脚本
 
@@ -56,9 +56,9 @@ python3 scripts/analyze_project.py /path/to/project -o report.json
 # 2. 撰写 repowiki（手动 / 由 Agent 完成）
 
 # 3. 生成元数据
-python3 scripts/generate_metadata.py /path/to/project/wiki/zh/content \
+python3 scripts/generate_metadata.py /path/to/project/.wanfeng-wiki/zh/content \
     --project-root /path/to/project \
-    --out /path/to/project/wiki/zh/meta/repowiki-metadata.json
+    --out /path/to/project/.wanfeng-wiki/zh/meta/repowiki-metadata.json
 ```
 
 ## 输出示例
@@ -66,7 +66,7 @@ python3 scripts/generate_metadata.py /path/to/project/wiki/zh/content \
 调用完成后，目标项目根目录下生成如下结构：
 
 ```
-<project_root>/wiki/zh/
+<project_root>/.wanfeng-wiki/zh/
 ├── meta/
 │   └── repowiki-metadata.json
 └── content/

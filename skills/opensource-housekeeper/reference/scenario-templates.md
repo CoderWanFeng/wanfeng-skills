@@ -1,6 +1,6 @@
 # 4 种非技术场景模板（个人 wiki / 设计师 / 文档党 / dotfiles）
 
-> SKILL.md 主线 A 在「场景识别」后引用本表，给不同项目类型提供专属的 .gitignore + README + 演示话术。
+> SKILL.md 主线 2（发布）在「场景识别」后引用本表，给不同项目类型提供专属的 .gitignore + README + 演示话术。
 
 ---
 

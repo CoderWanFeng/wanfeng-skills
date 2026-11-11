@@ -15,7 +15,7 @@
 | [**mp-saver**](mp-saver/) | 不登录保存公众号文章为单文件 MHTML（HTML + base64 内嵌图片，离线可看）。v2.0 起零依赖（只用 Python 标准库 urllib） | 公众号文章收藏、批量存档、喂 LLM | 「保存公众号文章」「下载公众号文章」「不登录存公众号」 | — |
 | [**knowledge-short-video**](knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | 「做条知识视频」「短视频口播稿」 | — |
 | [**personal-website-builder**](personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | 「我想做个博客」「搭个个人网站」「建个简历站」 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
-| [**opensource-housekeeper**](opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | 「帮我推到 GitHub」「开源搭子」「拉一下 llama.cpp 跑起来」 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
+| [**opensource-housekeeper**](opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | 「我想学 XX 怎么用」「这项目干嘛」「帮我推到 GitHub」「拉一下 llama.cpp 跑起来」 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**free-ai-models**](free-ai-models/) | 搜罗全网可以免费使用的大模型（直接用 / 软件内置 / 平台免费额度） | 找免费 GPT/Claude/Gemini、找软件里能白嫖的模型、找永久免费 API | 「免费大模型」「GPT 免费吗」「Cursor 里哪个免费」「API 免费额度」 | — |
 | [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（MiniMax 克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | 「做个数字人视频」「让我的照片说话」「用我的声音念这段话」「做一条十秒口播」 | — |
 
@@ -51,7 +51,7 @@ mp-saver
 
 ### 🚀 开源协作
 
-- **[opensource-housekeeper](opensource-housekeeper/)** — 一站式开源管家：发布 + 拉取双向，支持非代码项目（文档/图片/dotfiles）
+- **[opensource-housekeeper](opensource-housekeeper/)** — 晚枫开源管家：主打「学用开源项目」（找到 → 讲清 → 跑通 → 读懂 → 改一处用出效果），也能反向发布项目、生成项目文档
 
 ---
 
@@ -66,7 +66,7 @@ mp-saver
 | 我想用我的脸和声音做口播短片 | [wanfeng-digital-human](wanfeng-digital-human/) |
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
-| 我想跑一下网上的开源项目 | [opensource-housekeeper](opensource-housekeeper/) |
+| 我想学一个开源项目、把它真正用起来 | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
 
@@ -123,12 +123,14 @@ skills/<skill-name>/
 [opensource-housekeeper] 推到 GitHub/AtomGit/Gitee
 ```
 
-### 链路 4 · 跑开源项目
+### 链路 4 · 学用开源项目（主打）
 
 ```
-[opensource-housekeeper] 拉取 + 装依赖 + 跑起来
+[opensource-housekeeper] 找到项目 → 用人话讲清它是干嘛的
     ↓
-[改代码 / 学习 / 部署]
+拉取 + 装依赖 + 跑起来
+    ↓
+读懂结构 → 改一处 → 用自己的东西跑出效果
 ```
 
 ### 链路 5 · 公众号文章存档 + 转 Markdown

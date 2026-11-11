@@ -23,7 +23,7 @@
 | [**cover-hero**](skills/cover-hero/) | 给公众号文章做封面 + 正文配图（HyperFrames 风格） | 公众号配图、长文视觉 | [👉 封面侠](https://qclaw.qq.com/as/BQ2Cw50sNfcy) |
 | [**knowledge-short-video**](skills/knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | — |
 | [**personal-website-builder**](skills/personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
-| [**opensource-housekeeper**](skills/opensource-housekeeper/) | 一站式开源管家：发布本地项目到 GitHub/AtomGit/Gitee + 拉取网上的项目本地运行 | 开源小白、跨平台发布、跑开源项目 | [👉 开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
+| [**opensource-housekeeper**](skills/opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
@@ -46,6 +46,7 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 然后在对话里说出你的需求，比如：
 - 「帮我监控一下 AI 圈今天的热点」 → 触发 `hot-topic-radar`
 - 「我想搭一个个人博客」 → 触发 `personal-website-builder`
+- 「我想学 XX 这个开源项目怎么用」 → 触发 `opensource-housekeeper`
 - 「帮我把这个项目推到 GitHub」 → 触发 `opensource-housekeeper`
 
 ---
@@ -82,12 +83,14 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 [opensource-housekeeper]    推到 GitHub / AtomGit / Gitee
 ```
 
-### 链路 4 · 跑开源项目
+### 链路 4 · 学用开源项目（主打）
 
 ```
-[opensource-housekeeper]   拉取 + 装依赖 + 跑起来
+[opensource-housekeeper]   找到项目 → 用人话讲清它是干嘛的
                 ↓
-       [改代码 / 学习 / 部署]
+            拉取 + 装依赖 + 跑起来
+                ↓
+      读懂结构 → 改一处 → 用自己的东西跑出效果
 ```
 
 ---
