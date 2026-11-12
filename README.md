@@ -8,7 +8,7 @@
 
 ## ✨ 这是什么？
 
-本仓库沉淀了 **7 个相互独立、可自由组合**的 AI Skill。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
+本仓库沉淀了 **8 个相互独立、可自由组合**的 AI Skill。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
 
 设计原则：**纯对话、一问一答、人话解释、零假设、不强推**。
 
@@ -25,6 +25,7 @@
 | [**personal-website-builder**](skills/personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](skills/opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
+| [**mograph**](skills/mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用），在人的上下左右定时弹出并渲染成片 | 口播视频包装、出镜科普、数据 lower-third | — |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
 
@@ -48,6 +49,7 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 - 「我想搭一个个人博客」 → 触发 `personal-website-builder`
 - 「我想学 XX 这个开源项目怎么用」 → 触发 `opensource-housekeeper`
 - 「帮我把这个项目推到 GitHub」 → 触发 `opensource-housekeeper`
+- 「这条口播视频帮我自动剪辑，根据讲的内容加点动效卡」 → 触发 `mograph`
 
 ---
 
@@ -91,6 +93,16 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
             拉取 + 装依赖 + 跑起来
                 ↓
       读懂结构 → 改一处 → 用自己的东西跑出效果
+```
+
+### 链路 5 · 真人口播视频的动效包装
+
+```
+[knowledge-short-video]              出口播稿
+            ↓  稿子 + 已拍好的出镜视频
+[mograph]                       分镜 → 联网找动效实现 → 渲染弹卡
+            ↓
+       [cover-hero]                同视觉出封面
 ```
 
 ---
@@ -137,6 +149,7 @@ skills/<skill-name>/
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定 | 2026-07-03 |
 | wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
+| mograph（晚枫自动剪辑） | 🚧 v1 首发（骨架脚本本地跑通；渲染链路待 v1.1 实测） | 2026-11 |
 
 ---
 

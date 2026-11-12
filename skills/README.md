@@ -5,7 +5,7 @@
 
 ---
 
-## 📚 Skill 一览（9 个）
+## 📚 Skill 一览（10 个）
 
 | Skill | 用途 | 适用场景 | 触发词举例 | 在线体验 |
 |---|---|---|---|---|
@@ -18,6 +18,7 @@
 | [**opensource-housekeeper**](opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | 「我想学 XX 怎么用」「这项目干嘛」「帮我推到 GitHub」「拉一下 llama.cpp 跑起来」 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**free-ai-models**](free-ai-models/) | 搜罗全网可以免费使用的大模型（直接用 / 软件内置 / 平台免费额度） | 找免费 GPT/Claude/Gemini、找软件里能白嫖的模型、找永久免费 API | 「免费大模型」「GPT 免费吗」「Cursor 里哪个免费」「API 免费额度」 | — |
 | [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（MiniMax 克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | 「做个数字人视频」「让我的照片说话」「用我的声音念这段话」「做一条十秒口播」 | — |
+| [**mograph**](mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用卡），在人的上下左右定时弹出并渲染成片。v1「检索驱动」：运行时由本地 AI 联网拉社区最新的 Remotion / HyperFrames 实现 | 口播视频包装、出镜科普、lower-third 数据卡 | 「自动剪辑」「口播加动画」「给视频贴片」「上下左右弹卡」「加数据卡」「用 Remotion 给口播做叠加」 | — |
 
 ---
 
@@ -44,6 +45,7 @@ mp-saver
 - **[mp-saver](mp-saver/)** — 公众号文章保存器：v2.0 纯 HTTP 版 → MHTML 单文件，不登录、双击可看；v2.0 起只需 Python 标准库
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
 - **[wanfeng-digital-human](wanfeng-digital-human/)** — 数字人：一段素材 + 一句话，出 4–10 秒会说话的短片（克隆音色 + 自动字幕）
+- **[mograph](mograph/)** — 晚枫自动剪辑：真人已出镜的视频 + 口播稿 → 按讲话内容在四周弹卡（不重拍、不剪镜头）
 
 ### 🌐 个人项目 / 建站
 
@@ -69,6 +71,7 @@ mp-saver
 | 我想学一个开源项目、把它真正用起来 | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
+| 视频已经拍好了，只想在讲话时旁边弹出数据卡 / 图表 | [mograph](mograph/) |
 
 ---
 
@@ -143,6 +146,16 @@ skills/<skill-name>/
 [喂给 LLM / 笔记软件 / RAG]
 ```
 
+### 链路 6 · 真人口播视频的动效包装
+
+```
+[knowledge-short-video] 出口播稿（或自己写的稿）
+    ↓  稿子 + 已拍好的出镜视频（可选 .srt / 词级时间戳）
+[mograph] 出 overlay-spec.json → 联网检索动效实现 → 渲染弹卡成片
+    ↓
+[cover-hero] 同账号视觉令牌出封面
+```
+
 ---
 
 ## ⚙️ 共同设计原则
@@ -172,6 +185,7 @@ skills/<skill-name>/
 | opensource-housekeeper | ✅ v2 稳定（已优化可用性） | 2026-07-03 |
 | free-ai-models | ✅ v1 稳定 | 2026-07-12 |
 | wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
+| mograph（晚枫自动剪辑） | 🚧 v1 首发（骨架脚本本地跑通；渲染链路待 v1.1 实测） | 2026-11 |
 
 ---
 
