@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Agnes AI 免费使用 · MG 样片 E（8-bit 像素游戏风）
+"""示例选题（虚构）Nimbus 3.0 新版速览 · MG 样片 E（8-bit 像素游戏风）
 
 前四版：A 深色科技 / B 亮色杂志 / C 复古拼贴 / D 故障艺术
 本版：全部画面在 360×640 低分辨率渲染，再 ×3 最近邻放大到 1080×1920。
@@ -26,7 +26,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageOps
 
 HERE = Path(__file__).resolve().parent
 FPS = 30
@@ -52,7 +52,7 @@ else:
         _mg_sys.path.insert(0, str(_mg_here.parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
                    set_content_offset, write_report, load_evidence_or_raw,
-                   SHOTS_DIR, EVID_DIR)
+                   load_font, SHOTS_DIR, EVID_DIR)
 
 GUARD = OverlapGuard(1080, 1920, text_thresh=0.015,
                      safe_top=0, safe_bottom=0,
@@ -67,7 +67,7 @@ W, H = 1080, 1920
 LW, LH = 360, 640
 SCALE = 3
 
-F_SYS = "/System/Library/Fonts/Hiragino Sans GB.ttc"
+# 中文没法用 5×7 点阵，小字回退到系统粗黑；字体路径由 mgkit/fonts.py 按角色解析。
 
 # ---- 8-bit 调色板（有限色，像素游戏的味道来自色数少）----
 BG0 = (12, 16, 32)        # 深蓝黑
@@ -182,7 +182,7 @@ def text_w(s, px=1):
 
 
 def sysfont(size):
-    return ImageFont.truetype(F_SYS, int(size), index=2)
+    return load_font("sans_bold", int(size))
 
 
 # ---------------------------------------------------------------- 精灵
@@ -402,15 +402,15 @@ def shot_sprite(name, box, w, h, label=None):
 # ---------------------------------------------------------------- HUD
 # 每个场景的对话框台词（RPG 对话框，填补下方空间）
 DIALOG = {
-    1: ("晚枫", "文本 图片 视频 三个 Flash 现在都是 0 元"),
-    2: ("晚枫", "免费 API 就挂在官网首页，不是营销话术"),
-    3: ("系统", "普通用户走 Pavo，开发者走 API 接口"),
-    4: ("系统", "五步：注册 建 Key 选模型 填地址 发请求"),
-    5: ("系统", "model / base / auth，三行就够"),
-    6: ("系统", "文本 x2 图片 x3 视频 720P，全 0"),
-    7: ("系统", "视频 720P 视频时长 当前体验价 0 元每秒"),
-    8: ("系统", "注意：阶段性优惠，有 TPS 限制，按刊例价折算"),
-    9: ("晚枫", "你最想白嫖哪个？评论区告诉我，下期实测"),
+    1: ("旁白", "笔记 附件 网页 三项新能力都放开了"),
+    2: ("旁白", "新功能就挂在官网首页，不是宣传话术"),
+    3: ("系统", "普通人走网页端，重度用户走命令行"),
+    4: ("系统", "五步：注册 建区 装工具 连地址 开同步"),
+    5: ("系统", "client / sync / auth，三行就够"),
+    6: ("系统", "笔记 ×3 附件 ×5 网页剪藏不限"),
+    7: ("系统", "桌面端 离线同步 当前版本 支持三台设备"),
+    8: ("系统", "注意：灰度中，有设备数上限，按套餐折算"),
+    9: ("旁白", "你最想先试哪个？评论区告诉我，下期实测"),
 }
 
 
@@ -460,11 +460,11 @@ def hud(base, t, stage="STAGE 1", scene=1):
 def sc_hook(base, t):
     """钩子：STAGE 1 标题 + 金币雨 + 数据小面板 + 像素角色。"""
     a = fin(t - 0.05, 0.25)
-    t1 = big_text("文本 图片 视频", 26, WHITE)
+    t1 = big_text("笔记 附件 网页", 26, WHITE)
     place(base, t1, SAFE_L, 40, a)
 
     a2 = fin(t - 0.28, 0.25)
-    t2 = big_text("全部 0 元", 34, GOLD)
+    t2 = big_text("全部含在新版", 34, GOLD)
     place(base, t2, SAFE_L, 80, a2)
 
     # 金币雨
@@ -512,7 +512,7 @@ def sc_hook(base, t):
 def sc_proof(base, t):
     """兑现：宝箱开启 + 官网首页截图弹出 + 星星闪。"""
     a = fin(t - 0.02, 0.25)
-    t1 = big_text("免费 API", 30, WHITE)
+    t1 = big_text("新版功能", 30, WHITE)
     place(base, t1, SAFE_L, 80, a)
     t1b = big_text("就挂在官网首页", 24, CYAN)
     place(base, t1b, SAFE_L, 120, fin(t - 0.14, 0.25))
@@ -533,7 +533,7 @@ def sc_proof(base, t):
             y = 175 + 8 + math.sin(ang) * dist
             place(base, sprite("star", 1, GOLD), x, y, max(0.0, 1 - op / 1.1))
 
-    shot = shot_sprite("01-官网首页-免费API与多模态.jpg", (300, 155, 1000, 262),
+    shot = shot_sprite("01-官网首页-新版公告.jpg", (300, 155, 1000, 262),
                         CW, 88, "HOME")
     p = back_out((t - 0.40) / 0.45)
     place(base, shot, SAFE_L, 270, p, dy=10 * (1 - p))
@@ -561,8 +561,8 @@ def sc_two_ways(base, t):
 
     cw = (CW - 14) // 2
     blocks = [
-        ("普通用户", "PAVO", "聊天 创作\n视频", CYAN),
-        ("开发者", "API", "免费额度\n接自己工具", MAGENTA),
+        ("普通用户", "PAVO", "编辑 协作\n归档", CYAN),
+        ("开发者", "API", "离线同步\n接自己脚本", MAGENTA),
     ]
     for i, (title, tag, body, ac) in enumerate(blocks):
         st = 0.20 + i * 0.16
@@ -605,7 +605,7 @@ def sc_steps(base, t):
     t1 = big_text("开发者五步", 28, WHITE)
     place(base, t1, SAFE_L, 80, a)
 
-    items = ["注册账户", "生成 API Key", "选 3.0-flash", "填 Base URL", "发第一条请求"]
+    items = ["注册账户", "创建工作区", "选 3.0-flash", "连同步地址", "开第一次同步"]
     for i, it in enumerate(items):
         st = 0.22 + i * 0.15
         p = fin(t - st, 0.26)
@@ -636,14 +636,14 @@ def sc_code(base, t):
     t1 = big_text("三行就能发出去", 26, WHITE)
     place(base, t1, SAFE_L, 76, a)
 
-    shot = shot_sprite("03-快速开始-注册Key与首次请求.jpg", (0, 150, 1396, 1420),
+    shot = shot_sprite("03-快速开始-工作区与首次同步.jpg", (0, 150, 1396, 1420),
                         CW, 150, "DOC")
     p = back_out((t - 0.16) / 0.45)
     place(base, shot, SAFE_L, 120, p, dy=12 * (1 - p))
 
     lines = [
-        ("MODEL", "agnes-3.0-flash", CYAN),
-        ("BASE", "api.agnes-ai.cn/v1", WHITE),
+        ("CLIENT", "nimbus-cli 3.0", CYAN),
+        ("SYNC", "drive.nimbus.dev", WHITE),
         ("AUTH", "Bearer YOUR_API_KEY", WHITE),
     ]
     code_y = 288
@@ -677,15 +677,15 @@ def sc_code(base, t):
 
 
 def sc_free_range(base, t):
-    """免费范围：道具栏 3 件 + 0 金币价签。"""
+    """能力范围：道具栏 3 件 + 已解锁标记。"""
     a = fin(t - 0.02, 0.25)
-    t1 = big_text("哪些真的免费", 26, WHITE)
+    t1 = big_text("哪些新版能用", 26, WHITE)
     place(base, t1, SAFE_L, 80, a)
 
     rows = [
-        ("TEXT FLASH x2", "输入输出全 0", CYAN),
-        ("IMG FLASH x3", "各分辨率全 0", MAGENTA),
-        ("VID FLASH 720P", "时长 0 元/秒", GREEN),
+        ("NOTE x3", "多人同时编辑", CYAN),
+        ("FILE x5", "保留 30 天版本", MAGENTA),
+        ("WEB CLIP", "自动打标签", GREEN),
     ]
     for i, (k, v, ac) in enumerate(rows):
         st = 0.22 + i * 0.16
@@ -708,13 +708,13 @@ def sc_free_range(base, t):
 
 
 def sc_zero(base, t):
-    """0 元证据：BOSS 血条掉落 + 定价页 + 命中框。"""
+    """能力证据：BOSS 血条掉落 + 版本页 + 命中框。"""
     a = fin(t - 0.02, 0.25)
-    t1 = big_text("视频 FLASH 720P", 22, WHITE)
+    t1 = big_text("网页剪藏 不限页", 22, WHITE)
     place(base, t1, SAFE_L, 76, a)
 
     a2 = fin(t - 0.24, 0.26)
-    old = big_text("刊例价 ¥0.15 / 秒", 15, GREY)
+    old = big_text("旧版只能同步 1 台", 15, GREY)
     place(base, old, SAFE_L, 110, a2)
     sp = fin(t - 0.54, 0.34)
     if sp > 0:
@@ -723,16 +723,16 @@ def sc_zero(base, t):
         place(base, strike, SAFE_L, 110 + old.height // 2, sp)
 
     a3 = fin(t - 0.66, 0.24)
-    lab = pixel_text("CURRENT PRICE", 1, GREY)
+    lab = pixel_text("DEVICES", 1, GREY)
     place(base, lab, SAFE_L, 146, a3)
 
     # BOSS 血条掉落
     rp = clamp((t - 0.76) / 1.0)
-    val = 0.15 * (1 - ease_out(rp))
-    num_s = "¥0" if rp >= 0.999 else f"¥{val:.3f}"
+    val = 1 + 2 * ease_out(rp)
+    num_s = "3" if rp >= 0.999 else f"{val:.1f}"
     num = big_text(num_s, 40, GOLD)
     place(base, num, SAFE_L, 160, a3)
-    unit = big_text("/ 秒", 16, WHITE)
+    unit = big_text("台", 16, WHITE)
     place(base, unit, SAFE_L + num.width + 4, 190, a3)
 
     # 血条
@@ -741,8 +741,8 @@ def sc_zero(base, t):
     bp = int((CW) * rp)
     d.rectangle((SAFE_L, 208, SAFE_L + bp, 216), fill=GOLD + (255,))
 
-    shot = shot_sprite("07-模型定价-视频Flash限时免费.jpg", (0, 700, 1396, 822),
-                        CW, 66, "PRICE")
+    shot = shot_sprite("07-版本能力-离线同步说明.jpg", (0, 700, 1396, 822),
+                        CW, 66, "PLANS")
     p = back_out((t - 0.98) / 0.45)
     place(base, shot, SAFE_L, 236, p, dy=10 * (1 - p))
 
@@ -760,7 +760,7 @@ def sc_zero(base, t):
             d.rectangle((px_, py_, px_ + 1, py_ + 6), fill=GOLD + (int(255 * ha),))
 
     a4 = fin(t - 1.55, 0.26)
-    t4 = pixel_text("VIDEO-2.5-FLASH 720P", 1, GREY)
+    t4 = pixel_text("WEB CLIP UNLIMITED", 1, GREY)
     place(base, t4, SAFE_L, 316, a4)
 
 
@@ -771,7 +771,7 @@ def sc_limits(base, t):
     place(base, t1, SAFE_L, 76, a)
 
     rows = [
-        "阶段性优惠，不是永久免费",
+        "新版灰度中，还没全量放开",
         "有 TPS 和公平使用配额",
         "Agent Plan 按刊例价折算",
     ]
@@ -806,7 +806,7 @@ def sc_limits(base, t):
 def sc_end(base, t):
     """收尾：通关 + 提问 + 关注按钮。"""
     a = fin(t - 0.02, 0.25)
-    t1 = big_text("你最想白嫖哪个？", 26, WHITE)
+    t1 = big_text("你最想先试哪个？", 26, WHITE)
     place(base, t1, SAFE_L, 150, a)
 
     a2 = fin(t - 0.22, 0.26)
@@ -821,7 +821,7 @@ def sc_end(base, t):
         place(base, sprite("star", 1, GOLD), x, y, fin(t - 0.35 - i * 0.04, 0.25))
 
     a3 = fin(t - 0.55, 0.26)
-    t3 = big_text("科技不高冷，AI 很好用 · 我是晚枫", 14, GREY)
+    t3 = big_text("下期拆一个真实场景 · 记得回来看", 14, GREY)
     place(base, t3, SAFE_L, 300, a3)
 
     pa = t - 0.78

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Agnes AI 免费使用 · MG 样片 B（亮色杂志风 + 丰富动效）
+"""示例选题（虚构）Nimbus 3.0 新版速览 · MG 样片 B（亮色杂志风 + 丰富动效）
 
 与样片 A（深色科技风）的差异：
 - 配色：米白底 + 靛蓝主色 + 柠檬黄/薄荷绿点缀，亮色杂志感
@@ -18,7 +18,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 HERE = Path(__file__).resolve().parent
 FPS = 30
@@ -44,7 +44,7 @@ else:
         _mg_sys.path.insert(0, str(_mg_here.parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
                    set_content_offset, write_report, load_evidence_or_raw,
-                   SHOTS_DIR, EVID_DIR)
+                   load_font, SHOTS_DIR, EVID_DIR)
 
 GUARD = OverlapGuard(1080, 1920, text_thresh=0.015,
                      safe_top=0, safe_bottom=0,
@@ -55,10 +55,8 @@ EVID = EVID_DIR    # 由 mgkit.paths 解析（MG_EVID_DIR 可覆盖）
 
 W, H = 1080, 1920
 
-# 亮色杂志版用正体：腾讯 Sans 是动态斜体（适合深色科技风，不适合亮色杂志感）
-F7 = "/System/Library/Fonts/Hiragino Sans GB.ttc"   # index=2 → W6 粗体
-F3 = "/System/Library/Fonts/Hiragino Sans GB.ttc"   # index=0 → W3 常规
-F7_IDX, F3_IDX = 2, 0
+# 亮色杂志版用正体黑体（品牌字体是动态斜体，不适合亮色杂志感）；
+# 字体路径与 ttc 序号不写死，由 mgkit/fonts.py 按角色解析。
 
 # ---- 亮色杂志色卡 ----
 BG = (247, 245, 240)       # 米白底
@@ -68,7 +66,7 @@ MUTED = (132, 129, 122)    # 次要文本
 LINE = (228, 224, 216)     # 描边
 INDIGO = (79, 70, 229)     # 主色 靛蓝
 INDIGO_S = (233, 231, 253)  # 靛蓝浅底
-GREEN = (16, 185, 129)     # 免费 薄荷绿
+GREEN = (16, 185, 129)     # 强调 薄荷绿
 GREEN_S = (214, 244, 235)
 YELLOW = (250, 204, 21)    # 点缀 柠檬黄
 YELLOW_S = (254, 244, 200)
@@ -87,7 +85,7 @@ NFRAMES = round(TOTAL * FPS)
 
 
 def font(size, bold=False):
-    return ImageFont.truetype(F7 if bold else F3, int(size), index=F7_IDX if bold else F3_IDX)
+    return load_font("sans_bold" if bold else "sans_regular", int(size))
 
 
 def clamp(x):
@@ -275,7 +273,7 @@ def draw_bg(base):
         base.alpha_composite(ov)
 
 
-def top_bar(base, p, label="AGNES AI · 免费使用"):
+def top_bar(base, p, label="NIMBUS · 新版速览"):
     """顶部：标签 + 进度条 + 步骤序号。"""
     tag = chip_img(label, 25, INDIGO, INDIGO_S, radius=h2r(25))
     place(base, tag, SAFE_L, 70, 1.0)
@@ -293,23 +291,23 @@ def h2r(size):
 
 # ---------------------------------------------------------------- 场景
 def sc_hook(base, t):
-    """钩子：标题回弹入场 + 三个 0 元卡片依次飞入 + 底部长条生长。"""
+    """钩子：标题回弹入场 + 三张能力卡片依次飞入 + 底部长条生长。"""
     d = ImageDraw.Draw(base)
 
     a1 = back_out((t - 0.10) / 0.55)
-    t1 = text_img("文本 · 图片 · 视频", 96, INK, True)
+    t1 = text_img("笔记 · 附件 · 网页", 96, INK, True)
     place(base, t1, SAFE_L, 380, a1, dy=54 * (1 - a1))
 
     a2 = back_out((t - 0.32) / 0.55)
-    t2 = text_img("现在都是 0 元", 96, GREEN, True)
+    t2 = text_img("离线同步能用了", 96, GREEN, True)
     place(base, t2, SAFE_L, 520, a2, dy=54 * (1 - a2))
 
     a3 = fin(t - 0.56, 0.32)
-    t3 = text_img("Agnes AI Flash 系列 · 官网当前体验价", 38, MUTED)
+    t3 = text_img("Nimbus 3.0 系列 · 官网当前版本说明", 38, MUTED)
     place(base, t3, SAFE_L, 680, a3, dy=18 * (1 - a3))
 
-    # 三个 0 元卡片，依次带旋转滑入
-    items = [("文本", "Flash ×2"), ("图片", "Flash ×3"), ("视频", "720P")]
+    # 三张能力卡片，依次带旋转滑入
+    items = [("笔记", "协作 ×3"), ("附件", "版本 ×5"), ("网页", "不限页")]
     cw = (CW - 2 * 24) // 3
     for i, (a_, b_) in enumerate(items):
         st = 0.72 + i * 0.13
@@ -341,7 +339,7 @@ def sc_hook(base, t):
 def sc_proof(base, t):
     """兑现：标题左滑入 + 浏览器窗口右滑入 + 高亮框呼吸。"""
     a = back_out((t - 0.02) / 0.5)
-    t1 = text_img("免费 API", 92, INK, True)
+    t1 = text_img("新版功能", 92, INK, True)
     place(base, t1, SAFE_L, 330, a, dy=40 * (1 - a), scale=0.9 + 0.1 * a)
 
     a2 = back_out((t - 0.22) / 0.5)
@@ -349,7 +347,7 @@ def sc_proof(base, t):
     place(base, t2, SAFE_L, 460, a2, dy=40 * (1 - a2), scale=0.9 + 0.1 * a2)
 
     # 浏览器窗口从右侧推入
-    shot = shot_card("01-官网首页-免费API与多模态.jpg", (300, 155, 1000, 262),
+    shot = shot_card("01-官网首页-新版公告.jpg", (300, 155, 1000, 262),
                      CW, 210, "官网首屏")
     a3 = soft_out((t - 0.42) / 0.6)
     place(base, shot, SAFE_L, 640, a3, dy=60 * (1 - a3), angle=3 * (1 - a3))
@@ -367,7 +365,7 @@ def sc_proof(base, t):
     t4 = text_img("不是营销话术，是官网自己的入口", 38, MUTED)
     place(base, t4, SAFE_L, 900, a4, dy=16 * (1 - a4))
 
-    chip = chip_img("免费 API 入口", 30, GREEN, GREEN_S)
+    chip = chip_img("新版功能公告", 30, GREEN, GREEN_S)
     a5 = back_out((t - 1.50) / 0.5)
     place(base, chip, SAFE_L, 990, a5, dy=26 * (1 - a5), scale=0.9 + 0.1 * a5)
 
@@ -380,8 +378,8 @@ def sc_two_ways(base, t):
 
     cw = (CW - 40) // 2
     blocks = [
-        ("普通用户", "Pavo 网页端", "搜索 · 对话\n创作 · 视频", GREEN, GREEN_S, -7),
-        ("开发者", "API 接口", "免费额度试用\n接入自有工具", INDIGO, INDIGO_S, 7),
+        ("普通用户", "Nimbus 网页端", "编辑 · 协作\n搜索 · 归档", GREEN, GREEN_S, -7),
+        ("开发者", "API 接口", "离线增量\n接入自有脚本", INDIGO, INDIGO_S, 7),
     ]
     for i, (title, sub, body, ac, sc_, ang) in enumerate(blocks):
         st = 0.22 + i * 0.16
@@ -427,7 +425,7 @@ def sc_steps(base, t):
     t1 = text_img("开发者五步", 88, INK, True)
     place(base, t1, SAFE_L, 300, a, dy=36 * (1 - a))
 
-    items = ["注册账户", "生成 API Key", "选 agnes-3.0-flash", "填 Base URL", "发第一条请求"]
+    items = ["注册账户", "创建工作区", "装 nimbus 命令行", "连同步地址", "开第一次同步"]
     n = len(items)
     row_h = 176
     y0 = 470
@@ -465,14 +463,14 @@ def sc_code(base, t):
     t1 = text_img("三行就能发出去", 84, INK, True)
     place(base, t1, SAFE_L, 300, a, dy=36 * (1 - a))
 
-    shot = shot_card("03-快速开始-注册Key与首次请求.jpg", (0, 150, 1396, 1420),
+    shot = shot_card("03-快速开始-工作区与首次同步.jpg", (0, 150, 1396, 1420),
                      CW, 400, "官方快速开始")
     a2 = soft_out((t - 0.20) / 0.6)
     place(base, shot, SAFE_L, 450, a2, dy=70 * (1 - a2))
 
     lines = [
-        ("model:", "agnes-3.0-flash", INDIGO),
-        ("base:", "api.agnes-ai.cn/v1", INK),
+        ("model:", "nimbus-cli 3.0", INDIGO),
+        ("base:", "drive.nimbus.dev", INK),
         ("auth:", "Bearer YOUR_API_KEY", INK),
     ]
     code_y = 940
@@ -506,15 +504,15 @@ def sc_code(base, t):
 
 
 def sc_free_range(base, t):
-    """免费范围：三行卡片右滑入 + 每行 0 元标签弹性弹出 + 勾选填充。"""
+    """能力范围：三行卡片右滑入 + 每行 新版标签弹性弹出 + 勾选填充。"""
     a = back_out((t - 0.02) / 0.5)
-    t1 = text_img("哪些真的免费", 88, INK, True)
+    t1 = text_img("哪些新版能用", 88, INK, True)
     place(base, t1, SAFE_L, 300, a, dy=36 * (1 - a))
 
     rows = [
-        ("文本 Flash ×2", "输入 / 输出全 0"),
-        ("图片 Flash ×3", "各分辨率全 0"),
-        ("视频 Flash 720P", "时长 0 元 / 秒"),
+        ("笔记协作 ×3", "多人同时编辑"),
+        ("附件版本 ×5", "保留 30 天版本"),
+        ("网页剪藏 不限页", "自动打标签"),
     ]
     for i, (k, v) in enumerate(rows):
         st = 0.24 + i * 0.17
@@ -537,23 +535,23 @@ def sc_free_range(base, t):
         c.alpha_composite(tk, (114, 34))
         tv = text_img(v, 28, MUTED)
         c.alpha_composite(tv, (114, 92))
-        # 右侧 0 元标签
+        # 右侧 新版标签
         lp = back_out((t - st - 0.28) / 0.45)
         if lp > 0:
-            tag = chip_img("¥0", 34, GREEN, GREEN_S, radius=18)
+            tag = chip_img("NEW", 34, GREEN, GREEN_S, radius=18)
             c.alpha_composite(tag, (CW - tag.width - 30, 55))
         place(base, c, SAFE_L, 470 + i * 175, p, dy=44 * (1 - p), angle=2.5 * (1 - p))
 
 
 def sc_zero(base, t):
-    """0 元证据：刊例价划线删除 + 体验价数字滚动 + 定价页截图。"""
+    """能力证据：旧版本号划线删除 + 能力项数字滚动 + 定价页截图。"""
     a = back_out((t - 0.02) / 0.5)
-    t1 = text_img("视频 Flash 720P", 76, INK, True)
+    t1 = text_img("网页剪藏 不限页", 76, INK, True)
     place(base, t1, SAFE_L, 290, a, dy=34 * (1 - a))
 
     # 刊例价 → 划线删除
     a2 = fin(t - 0.28, 0.35)
-    old = text_img("刊例价 ¥0.15 / 秒", 44, MUTED, True)
+    old = text_img("旧版只能同步 1 台", 44, MUTED, True)
     place(base, old, SAFE_L, 400, a2)
     sp = fin(t - 0.60, 0.4)
     if sp > 0:
@@ -561,25 +559,22 @@ def sc_zero(base, t):
         ImageDraw.Draw(strike).rectangle((0, 0, old.width + 10, 4), fill=CORAL + (255,))
         wipe(base, strike, SAFE_L, 400 + old.height // 2, sp)
 
-    # 体验价：数字从 0.15 滚到 0
+    # 数字滚动：从 1 滚到 3
     a3 = fin(t - 0.75, 0.35)
-    lab = text_img("当前体验价", 34, MUTED, True)
+    lab = text_img("当前版本说明", 34, MUTED, True)
     place(base, lab, SAFE_L, 500, a3)
 
     rp = clamp((t - 0.85) / 1.0)
-    val = 0.15 * (1 - ease_out(rp))
-    if rp >= 0.999:
-        num_s = "¥0"
-    else:
-        num_s = f"¥{val:.3f}"
+    val = 1 + 2 * ease_out(rp)
+    num_s = "3" if rp >= 0.999 else f"{val:.1f}"
     num = text_img(num_s, 132, GREEN, True)
     place(base, num, SAFE_L, 560, a3)
-    unit = text_img("/ 秒", 46, INK, True)
+    unit = text_img("台设备", 46, INK, True)
     place(base, unit, SAFE_L + num.width + 16, 560 + 96, a3)
 
-    # 定价页真实截图
-    shot = shot_card("07-模型定价-视频Flash限时免费.jpg", (0, 700, 1396, 822),
-                     CW, 150, "官网定价页")
+    # 版本页真实截图
+    shot = shot_card("07-版本能力-离线同步说明.jpg", (0, 700, 1396, 822),
+                     CW, 150, "官网版本说明页")
     a4 = soft_out((t - 1.05) / 0.6)
     place(base, shot, SAFE_L, 740, a4, dy=50 * (1 - a4))
 
@@ -593,7 +588,7 @@ def sc_zero(base, t):
         place(base, hl, SAFE_L, 740, fin(pa, 0.3), scale=pulse)
 
     a5 = fin(t - 1.60, 0.35)
-    t5 = text_img("agnes-video-2.5-flash · 官网当前显示", 34, MUTED)
+    t5 = text_img("nimbus-desktop-3.0 · 官网当前说明", 34, MUTED)
     place(base, t5, SAFE_L, 950, a5, dy=16 * (1 - a5))
 
 
@@ -604,7 +599,7 @@ def sc_limits(base, t):
     place(base, t1, SAFE_L, 300, a, dy=36 * (1 - a))
 
     rows = [
-        "阶段性优惠，不是永久免费",
+        "新版灰度中，还没全量放开",
         "有 TPS 和公平使用配额",
         "Agent Plan 按刊例价折算 Credits",
     ]
@@ -630,7 +625,7 @@ def sc_limits(base, t):
 def sc_end(base, t):
     """收尾：标题弹性放大 + 下划线擦除 + 按钮脉冲。"""
     a = back_out((t - 0.02) / 0.45)
-    t1 = text_img("你最想白嫖哪个？", 92, INK, True)
+    t1 = text_img("你最想先试哪个？", 92, INK, True)
     place(base, t1, SAFE_L, 480, a, dy=44 * (1 - a), scale=0.88 + 0.12 * a)
 
     a2 = fin(t - 0.22, 0.32)
@@ -645,14 +640,14 @@ def sc_end(base, t):
         wipe(base, ul, SAFE_L, 730, up)
 
     a3 = fin(t - 0.55, 0.35)
-    t3 = text_img("科技不高冷，AI 很好用 · 我是晚枫", 36, MUTED)
+    t3 = text_img("下期拆一个真实场景 · 记得回来看", 36, MUTED)
     place(base, t3, SAFE_L, 790, a3, dy=16 * (1 - a3))
 
     # 按钮脉冲
     pa = t - 0.80
     if pa > 0:
         pulse = 1 + 0.05 * math.sin(pa * 6.0)
-        btn = chip_img("关注我 · 只讲真能白嫖的", 36, (255, 255, 255), INDIGO, radius=30)
+        btn = chip_img("关注我 · 只测官网写得清的", 36, (255, 255, 255), INDIGO, radius=30)
         place(base, btn, SAFE_L, 900, fin(pa, 0.35), scale=pulse)
 
 

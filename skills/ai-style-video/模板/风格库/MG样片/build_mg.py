@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Agnes AI 免费使用 · MG 样片渲染器
+"""示例选题（虚构）Nimbus 3.0 新版速览 · MG 样片渲染器
 
-风格：深色科技风（对齐账号色卡），画面全部走深色底 + 荧光绿强调。
+风格：深色科技风，画面全部走深色底 + 荧光绿强调。
 结构：按《内容编排方法论》四段式（钩子 / 兑现 / 正文 / 收尾）。
 素材：官网截图只做裁切 + 高亮框，不改原图文字与价格。
 
@@ -17,7 +17,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance
 
 HERE = Path(__file__).resolve().parent
 FPS = 30
@@ -43,7 +43,7 @@ else:
         _mg_sys.path.insert(0, str(_mg_here.parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
                    set_content_offset, write_report, load_evidence_or_raw,
-                   SHOTS_DIR, EVID_DIR)
+                   load_font, SHOTS_DIR, EVID_DIR)
 
 GUARD = OverlapGuard(1080, 1920, text_thresh=0.015,
                      safe_top=210, safe_bottom=1920-1450,
@@ -54,10 +54,9 @@ EVID = EVID_DIR    # 由 mgkit.paths 解析（MG_EVID_DIR 可覆盖）
 
 W, H = 1080, 1920
 
-F7 = "/Users/wanfeng/Library/Fonts/TencentSans-W7.ttf"
-F3 = "/Users/wanfeng/Library/Fonts/TencentSans-W3.ttf"
+# 字体不写死路径：按角色向 mgkit 要。brand_* = 品牌字体，本机没装会自动退回系黑体。
 
-# ---- 账号色卡（深色科技风）----
+# ---- A 风格色卡（深色科技风）----
 BG = (10, 14, 20)          # 背景底色 #0A0E14
 CARD = (20, 26, 36)        # 卡片面 #141A24
 LINE = (35, 43, 57)        # 描边 #232B39
@@ -79,7 +78,7 @@ NFRAMES = round(TOTAL * FPS)
 
 
 def font(size, bold=False):
-    return ImageFont.truetype(F7 if bold else F3, int(size))
+    return load_font("brand_bold" if bold else "brand_regular", int(size))
 
 
 def ease_out(x):
@@ -238,20 +237,20 @@ def build_scenes():
 
     # ---- 场景 1：钩子（0-3.3s）----
     S.append((0.15, 3.15, [
-        dict(k="headline", y=400, s="文本 · 图片 · 视频", size=104, delay=0.0),
-        dict(k="headline", y=550, s="现在都是 0 元", size=104, color=ACCENT, delay=0.16),
-        dict(k="sub", y=710, s="Agnes AI Flash 系列 · 官网当前体验价", delay=0.32),
+        dict(k="headline", y=400, s="笔记 · 附件 · 网页", size=104, delay=0.0),
+        dict(k="headline", y=550, s="离线同步能用了", size=104, color=ACCENT, delay=0.16),
+        dict(k="sub", y=710, s="Nimbus 3.0 系列 · 官网当前版本说明", delay=0.32),
         dict(k="rule", y=850, delay=0.44),
     ]))
     S.append((0.15, 3.15, [
-        dict(k="shot", y=930, name="01-官网首页-免费API与多模态.jpg",
-             box=(740, 155, 980, 225), w=880, h=200, label="官网首页 · 免费 API", delay=0.55),
+        dict(k="shot", y=930, name="01-官网首页-新版公告.jpg",
+             box=(740, 155, 980, 225), w=880, h=200, label="官网首页 · 新版公告", delay=0.55),
     ]))
 
     # ---- 场景 2：兑现（3.4-7.0s）----
     S.append((3.40, 3.60, [
-        dict(k="headline", y=340, s="免费 API 就挂在首页", size=84, delay=0.0),
-        dict(k="shot", y=520, name="01-官网首页-免费API与多模态.jpg",
+        dict(k="headline", y=340, s="新功能就写在首页", size=84, delay=0.0),
+        dict(k="shot", y=520, name="01-官网首页-新版公告.jpg",
              box=(300, 155, 1000, 260), w=912, h=190, label="官网首屏", delay=0.12),
         dict(k="sub", y=790, s="不是营销话术，是官网自己的入口", delay=0.28),
     ]))
@@ -260,52 +259,52 @@ def build_scenes():
     S.append((7.20, 3.20, [
         dict(k="headline", y=320, s="两种用法", size=88, delay=0.0),
         dict(k="pair", y=470, a="普通用户", b="开发者",
-             ad="Pavo 网页端\n搜索 · 对话 · 创作", bd="API 接口\n免费额度试用", delay=0.14),
+             ad="Nimbus 网页端\n编辑 · 协作 · 搜索", bd="命令行工具\n批量 · 增量 · 离线", delay=0.14),
         dict(k="sub", y=980, s="不写代码也能用，要接工具才走 API", delay=0.30),
     ]))
 
     # ---- 场景 4：五步（10.6-13.0s）----
     S.append((10.60, 2.40, [
         dict(k="headline", y=300, s="开发者五步", size=88, delay=0.0),
-        dict(k="steps", y=470, items=["注册账户", "生成 Key", "选 Flash", "填地址", "发请求"],
+        dict(k="steps", y=470, items=["注册账户", "建工作区", "装工具", "填地址", "发请求"],
              delay=0.14),
     ]))
 
     # ---- 场景 5：快速开始 + 请求参数（13.1-16.4s）----
     S.append((13.10, 3.30, [
         dict(k="headline", y=300, s="三行就能发出去", size=84, delay=0.0),
-        dict(k="shot", y=480, name="03-快速开始-注册Key与首次请求.jpg",
+        dict(k="shot", y=480, name="03-快速开始-工作区与首次同步.jpg",
              box=(0, 150, 1396, 1420), w=912, h=430, label="官方快速开始", delay=0.12),
         dict(k="code", y=970, lines=[
-            "model:  agnes-3.0-flash",
-            "base:   api.agnes-ai.cn/v1",
+            "client: nimbus-cli 3.0",
+            "sync:   drive.nimbus.dev",
             "auth:   Bearer YOUR_API_KEY",
         ], delay=0.28),
     ]))
 
-    # ---- 场景 6：免费范围（16.6-18.1s）----
+    # ---- 场景 6：能力范围（16.6-18.1s）----
     S.append((16.60, 1.50, [
-        dict(k="headline", y=300, s="哪些真的免费", size=88, delay=0.0),
+        dict(k="headline", y=300, s="哪些新版能用", size=88, delay=0.0),
         dict(k="rows", y=480, rows=[
-            ("文本 Flash ×2", "输入输出全 0", ACCENT),
-            ("图片 Flash ×3", "各分辨率全 0", ACCENT),
-            ("视频 Flash 720P", "时长 0 元/秒", ACCENT),
+            ("笔记协作 ×3", "多人同时编辑", ACCENT),
+            ("附件版本 ×5", "保留 30 天版本", ACCENT),
+            ("网页剪藏 不限页", "自动打标签", ACCENT),
         ], delay=0.14),
     ]))
 
-    # ---- 场景 7：视频 0 元证据（18.2-20.0s）----
+    # ---- 场景 7：能力证据（18.2-20.0s）----
     S.append((18.20, 1.80, [
-        dict(k="shot", y=330, name="07-模型定价-视频Flash限时免费.jpg",
-             box=(0, 700, 1396, 820), w=912, h=132, label="官网定价页 · 视频", delay=0.0),
-        dict(k="num", y=530, num="¥0", unit="/ 秒", h=290,
-             label="agnes-video-2.5-flash · 720P 视频时长", delay=0.16),
+        dict(k="shot", y=330, name="07-版本能力-离线同步说明.jpg",
+             box=(0, 700, 1396, 820), w=912, h=132, label="官网版本页 · 离线同步", delay=0.0),
+        dict(k="num", y=530, num="3", unit="台设备", h=290,
+             label="nimbus-desktop-3.0 · 离线同步范围", delay=0.16),
     ]))
 
     # ---- 场景 8：三条限制（20.2-22.6s）----
     S.append((20.20, 2.40, [
         dict(k="headline", y=300, s="但有三条限制", size=88, color=ORANGE, delay=0.0),
         dict(k="warn", y=480, rows=[
-            "阶段性优惠，不是永久免费",
+            "新版灰度中，还没全量放开",
             "有 TPS 和公平使用配额",
             "Agent Plan 按刊例价折算 Credits",
         ], delay=0.14),
@@ -313,10 +312,10 @@ def build_scenes():
 
     # ---- 场景 9：收尾（22.8-24.0s）----
     S.append((22.80, 1.20, [
-        dict(k="headline", y=520, s="你最想白嫖哪个？", size=96, delay=0.0),
+        dict(k="headline", y=520, s="你最想先试哪个？", size=96, delay=0.0),
         dict(k="sub", y=700, s="评论区告诉我，我下期实测", color=ACCENT, size=44, delay=0.12),
         dict(k="rule", y=830, delay=0.22),
-        dict(k="sub", y=880, s="科技不高冷，AI 很好用 · 我是晚枫", size=38, delay=0.30),
+        dict(k="sub", y=880, s="下期拆一个真实场景 · 记得回来看", size=38, delay=0.30),
     ]))
     return S
 
@@ -403,7 +402,7 @@ def render_el(el, t):
 def render_frame(t):
     GUARD.reset()
     base = Image.new("RGBA", (W, H), BG + (255,))
-    kicker(base, "AGNES AI · 免费使用")
+    kicker(base, "NIMBUS · 新版速览")
     progress(base, t / TOTAL)
 
     for start, dur, els in SCENES:

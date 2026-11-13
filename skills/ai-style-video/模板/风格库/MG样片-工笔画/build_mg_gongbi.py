@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Agnes AI 免费使用 · MG 样片 H（工笔重彩画风）
+"""示例选题（虚构）Nimbus 3.0 新版速览 · MG 样片 H（工笔重彩画风）
 
 前七版：A 深色科技 / B 亮色杂志 / C 复古拼贴 / D 故障艺术 / E 像素游戏 / F 暖色治愈 / G 简笔画
 本版：绢本工笔重彩——不是水墨写意，是矿物颜料一层层染出来的那种颜色。
@@ -27,7 +27,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 HERE = Path(__file__).resolve().parent
 FPS = 30
@@ -52,8 +52,8 @@ else:
     else:
         _mg_sys.path.insert(0, str(_mg_here.parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
-                   set_content_offset, write_report, evidence_path,
-                   SHOTS_DIR, EVID_DIR)
+                   set_content_offset, write_report, open_evidence,
+                   load_font, SHOTS_DIR, EVID_DIR)
 
 GUARD = OverlapGuard(1080, 1920, text_thresh=0.015,
                      safe_top=0, safe_bottom=0, safe_left=0, safe_right=0)
@@ -63,10 +63,8 @@ EVID = EVID_DIR    # 由 mgkit.paths 解析（MG_EVID_DIR 可覆盖）
 
 W, H = 1080, 1920
 
-# 标题用宋体（画题、碑帖感），小字用黑体保清晰——宋体小字号在视频里会糊
-FSONG = "/System/Library/Fonts/Supplemental/Songti.ttc"
-FHIRA = "/System/Library/Fonts/Hiragino Sans GB.ttc"
-SONG_IDX, HIRA_IDX = 1, 2
+# 标题用宋体（画题、碑帖感），小字用黑体保清晰——宋体小字号在视频里会糊；
+# 字体路径与 ttc 序号不写死，由 mgkit/fonts.py 按角色解析。
 
 # ---- 工笔重彩色卡：矿物颜料，全部按"染"的方式叠 ----
 # 重彩的要害是颜料本身不透明、饱和，叠上去要看得见。比淡彩/水墨写意浓一档。
@@ -100,8 +98,7 @@ random.seed(20261113)
 
 
 def font(size, title=False):
-    return ImageFont.truetype(FSONG if title else FHIRA, int(size),
-                              index=SONG_IDX if title else HIRA_IDX)
+    return load_font("serif_bold" if title else "sans_bold", int(size))
 
 
 def clamp(x):
@@ -328,7 +325,7 @@ def seal(text, size=112, color=CINNABAR):
 
 @lru_cache(maxsize=8)
 def roundel(size=150, color=AZURE):
-    """团花：双层花瓣圈 + 中心开光，用来放"或""¥0"这类单点信息。
+    """团花：双层花瓣圈 + 中心开光，用来放“含”“新”这类单点信息。
 
     带缓存，往里写字之前必须先 .copy()，否则污染缓存。
     """
@@ -536,11 +533,9 @@ def evid_card(name, w, h, label=None, accent=AZURE, prog=1.0):
     官网截图是纯白底，直接放在绢本上会"跳"出来，所以先降饱和、
     提亮，再罩一层极淡的米黄，让它像被画进绢里。
     """
-    im = Image.open(evidence_path(name, prefer_light=True)).convert("RGB")
     band = 34
     ih = h - band * 2
-    r = min((w - 28) / im.width, ih / im.height)
-    im = im.resize((max(1, int(im.width * r)), max(1, int(im.height * r))), Image.LANCZOS)
+    im = open_evidence(name, w - 28, ih, prefer_light=True).convert("RGB")
     im = ImageEnhance.Color(im).enhance(0.82)
     im = ImageEnhance.Brightness(im).enhance(1.02)
     tint = Image.new("RGB", im.size, SILK)
@@ -565,7 +560,7 @@ def evid_card(name, w, h, label=None, accent=AZURE, prog=1.0):
     return layer
 
 
-def top_bar(base, p, label="AGNES AI · 免费使用"):
+def top_bar(base, p, label="NIMBUS · 新版速览"):
     """顶部：题签 + 一条正在被染满的进度带 + 右上三枚小色点。"""
     tag = chip(label, 25, CINNABAR, CINNABAR_L, pad_x=22, pad_y=11)
     place(base, tag, SAFE_L, 66, 1.0)
@@ -609,11 +604,11 @@ def sc_hook(base, t):
         place(base, crop, SAFE_R - 250, 150, 0.92)
 
     a = fin(t - 0.05, 0.44)
-    t1 = text_img("文本 · 图片 · 视频", 86, INK, True, 1.22)
+    t1 = text_img("笔记 · 附件 · 网页", 86, INK, True, 1.22)
     place(base, t1, SAFE_L, 340, a, dy=22 * (1 - a))
 
     a2 = fin(t - 0.26, 0.44)
-    t2 = text_img("现在都是 0 元", 104, CINNABAR, True, 1.20)
+    t2 = text_img("离线同步能用了", 104, CINNABAR, True, 1.20)
     if a2 > 0:
         hl = Image.new("RGBA", (t2.width + 28, t2.height + 16), (0, 0, 0, 0))
         wash(hl, (0, 0, hl.width - 1, hl.height - 1), CINNABAR_L, 0.66, 4,
@@ -629,11 +624,11 @@ def sc_hook(base, t):
         wipe(base, gl, SAFE_L, 600, up)
 
     a3 = fin(t - 0.58, 0.36)
-    t3 = text_img("Agnes AI Flash 系列 · 官网当前体验价", 34, INK_S)
+    t3 = text_img("Nimbus 3.0 系列 · 官网当前版本说明", 34, INK_S)
     place(base, t3, SAFE_L, 648, a3, dy=14 * (1 - a3))
 
     # 三张笺卡：文本 / 图片 / 视频
-    items = [("文本", "×2"), ("图片", "×3"), ("视频", "720P")]
+    items = [("笔记", "×2"), ("附件", "×3"), ("网页", "720P")]
     tones = [AZURE, GREEN, GOLD]
     cw = (CW - 2 * 26) // 3
     for i, (k, v) in enumerate(items):
@@ -662,13 +657,13 @@ def sc_hook(base, t):
             wash(band, (i * seg + 3, 3, (i + 1) * seg - 3, 17), c, 0.95, 3, 1.0)
         wipe(base, band, SAFE_L, 1040, lp)
 
-    stamp(base, "免费", SAFE_R - 130, 1080, t - 1.66, 120)
+    stamp(base, "新版", SAFE_R - 130, 1080, t - 1.66, 120)
 
 
 def sc_proof(base, t):
     """兑现：立轴装裱的官网证据 + 朱砂批印。"""
     a = fin(t - 0.02, 0.42)
-    t1 = text_img("免费 API", 94, INK, True, 1.20)
+    t1 = text_img("新版功能", 94, INK, True, 1.20)
     place(base, t1, SAFE_L, 320, a, dy=24 * (1 - a))
 
     a2 = fin(t - 0.20, 0.36)
@@ -676,7 +671,7 @@ def sc_proof(base, t):
     place(base, t2, SAFE_L, 452, a2, dy=18 * (1 - a2))
 
     ep = clamp((t - 0.36) / 0.78)
-    ev = evid_card("E09-免费访问-额度与限制.png", CW, 400, "官网 · 免费 API 入口", AZURE, prog=ep)
+    ev = evid_card("E09-试用额度与限制.png", CW, 400, "官网 · 新版公告入口", AZURE, prog=ep)
     if ep > 0:
         place(base, ev, SAFE_L, 576, 1.0)
 
@@ -702,8 +697,8 @@ def sc_two_ways(base, t):
 
     cw = (CW - 44) // 2
     blocks = [
-        ("普通用户", "Pavo 网页端", "搜索 · 对话\n创作 · 视频", AZURE, AZURE_L),
-        ("开发者", "API 接口", "免费额度试用\n接入自有工具", GREEN, GREEN_L),
+        ("普通用户", "Nimbus 网页端", "编辑 · 协作\n搜索 · 归档", AZURE, AZURE_L),
+        ("开发者", "API 接口", "离线增量\n接入自有脚本", GREEN, GREEN_L),
     ]
     for i, (title, sub, body, ac, sc_) in enumerate(blocks):
         st = 0.18 + i * 0.18
@@ -741,7 +736,7 @@ def sc_steps(base, t):
     t1 = text_img("开发者五步", 90, INK, True, 1.22)
     place(base, t1, SAFE_L, 300, a, dy=18 * (1 - a))
 
-    items = ["注册账户", "生成 API Key", "选 agnes-3.0-flash", "填 Base URL", "发第一条请求"]
+    items = ["注册账户", "创建工作区", "装 nimbus 命令行", "连同步地址", "开第一次同步"]
     row_h = 172
     y0 = 468
 
@@ -777,13 +772,13 @@ def sc_code(base, t):
     place(base, t1, SAFE_L, 300, a, dy=18 * (1 - a))
 
     ep = clamp((t - 0.18) / 0.62)
-    ev = evid_card("E06-快速开始-BaseURL.png", CW, 226, "官方快速开始", GREEN, prog=ep)
+    ev = evid_card("E06-快速开始-同步地址.png", CW, 226, "官方快速开始", GREEN, prog=ep)
     if ep > 0:
         place(base, ev, SAFE_L, 414, 1.0)
 
     lines = [
-        ("model:", "agnes-3.0-flash"),
-        ("base:", "api.agnes-ai.cn/v1"),
+        ("model:", "nimbus-cli 3.0"),
+        ("base:", "drive.nimbus.dev"),
         ("auth:", "Bearer YOUR_API_KEY"),
     ]
     code_y = 678
@@ -815,15 +810,15 @@ def sc_code(base, t):
 
 
 def sc_free_range(base, t):
-    """免费范围：三行立轴证据 + 右侧朱砂圆印 ¥0。"""
+    """能力范围：三行立轴证据 + 右侧朱砂圆印 NEW。"""
     a = fin(t - 0.02, 0.42)
-    t1 = text_img("哪些真的免费", 86, INK, True, 1.22)
+    t1 = text_img("哪些新版能用", 86, INK, True, 1.22)
     place(base, t1, SAFE_L, 268, a, dy=18 * (1 - a))
 
     rows = [
-        ("E03-文本Flash-体验价全0", "文本 Flash ×2", "输入 / 输出全 0", AZURE),
-        ("E04-图片Flash-各分辨率全0", "图片 Flash ×3", "各分辨率全 0", GREEN),
-        ("E01-视频Flash-0元每秒", "视频 Flash 720P", "时长 0 元 / 秒", CINNABAR),
+        ("E03-能力表-多人协作", "笔记协作 ×3", "多人同时编辑", AZURE),
+        ("E04-能力表-附件版本", "附件版本 ×5", "保留 30 天版本", GREEN),
+        ("E01-能力表-离线同步", "网页剪藏 不限页", "自动打标签", CINNABAR),
     ]
     for i, (ev_name, k, v, ac) in enumerate(rows):
         st = 0.20 + i * 0.18
@@ -839,9 +834,7 @@ def sc_free_range(base, t):
         tv = text_img(v, 26, INK_S)
         c.alpha_composite(tv, (26 + tk.width + 18, 26))
         gold_rule(c, 26, 62, CW - 150, clamp((t - st - 0.18) / 0.4), 2)
-        ev = Image.open(evidence_path(ev_name, prefer_light=True)).convert("RGB")
-        r = min((CW - 56) / ev.width, 148 / ev.height)
-        ev = ev.resize((max(1, int(ev.width * r)), max(1, int(ev.height * r))), Image.LANCZOS)
+        ev = open_evidence(ev_name, CW - 56, 148, prefer_light=True).convert("RGB")
         ev = ImageEnhance.Color(ev).enhance(0.86)
         tint = Image.new("RGB", ev.size, SILK)
         ev = Image.blend(ev, tint, 0.07)
@@ -849,20 +842,20 @@ def sc_free_range(base, t):
         lp = clamp(fin(t - st - 0.28, 0.44))
         if lp > 0:
             tag = roundel(106, ac).copy()
-            z = text_img("¥0", 34, INK, True)
+            z = text_img("含", 36, INK, True)
             tag.alpha_composite(z, ((106 - z.width) // 2, (106 - z.height) // 2))
             c.alpha_composite(tag, (CW - 126, 14))
         place(base, c, SAFE_L, cy, p, dy=24 * (1 - p), angle=(i - 1) * 0.7)
 
 
 def sc_zero(base, t):
-    """0 元证据：刊例价被胭脂划掉 + 数字染到 0 + 立轴 + 落印。"""
+    """能力证据：旧版本号被胭脂划掉 + 字色由淡染到浓 + 立轴 + 落印。"""
     a = fin(t - 0.02, 0.42)
-    t1 = text_img("视频 Flash 720P", 72, INK, True, 1.22)
+    t1 = text_img("网页剪藏 不限页", 72, INK, True, 1.22)
     place(base, t1, SAFE_L, 288, a, dy=16 * (1 - a))
 
     a2 = fin(t - 0.24, 0.34)
-    old = text_img("刊例价 ¥0.15 / 秒", 42, INK_S, True)
+    old = text_img("旧版只能同步 1 台", 42, INK_S, True)
     place(base, old, SAFE_L, 388, a2)
     sp = clamp((t - 0.56) / 0.44)
     if sp > 0:
@@ -872,19 +865,19 @@ def sc_zero(base, t):
         wipe(base, strike, SAFE_L - 4, 388 + old.height // 2 - 8, sp)
 
     a3 = fin(t - 0.66, 0.34)
-    lab = text_img("当前体验价", 32, INK_S, True)
+    lab = text_img("当前版本说明", 32, INK_S, True)
     place(base, lab, SAFE_L, 468, a3)
 
     rp = clamp((t - 0.78) / 1.0)
-    val = 0.15 * (1 - soft_out(rp))
-    num_s = "¥0" if rp >= 0.999 else f"¥{val:.3f}"
+    val = 1 + 2 * soft_out(rp)
+    num_s = "3" if rp >= 0.999 else f"{val:.1f}"
     num = text_img(num_s, 130, CINNABAR, True)
     place(base, num, SAFE_L, 518, a3)
-    unit = text_img("/ 秒", 44, INK, True)
+    unit = text_img("台设备", 44, INK, True)
     place(base, unit, SAFE_L + num.width + 14, 596, a3)
 
     ep = clamp((t - 1.02) / 0.62)
-    ev = evid_card("E01-视频Flash-0元每秒.png", CW, 190, "官网定价页", GOLD, prog=ep)
+    ev = evid_card("E01-能力表-离线同步.png", CW, 190, "官网版本说明页", GOLD, prog=ep)
     if ep > 0:
         place(base, ev, SAFE_L, 706, 1.0)
 
@@ -896,7 +889,7 @@ def sc_zero(base, t):
         place(base, br, SAFE_L + 80, 752, 1.0)
 
     a5 = fin(t - 1.58, 0.32)
-    t5 = text_img("agnes-video-2.5-flash · 官网当前显示", 32, INK_S)
+    t5 = text_img("nimbus-desktop-3.0 · 官网当前说明", 32, INK_S)
     place(base, t5, SAFE_L, 918, a5, dy=12 * (1 - a5))
 
     stamp(base, "零", SAFE_R - 116, 1000, t - 1.70, 104)
@@ -909,7 +902,7 @@ def sc_limits(base, t):
     place(base, t1, SAFE_L, 288, a, dy=18 * (1 - a))
 
     rows = [
-        ("阶段性优惠，不是永久免费", "时"),
+        ("新版灰度中，还没全量放开", "时"),
         ("有 TPS 和公平使用配额", "额"),
         ("Agent Plan 按刊例价折算 Credits", "折"),
     ]
@@ -939,7 +932,7 @@ def sc_end(base, t):
     rain_petals(base, t, n=10, speed=3.0, scale=1.0)
 
     a = fin(t - 0.05, 0.44)
-    t1 = text_img("你最想白嫖哪个？", 90, INK, True, 1.20)
+    t1 = text_img("你最想先试哪个？", 90, INK, True, 1.20)
     place(base, t1, SAFE_L, 468, a, dy=24 * (1 - a))
 
     a2 = fin(t - 0.26, 0.34)
@@ -955,7 +948,7 @@ def sc_end(base, t):
     # 右侧竖排落款
     vp = clamp((t - 0.50) / 0.9)
     if vp > 0:
-        vt = vertical_text("科技不高冷", 44, INK)
+        vt = vertical_text("下期继续拆", 44, INK)
         crop = vt.crop((0, 0, vt.width, int(vt.height * vp)))
         place(base, crop, SAFE_R - 68, 790, 1.0)
         vt2 = vertical_text("AI 很好用", 44, INK)
@@ -963,7 +956,7 @@ def sc_end(base, t):
         place(base, crop2, SAFE_R - 136, 790, 1.0)
 
     a3 = fin(t - 0.62, 0.32)
-    t3 = text_img("我是晚枫", 34, INK_S)
+    t3 = text_img("下期实测", 34, INK_S)
     place(base, t3, SAFE_L, 790, a3, dy=12 * (1 - a3))
 
     pa = t - 0.84
@@ -971,11 +964,11 @@ def sc_end(base, t):
         p = clamp(back_out(pa / 0.44))
         btn, _ = card(520, 96, CINNABAR_L, CINNABAR, 6, seed=250, corner=False)
         wash(btn, (0, 0, 519, 95), CINNABAR, 0.20, 3, 1.0)
-        bt = text_img("关注我 · 只讲真能白嫖的", 33, (255, 250, 242), True)
+        bt = text_img("关注我 · 只测官网写得清的", 33, (255, 250, 242), True)
         btn.alpha_composite(bt, ((520 - bt.width) // 2, (96 - bt.height) // 2))
         place(base, btn, SAFE_L, 880, p, scale=0.95 + 0.05 * p)
 
-    stamp(base, "晚枫", SAFE_L + 546, 872, t - 1.10, 112)
+    stamp(base, "实测", SAFE_L + 546, 872, t - 1.10, 112)
 
 
 SCENES = [

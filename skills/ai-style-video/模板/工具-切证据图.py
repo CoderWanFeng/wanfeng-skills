@@ -12,6 +12,10 @@
 
 输出：素材-证据图/
 
+下面的 SPECS 是示例选题的登记表，**换选题就要改这张表**：源图名、裁切框、
+高亮框。裁切框可以写像素坐标，也可以写 0–1 的比例；推荐用比例，
+因为每个人截的图分辨率不一样，比例才能怎么截都裁到同一个位置。
+
 路径默认取当前选题根目录（在该目录下运行），可用环境变量覆盖：
     MG_ROOT / MG_SHOTS_HD_DIR / MG_EVID_DIR
 """
@@ -32,39 +36,39 @@ ORANGE = (222, 108, 30)
 GREEN = (16, 140, 88)
 BLUE = (36, 100, 210)
 
-PRICING = "05-模型定价-文本模型与试用规则.jpg"
-QUICK = "03-快速开始-注册Key与首次请求.jpg"
-CAMP = "02-免费访问入口与套餐对比.jpg"
+HERO = "01-官网首页-新版公告.jpg"        # 首页首屏
+TRIAL = "02-试用入口与套餐对比.jpg"      # 入口 / 套餐页
+QUICK = "03-快速开始-工作区与首次同步.jpg"  # 上手文档页
+PLANS = "07-版本能力-离线同步说明.jpg"      # 版本 / 能力说明页
 
 # (输出名, 源文件, 裁切框, 高亮框(相对裁切图 x0,y0,x1,y1)，高亮色, 是否出亮版)
+# 下面全是示例值：拿到自己的截图后逐行改裁切框，直到裁出来的图只剩证据本身。
 SPECS = [
-    # ---- 视频 Flash ¥0/秒（核心证据）----
-    ("E01-视频Flash-0元每秒", PRICING, (640, 8460, 1810, 8600),
-     (1030, 22, 1160, 102), GREEN, True),
-    # ---- 普通视频模型对照（仍收费）----
-    ("E02-视频普通模型-仍收费", PRICING, (640, 8060, 1810, 8230),
-     (1030, 24, 1160, 104), ORANGE, True),
-    # ---- 文本 Flash 体验价 ----
-    ("E03-文本Flash-体验价全0", PRICING, (640, 5700, 1810, 5960),
-     (1030, 122, 1160, 202), GREEN, True),
-    # ---- 图片 Flash 体验价 ----
-    ("E04-图片Flash-各分辨率全0", PRICING, (640, 5150, 1810, 5400),
-     (1030, 122, 1160, 202), GREEN, True),
-    # ---- 当前优惠规则说明 ----
-    ("E05-当前优惠-规则说明", PRICING, (330, 4300, 2470, 4700), None, None, True),
-    # ---- 快速开始：Base URL ----
-    ("E06-快速开始-BaseURL", QUICK, (280, 1560, 2520, 2010), None, None, True),
-    # ---- 快速开始：curl 示例 ----
-    ("E07-快速开始-curl示例", QUICK, (280, 2010, 2520, 2500), None, None, True),
-    # ---- 快速开始：创建 API Key ----
-    ("E08-快速开始-创建Key", QUICK, (280, 1060, 2520, 1560), None, None, True),
-    # ---- campaign：免费访问卡片（免费试用 / TPS / 配额）----
-    ("E09-免费访问-额度与限制", CAMP, (150, 780, 830, 1240), None, None, True),
-    # ---- campaign：Token 套餐对照 ----
-    ("E10-Token套餐-对照", CAMP, (830, 780, 1510, 1240), None, None, True),
-    # ---- campaign：Pavo 普通用户入口 ----
-    ("E11-Pavo-普通用户入口", CAMP, (1560, 780, 2320, 1240), None, None, True),
+    # ---- 能力表：每项能力一张，只装下那一行 ----
+    ("E01-能力表-离线同步", PLANS, (0.05, 0.50, 0.95, 0.58), None, None, True),
+    ("E03-能力表-多人协作", PLANS, (0.05, 0.34, 0.95, 0.42), None, None, True),
+    ("E04-能力表-附件版本", PLANS, (0.05, 0.42, 0.95, 0.50), None, None, True),
+    ("E05-版本规则说明", PLANS, (0.05, 0.16, 0.95, 0.30), None, None, True),
+    # ---- 快速开始：拆成三个步骤图 ----
+    ("E06-快速开始-同步地址", QUICK, (0.05, 0.30, 0.95, 0.42), None, None, True),
+    ("E07-快速开始-命令示例", QUICK, (0.05, 0.42, 0.95, 0.58), None, None, True),
+    ("E08-快速开始-创建工作区", QUICK, (0.05, 0.18, 0.95, 0.30), None, None, True),
+    # ---- 入口与限制：首屏 / 套餐卡片 ----
+    ("E09-试用额度与限制", TRIAL, (0.05, 0.30, 0.35, 0.50), None, None, True),
+    ("E10-套餐对照", TRIAL, (0.35, 0.30, 0.65, 0.50), None, None, True),
+    ("E11-网页端入口", TRIAL, (0.65, 0.30, 0.95, 0.50), None, None, True),
+    # ---- 首页公告（给只想要一张图的风格用）----
+    ("E12-首页新版公告", HERO, (0.0, 0.20, 1.0, 0.36), None, None, True),
 ]
+
+
+def crop_box(im, box):
+    """四个数全在 0–1 时按比例解释，否则当像素坐标。与 mgkit 里的写法一致。"""
+    b = tuple(box)
+    if all(0.0 <= v <= 1.0 for v in b) and b[2] > b[0] and b[3] > b[1]:
+        return (int(round(b[0] * im.width)), int(round(b[1] * im.height)),
+                int(round(b[2] * im.width)), int(round(b[3] * im.height)))
+    return b
 
 
 def light_version(im):
@@ -102,11 +106,18 @@ def light_version(im):
 
 
 def main():
+    missing = [s for _, s, *_ in SPECS if not (HD / s).exists()]
+    if missing:
+        print(f"✗ 素材-官网截图-HD/ 里缺这些源图（先放图再跑本工具）：")
+        for m in sorted(set(missing)):
+            print(f"   · {m}")
+        raise SystemExit(1)
+
     cache = {}
     for name, src, box, hl, hcolor, want_light in SPECS:
         if src not in cache:
             cache[src] = Image.open(HD / src).convert("RGB")
-        base = cache[src].crop(box)
+        base = cache[src].crop(crop_box(cache[src], box))
 
         variants = [("原版", base)]
         if want_light:

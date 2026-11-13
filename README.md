@@ -26,7 +26,7 @@
 | [**opensource-housekeeper**](skills/opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
 | [**mograph**](skills/mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用），在人的上下左右定时弹出并渲染成片 | 口播视频包装、出镜科普、数据 lower-third | — |
-| [**ai-free-video**](skills/ai-free-video/) | AI 免费工具 / AI 热点 → 竖屏 MG 静音样片：采证据截图（2x）→ 8 种风格选 1 → 渲染样片，自带文字重叠检测 | 白嫖类选题、热点短视频、不出镜的静音 MG | — |
+| [**ai-style-video**](skills/ai-style-video/) | 晚枫AI动画：把任意选题做成 8 种风格的竖屏 MG 静音样片（1080×1920 / 24–25s）：先选风格 → 按清单交素材 → 渲染样片，自带文字重叠检测与缺素材占位 | 不出镜的 MG 短视频、产品/功能/事件解读 | — |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
 
@@ -51,7 +51,7 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 - 「我想学 XX 这个开源项目怎么用」 → 触发 `opensource-housekeeper`
 - 「帮我把这个项目推到 GitHub」 → 触发 `opensource-housekeeper`
 - 「这条口播视频帮我自动剪辑，根据讲的内容加点动效卡」 → 触发 `mograph`
-- 「这个免费用 AI 的消息，做一条不出镜的竖屏 MG 短视频」 → 触发 `ai-free-video`
+- 「这个选题帮我做一条不出镜的竖屏 MG 短视频」 → 触发 `ai-style-video`
 
 ---
 
@@ -152,7 +152,7 @@ skills/<skill-name>/
 | opensource-housekeeper | ✅ v2 稳定 | 2026-07-03 |
 | wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
 | mograph（晚枫自动剪辑） | 🚧 v1 首发（骨架脚本本地跑通；渲染链路待 v1.1 实测） | 2026-11 |
-| ai-free-video | ✅ v1.2 稳定（本地渲染链路已跑通；8 种风格；不做配音） | 2026-11-13 |
+| ai-style-video（晚枫AI动画） | ✅ v2.0 稳定（8 种风格本地跑通；字体跨平台；不限题材；不做配音） | 2026-11-13 |
 
 ---
 

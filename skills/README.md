@@ -19,7 +19,7 @@
 | [**free-ai-models**](free-ai-models/) | 搜罗全网可以免费使用的大模型（直接用 / 软件内置 / 平台免费额度） | 找免费 GPT/Claude/Gemini、找软件里能白嫖的模型、找永久免费 API | 「免费大模型」「GPT 免费吗」「Cursor 里哪个免费」「API 免费额度」 | — |
 | [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（MiniMax 克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | 「做个数字人视频」「让我的照片说话」「用我的声音念这段话」「做一条十秒口播」 | — |
 | [**mograph**](mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用卡），在人的上下左右定时弹出并渲染成片。v1「检索驱动」：运行时由本地 AI 联网拉社区最新的 Remotion / HyperFrames 实现 | 口播视频包装、出镜科普、lower-third 数据卡 | 「自动剪辑」「口播加动画」「给视频贴片」「上下左右弹卡」「加数据卡」「用 Remotion 给口播做叠加」 | — |
-| [**ai-free-video**](ai-free-video/) | AI 免费工具 / AI 热点 → 竖屏 MG 静音样片。采集官网证据截图（2x）→ 8 种风格选 1 → 渲染样片，自带文字重叠检测与高清证据图流水线 | 白嫖类选题、热点短视频、不出镜的静音 MG | 「做条免费用 AI 的视频」「按这个热点出 MG 动画」「换个风格重做这条」「证据图发虚」 | — |
+| [**ai-style-video**](ai-style-video/) | 晚枫AI动画：把任意选题做成 8 种风格的竖屏 MG 静音样片（1080×1920 / 24–25s / 9 场景）。**先选风格 → 再按清单交素材** → 渲染样片，自带文字重叠检测、缺素材占位卡、跨平台字体解析 | 不出镜的 MG 短视频、产品/功能/事件/教程解读 | 「做条不出镜的 MG 视频」「选个风格重做这条」「素材要哪些」「证据图发虚」 | — |
 
 ---
 
@@ -47,7 +47,7 @@ mp-saver
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
 - **[wanfeng-digital-human](wanfeng-digital-human/)** — 数字人：一段素材 + 一句话，出 4–10 秒会说话的短片（克隆音色 + 自动字幕）
 - **[mograph](mograph/)** — 晚枫自动剪辑：真人已出镜的视频 + 口播稿 → 按讲话内容在四周弹卡（不重拍、不剪镜头）
-- **[ai-free-video](ai-free-video/)** — 不出镜的热点 MG 片：免费用 AI / AI 新闻类选题 → 证据截图 → 8 种风格 → 竖屏静音样片
+- **[ai-style-video](ai-style-video/)** — 晚枫AI动画，不出镜的风格 MG 片：任何选题 → 先选 8 种风格之一 → 按清单交素材 → 竖屏静音样片
 
 ### 🌐 个人项目 / 建站
 
@@ -74,7 +74,7 @@ mp-saver
 | 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
 | 视频已经拍好了，只想在讲话时旁边弹出数据卡 / 图表 | [mograph](mograph/) |
-| 免费用 AI 的热点想快速出条竖屏短视频，人不想出镜 | [ai-free-video](ai-free-video/) |
+| 手上有一推资料（官网/公告/数据），想快速出条竖屏短视频，人不出镜 | [ai-style-video](ai-style-video/) |
 
 ---
 
@@ -126,7 +126,7 @@ skills/<skill-name>/
 ```
 [aihot-topic-selector 或 hot-topic-radar] 选题
     ↓
-[ai-free-video] 采证据截图 → 选风格 → 渲染竖屏静音 MG
+[ai-style-video] 选风格 → 按清单交素材 → 渲染竖屏静音 MG
     ↓
 [wanfeng-digital-human] 需要口播时再叠数字人
 ```
@@ -199,7 +199,7 @@ skills/<skill-name>/
 | free-ai-models | ✅ v1 稳定 | 2026-07-12 |
 | wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
 | mograph（晚枫自动剪辑） | 🚧 v1 首发（骨架脚本本地跑通；渲染链路待 v1.1 实测） | 2026-11 |
-| ai-free-video | ✅ v1.2 稳定（本地渲染链路已跑通；8 种风格均已验证；配音 / 字幕不在范围内） | 2026-11-13 |
+| ai-style-video（晚枫AI动画） | ✅ v2.0 稳定（8 种风格均已验证；字体跨平台；不限题材；配音 / 字幕不在范围内） | 2026-11-13 |
 
 ---
 
