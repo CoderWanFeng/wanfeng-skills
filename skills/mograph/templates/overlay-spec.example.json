@@ -176,6 +176,35 @@
           "ChatGPT"
         ],
         "brief": "待填：按 reference/animation-brief.md §7 模板写"
+      },
+      "visual": {
+        "kind": "screenshot",
+        "file": "assets/chatgpt-input-box.png",
+        "source": "web",
+        "url": "https://chatgpt.com/",
+        "captured_at": "2026-11-17",
+        "shows": "ChatGPT 首页底部的提问输入框",
+        "proves": "口播「你在 ChatGPT 输入一个问题」",
+        "annotations": [
+          {
+            "type": "box",
+            "target": "提问输入框",
+            "rect": [
+              180,
+              520,
+              720,
+              90
+            ]
+          },
+          {
+            "type": "step",
+            "label": "1",
+            "at": [
+              820,
+              540
+            ]
+          }
+        ]
       }
     },
     {
@@ -318,5 +347,5 @@
       "animation": null
     }
   ],
-  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：什么是Token 口播稿，--duration 85）。字段含义：start/end=句子时间轴；animation.type=8 类之一；slot=位置（见 overlay-layout.md §1）；layer=behind|front（front 需抠图，v1 不用）；visible=卡片真实可见窗口；brief=Step 3 由 agent 填的动画描述；dropped=命中但因同屏上限被弃卡的原因。"
+  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：什么是Token 口播稿，--duration 85）。字段含义：start/end=句子时间轴；animation.type=8 类之一；slot=位置（见 overlay-layout.md §1）；layer=behind|front（front 需抠图，v1 不用）；visible=卡片真实可见窗口；brief=Step 3 由 agent 填的动画描述；dropped=命中但因同屏上限被弃卡的原因。visual=Step 1.5 由 agent 补的配图素材（脚本不生成，无配图的段落没有此字段）：kind=素材类型（screenshot|photo|diagram）；file=相对 assets/ 的路径；source=user-provided|web|local-video；url/captured_at=来源与截取日期；shows=图上实际有什么；proves=支撑哪句口播；annotations=标注（box 高亮框 / step 步骤编号 / arrow 箭头）。"
 }

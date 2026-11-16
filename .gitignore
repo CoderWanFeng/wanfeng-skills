@@ -4,3 +4,7 @@ test/
 workflow/
 .trae/
 .qoder
+
+# Python 编译缓存（可再生，禁止入库）
+__pycache__/
+*.py[cod]
