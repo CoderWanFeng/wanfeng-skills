@@ -5,6 +5,8 @@ description: 把任意文档（PDF/Word/PPT/Excel/图片/音频/HTML/CSV/ZIP/EPU
 
 # doc-speedreader · 速读侠（基于 MarkItDown 的快速读文档 skill）
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-doc-speedreader
+
 > **目录名**：`doc-speedreader/`
 > **中文名**：速读侠
 > **依赖**：Microsoft MarkItDown（`pip install 'markitdown[all]'`）

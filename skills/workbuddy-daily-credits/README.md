@@ -1,5 +1,7 @@
 # WorkBuddy 每日积分自动领取 —— 上手与演示说明
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-workbuddy-daily-credits
+
 一句话：**一条命令，把 WorkBuddy 每天白送的积分领完（签到 100 分 + 猫猫旅行 + 盲盒）。**
 
 - 不需要装任何第三方库（纯 Python 标准库）

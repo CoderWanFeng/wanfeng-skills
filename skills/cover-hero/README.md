@@ -3,6 +3,8 @@
 > **目录名**：`cover-hero/`
 > **中文名**：封面侠
 > **版本**：v5.4 · 内容注入链路 + 竖版布局修复（2026-07）
+>
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-cover-hero
 
 > 为**多平台**文章 / 内容生成 HyperFrames 视觉风格的封面 + 配图。
 > 封装：手写 HTML + Puppeteer 渲染 + **多平台模板选择器**（8 个平台 + 任意自定义尺寸）。

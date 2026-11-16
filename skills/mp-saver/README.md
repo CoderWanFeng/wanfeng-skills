@@ -2,6 +2,8 @@
 
 > 把 `mp.weixin.qq.com/s/...` 链接保存成单文件 `.mhtml` —— 不登录、双击可看。
 > **v2.0 起零依赖（Python 标准库），启动秒级。**
+>
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mp-saver
 
 ---
 

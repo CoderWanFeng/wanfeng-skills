@@ -5,6 +5,8 @@ description: "帮用户搜罗全网可以免费使用的大模型。覆盖三类
 
 # 免费大模型查找器（Free AI Models）
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-free-ai-models
+
 > **目标**：让用户**3 轮对话内**找到"现在能白嫖"的大模型，不管是想直接用、想接 API、还是想在某个软件里切换。
 
 ## 这是什么

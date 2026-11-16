@@ -5,6 +5,8 @@ description: 自媒体选题雷达。7×24h 监控全网热搜（微博/抖音/�
 
 # 自媒体热点雷达 · Hot Topic Radar
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-hot-topic-radar
+
 > **本文件做什么**：监控全网热搜 → 按关键词/领域过滤打分 → 输出今天的 TOP 选题清单 → **到此结束**。
 >
 > 本 skill 是一个**独立任务**，不涉及任何下游（写公众号/写口播稿/拍视频/发布等）。雷达只负责"告诉你今天发生了什么、哪个值得跟"，**不替你决定写什么、怎么写**。

@@ -5,6 +5,8 @@ description: 从 AIHOT 热点里选题。每天跑一次：拉数据 → 写每�
 
 # 选题指南 · AIHOT 每日选题 skill
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-aihot-topic-selector
+
 > **本文件做什么**：从 AIHOT 热点里选题 → 在 `task/` 目录里创建工作目录 → **到此结束**。
 >
 > 本 skill 是一个**独立任务**，不涉及任何下游（公众号/口播稿/视频/其他）。选题结束后，由用户自行决定如何消费 `task/` 目录里的产物。

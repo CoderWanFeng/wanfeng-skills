@@ -1,5 +1,7 @@
 # 晚枫知识库
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator
+
 为任意项目生成结构与风格参考 popdf repowiki 的仓库知识库（格式规范见 [`references/format-spec.md`](references/format-spec.md)），输出到目标项目自身的 `.wanfeng-wiki/<lang>/` 目录下。默认生成中文 `.wanfeng-wiki/zh/`，生成前会询问是否同步生成英文。
 
 ## 适用场景

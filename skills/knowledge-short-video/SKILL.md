@@ -6,6 +6,8 @@ version: 2.2.0
 
 # 知识类短视频 · Skill 索引
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-knowledge-short-video
+
 > 把任何"知识科普"内容做成一条可在小红书 / 抖音 / 视频号发布的完整竖版短视频。
 > 适用：**60-90s、9:16、单人口播讲解型、无人出镜、以排版为主的中文 TTS 视频**。
 > 适用主题（不限于）：AI 工具 / 美食 / 职场 / 育儿 / 历史 / 健身 / 财经 / 心理 ...

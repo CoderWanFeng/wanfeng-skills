@@ -1,5 +1,7 @@
 # 晚枫自动剪辑 · mograph
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph
+
 一句话：**给一条真人口播视频，按你讲话的内容，自动在人的上下左右弹出字卡 / 数据 / 图表 / 对比框，渲染成片。**
 
 - v1 采用「**检索驱动**」架构：skill 不自带动效素材库，运行时由你本地的 AI 联网拉社区最新实现

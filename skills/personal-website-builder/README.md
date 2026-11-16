@@ -1,6 +1,8 @@
 # 晚枫个人网站
 
 > **晚枫个人网站**：通过对话引导用户创建个人网站（博客/知识库/AI 导航/作品集/简历）的 AI skill。
+>
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-personal-website-builder
 
 ## 这是什么
 

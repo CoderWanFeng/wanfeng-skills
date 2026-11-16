@@ -1,5 +1,7 @@
 # 晚枫数字人
 
+> SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human
+
 把一段你的视频、一张你的照片，变成一条会说话的数字人短片：画面里是你，声音是你的，说的是你写的那句话，还带一条字幕。长度 4–10 秒。
 
 ## 你要做的事，只有三步
