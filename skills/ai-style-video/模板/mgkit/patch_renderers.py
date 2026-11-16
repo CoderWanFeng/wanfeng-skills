@@ -41,12 +41,58 @@ import sys as _mg_sys
 from pathlib import Path as _mg_Path
 _mg_sys.path.insert(0, str(_mg_Path(__file__).resolve().parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
-                   set_content_offset)
+                   set_content_offset, CANVAS)
 
 GUARD = OverlapGuard({W}, {H}, text_thresh=0.015,
                      safe_top={SAFE_TOP}, safe_bottom={SAFE_BOTTOM},
                      safe_left={SAFE_LEFT}, safe_right={SAFE_RIGHT})
 '''
+
+
+RF_RE = re.compile(r"^def render_frame\(", re.M)
+TOP_LEVEL_RE = re.compile(r"^\S", re.M)
+EXIT_RE = re.compile(r"^    return[ \t]+([^\n#]*?)[ \t]*(#[^\n]*)?$", re.M)
+
+
+def wrap_render_frame_exit(src: str) -> str:
+    """只给 `render_frame` 的出口包上 `CANVAS.fit_frame(...)`。
+
+    出口形态各风格不同（`base.convert("RGB")` / `up` / `base`），而且同一个文件里
+    别的函数也有 `return base`——像素版的 `render_lowres`、故障版中间的两个
+    `return base` 都是。直接全文替换会把 fit 加错位置：加在 `render_lowres` 上会
+    "先适配再放大"，漏在真正的出口上则 ffmpeg 强行拉伸变形。所以先把范围钉死在
+    `render_frame` 函数体内，再取它的最后一条 return。
+    """
+    m = RF_RE.search(src)
+    if not m:
+        return src
+    nxt = TOP_LEVEL_RE.search(src, m.end())
+    body = src[m.end():nxt.start() if nxt else len(src)]
+    exits = list(EXIT_RE.finditer(body))
+    if not exits:
+        return src
+    last = exits[-1]
+    expr = last.group(1).strip()
+    if expr.startswith("CANVAS.fit_frame"):
+        return src                                   # 已经接过，重复跑安全
+    wrapped = f"CANVAS.fit_frame({expr})"
+    if last.group(2):                                # 行尾注释留在括号外面
+        wrapped += "  " + last.group(2).strip()
+    pos = m.end() + last.start(1)
+    return src[:pos] + wrapped + src[m.end() + last.end():]
+
+
+def patch_canvas(src: str) -> str:
+    """把渲染器接到画幅层（重复跑安全）。
+
+    三处：`render_frame` 出口包 `fit_frame`、ffmpeg 的 `-s` 用目标尺寸、
+    检查图缩略图按目标宽高比重算。9:16 下这三处都等价于原来的行为。
+    """
+    src = wrap_render_frame_exit(src)
+    src = src.replace('f"{W}x{H}"', 'f"{CANVAS.W}x{CANVAS.H}"')
+    src = re.sub(r"^([ \t]*)cw, ch = (\d+), (\d+)$",
+                 r"\1cw, ch = CANVAS.thumb(\2, \3)", src, flags=re.M)
+    return src
 
 
 def patch(path: Path) -> bool:
@@ -132,6 +178,9 @@ def patch(path: Path) -> bool:
         return s
 
     src = patch_render(src)
+
+    # 5) 画幅接入
+    src = patch_canvas(src)
 
     path.write_text(src, encoding="utf-8")
     print(f"  ✓ 已打补丁 {path.name}")

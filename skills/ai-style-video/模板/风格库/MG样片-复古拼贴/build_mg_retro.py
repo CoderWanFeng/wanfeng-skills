@@ -47,7 +47,7 @@ else:
         _mg_sys.path.insert(0, str(_mg_here.parent.parent / "mgkit"))
 from mgkit import (OverlapGuard, mark_text_layer, register_layer_texts,  # noqa: E402
                    set_content_offset, write_report, load_evidence_or_raw,
-                   load_font, SHOTS_DIR, EVID_DIR)
+                   load_font, SHOTS_DIR, EVID_DIR, CANVAS)
 
 GUARD = OverlapGuard(1080, 1920, text_thresh=0.015,
                      safe_top=0, safe_bottom=0,
@@ -736,13 +736,13 @@ def render_frame(t):
     # --- mgkit: overlap check ---
     GUARD.check(f"t={t:.2f}")
     # --- end mgkit ---
-    return base.convert("RGB")
+    return CANVAS.fit_frame(base.convert("RGB"))
 
 
 def make_contact():
     marks = [0.6, 1.4, 2.4, 3.0, 4.2, 5.6, 7.8, 9.4, 11.2, 12.8, 14.2, 15.6,
              17.4, 19.0, 20.4, 22.0, 23.2, 24.2]
-    cw, ch = 240, 427
+    cw, ch = CANVAS.thumb(240, 427)
     cols = 6
     rows = (len(marks) + cols - 1) // cols
     sheet = Image.new("RGB", (cw * cols, ch * rows), (60, 52, 42))
@@ -767,7 +767,7 @@ def main():
         return
     out = HERE / "MG-样片C-复古拼贴-无声.mp4"
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
-           "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-an",
+           "-s", f"{CANVAS.W}x{CANVAS.H}", "-r", str(FPS), "-i", "-", "-an",
            "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
            "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out)]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE)

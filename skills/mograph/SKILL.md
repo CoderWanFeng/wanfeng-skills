@@ -1,7 +1,7 @@
 ---
 name: mograph
-description: 晚枫自动剪辑（mograph）——给「一个人口播」的视频自动加动效包装：根据口播稿讲的内容，卡着讲话的时间点，在人的上下左右（或身前）弹出字卡、数据、图表、对比框、清单、引用卡，再渲染成成片。v1 采用「检索驱动」架构：本 skill 不自带动效素材库，而是内置一套联网检索协议，让你本地 AI 现场拉取社区最新的 Remotion / HyperFrames 动效实现，转成引擎无关的 overlay-spec.json，再落地渲染。触发词：自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、Remotion 口播、HyperFrames 叠加、包装视频、动效字幕。
-version: 1.0.0
+description: 晚枫自动剪辑（mograph）——给「一个人口播」的视频自动加动效包装：根据口播稿讲的内容，卡着讲话的时间点，在人的上下左右（或身前）弹出字卡、数据、图表、对比框、清单、引用卡，再渲染成成片。v1 采用「检索驱动」架构：本 skill 不自带动效素材库，而是内置一套联网检索协议，让你本地 AI 现场拉取社区最新的 Remotion / HyperFrames 动效实现，转成引擎无关的 overlay-spec.json，再落地渲染。**内置两条路径**：通用路径走检索驱动；「晚枫专用」路径是晚枫工作室自有风格的完整打法（Pillow 2 倍超采样自绘 + 手写场景表 + 圆形人头 + 步骤条版式 + 语速映射 + 两遍法响度归一），用户选中后全流程切换。触发词：自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、Remotion 口播、HyperFrames 叠加、包装视频、动效字幕、晚枫专用、晚枫风格、我们自己的风格剪。
+version: 1.1.0
 license: MIT-0
 allowed-tools: Bash
 metadata:
@@ -76,18 +76,43 @@ metadata:
 
 ## 三、7 步流程（agent 按此执行）
 
-### Step 0 · 一次性确认 4 个开关（只问一轮）
+### Step 0 · 一次性确认 5 个开关（只问一轮）
 
 | 开关 | 选项 | 默认推荐 |
 |---|---|---|
+| **风格路径** ⭐ | **通用**（检索驱动，任何口播都能用）/ **晚枫专用**（晚枫工作室自有打法，见 `reference/wanfeng-path.md`） | ⭐ 通用；用户说「晚枫专用 / 我们自己的风格」→ 选**晚枫专用** |
 | **画幅** | 竖屏 9:16 / 横屏 16:9 | 按源视频自动探测 |
 | **动效密度** | 克制（每 8s 一张，同屏 1 张）/ 标准（每 5s 一张，同屏 1 张）/ 高密度（每 2.5s 一张，同屏 2 张） | ⭐ 标准 |
-| **渲染引擎** | Remotion / HyperFrames / 自动选 | ⭐ 自动（装了哪个用哪个） |
+| **渲染引擎** | Remotion / HyperFrames / 自动选 | ⭐ 自动（装了哪个用哪个）；**晚枫专用路径固定用 Pillow 自绘**，此项作废 |
 | **要不要前景遮挡**（卡片压在人身前） | 要 / 不要 | ⭐ 不要（需人像抠图，v1 不承诺，见 R3） |
 
 问完直接进入 Step 1，不要逐条追问。
 
+> **风格路径这一项要先问**。它决定了后面走哪条流程，问晚了要推倒重来。
+
+### Step 0.5 · ⭐ 路径分叉
+
+```
+选了「通用」 ──────────────→ 走第三节 Step 1 → Step 7（本文档默认流程）
+选了「晚枫专用」 ──────────→ 走 reference/wanfeng-path.md 的 Step A → Step G
+```
+
+**两条路径是并列的，不是主次关系**。晚枫专用路径**完全绕开**下面 Step 1–5 的内容：
+
+| 通用路径 | 晚枫专用路径 |
+|---|---|
+| Step 1 用正则把句子命中成 8 类动效、自动分配 slot | **手写场景表** `build_scenes()`，一场景讲一件事 |
+| Step 2 联网检索社区动效实现 | **不检索**，版式全部自绘（Pillow 2 倍超采样） |
+| Step 3 填动画描述（进出场/缓动/元素顺序） | 抄 `wanfeng-path.md` §4 的设计令牌与 §5 的版式库 |
+| Step 4 落位校验（避人脸安全区） | 场景级参数 `head_pos` / `head_r` / `sub_dy` 直接指定 |
+| Step 5 选引擎渲染 | Pillow 逐帧渲染 + ffmpeg 管道 |
+| Step 6 自检三闸 | 静帧复核 → 重渲 → 抽帧终检 → 同步性与基频验证 → 两遍法响度归一 |
+
+**怎么判断用户想要哪条**：只要出现「晚枫专用」「我们自己的风格」「按我们号里的调性」「和上次那条一样」，直接选晚枫专用，不必再确认。
+
 ### Step 1 · 出骨架（本地，离线可跑）
+
+> 通用路径走这里。**晚枫专用路径跳过 Step 1–5**，直接按 `reference/wanfeng-path.md` 的 Step A → C 开始建工程。
 
 ```bash
 python3 scripts/make_spec.py \
@@ -95,11 +120,16 @@ python3 scripts/make_spec.py \
   --video  口播.mp4 \
   --srt    字幕.srt \
   --density standard \
+  --style-path generic \
   --out    task/<时间戳>_motion/overlay-spec.json
 
 # 没有视频文件、也没字幕时，至少把总时长钉准，别让字数硬估：
 #   --duration 85        （优先级：实测媒体 > --duration > 稿件元信息 > 字数硬估）
 ```
+
+> `--style-path wanfeng` 会切换产出：**不再做正则命中与 slot 分配**，改为输出一份
+> `wanfeng-scene-plan.json` 场景骨架（时间区间 + 建议版式 + 该段口播原文），
+> 供 agent 按 `reference/wanfeng-path.md` §6 手写场景表。详见第四节的参数说明。
 
 产物就是**引擎无关的时间轴契约**：每个 `segment` 含 `start / end / text / keywords / animation.type / slot / layer`。字段含义见 `templates/overlay-spec.example.json`。
 
@@ -181,6 +211,7 @@ task/<时间戳>_motion/
 | `--duration` | 手给成片总时长（秒）。时长优先级：**实测媒体 > `--duration` > 稿件元信息（「时长：~85s」）> 字数硬估**，来源会打进输出摘要 |
 | `--srt` / `--timestamps` | 真实时间戳（`.srt` 或 `[{text,start,end}]` JSON） |
 | `--density` | `sparse` / `standard` / `high`（默认 standard，见 Step 0 的间隔/同屏数） |
+| `--style-path` | `generic`（默认，正则命中 + slot 分配，出 `overlay-spec.json`）/ `wanfeng`（出 `wanfeng-scene-plan.json` 场景骨架，见 `reference/wanfeng-path.md`） |
 | `--aspect` | `9:16` / `16:9` / `auto`（默认按视频探测） |
 | `--max-slots` | **同屏并发卡上限**，覆盖密度默认值。超出上限的那条命中项会被弃卡并在 spec 里写 `dropped` 原因 |
 | `--engine` | `auto` / `remotion` / `hyperframes` / `none`（写进 spec 供下游参考） |
@@ -201,12 +232,14 @@ mograph/
 │   └── make_spec.py                  # 唯一本地脚本（Python 标准库，零依赖）
 ├── reference/
 │   ├── research-protocol.md          # ⭐ 联网检索协议（取巧核心）
+│   ├── wanfeng-path.md               # ⭐ 晚枫专用路径（版式库 / 语速映射 / 响度归一 / 踩坑清单）
 │   ├── overlay-layout.md             # 位置语义 / 人脸安全区 / 避让规则
 │   ├── animation-brief.md            # 8 类动画 × 描述模板 × 内置最小实现
 │   ├── engine-remotion.md            # Remotion 路线最小工程
 │   └── engine-hyperframes.md         # HyperFrames 路线最小工程
 └── templates/
-    └── overlay-spec.example.json     # 引擎无关时间轴契约（含注释说明）
+    ├── overlay-spec.example.json     # 引擎无关时间轴契约（含注释说明）
+    └── wanfeng-scene-plan.example.json  # 晚枫专用路径的场景骨架示例
 ```
 
 **依赖原则**：与仓库其他 skill 一致 —— Python 只用标准库；不引入 `requirements.txt`；ffmpeg 作为系统依赖在文档里说明安装方式；**本 skill 不调用任何付费生成 API**。
@@ -262,6 +295,11 @@ $ python3 scripts/make_spec.py --script script.md --timestamps timeline.json
 | **R6** | 不调用任何付费接口（TTS / 生成 / 云渲染）；纯本地渲染 | 试错成本 |
 | **R7** | 验证用截图看完即删，task 目录只留最终产物 | 目录脏 |
 
+> **选了「晚枫专用」路径后，R1–R7 中的 R3（前景遮挡）、R4（联网声明）、R5（许可核对）不适用**
+> —— 那条路径不检索外部实现、也不做前景遮挡。
+> 取而代之的是 `reference/wanfeng-path.md` §11 的 **W1–W8**（静帧先过、基线锚点、语速双改、
+> fs 必配步骤条与人头、终检逐张读图、双版本交付、设计令牌勿改、交接文档必写本轮改动）。
+
 ---
 
 ## 八、已知限制（v1 的坦白）
@@ -273,6 +311,10 @@ $ python3 scripts/make_spec.py --script script.md --timestamps timeline.json
 5. **中文优先** —— 分句、字数估算、关键词命中都按中文调；英文稿能跑但切分质量下降。
 6. **渲染质量取决于本机环境** —— 没有 Node 只能走 ffmpeg 兜底，动效会明显朴素一档。
 7. **`--timestamps` 模式不重新分句** —— 给了真实时间戳后，句子粒度完全跟着字幕走，命中率可能低于估算模式（估算会把稿件重新切成更细的句子）。这是取舍而非 bug：时间准确性 > 卡片数量，缺的卡在 Step 3 补。
+8. **晚枫专用路径没有自动分镜** —— `--style-path wanfeng` 只出**场景骨架**（时间区间 + 建议版式），
+   场景内容、版式选择、文案仍要 agent 按 `reference/wanfeng-path.md` 手写。
+   这是刻意的：晚枫的成片靠人手审美把关，自动正则命中只会出来一堆平庸的通用卡。
+9. **晚枫专用路径绑死中文字体** —— Hiragino Sans GB 是 macOS 自带，换到没装这个字体的机器要手工换字体并重跑静帧。
 
 ---
 

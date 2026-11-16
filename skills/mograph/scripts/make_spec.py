@@ -10,6 +10,12 @@
   3. 关键词命中 → 8 类动画意图 + 位置（slot）分配（避开人脸安全区）
   4. 输出 overlay-spec.json + 中文摘要
 
+两条风格路径（--style-path）：
+  - generic（默认）：上面这四件事全做，出 overlay-spec.json，供 Remotion / HyperFrames 渲染。
+  - wanfeng（晚枫专用）：只做 1、2，再把字幕切成「场景骨架」（时间区间 + 建议版式），
+    出 wanfeng-scene-plan.json；场景内容与文案由 agent 按 reference/wanfeng-path.md 手写，
+    渲染器是 Pillow 自绘，不是浏览器。
+
 它不做的事（交给 agent / 下游）：
   - 不联网检索（见 reference/research-protocol.md，由 agent 执行）
   - 不写渲染代码（见 reference/engine-*.md）
@@ -18,11 +24,13 @@
 用法：
   python3 scripts/make_spec.py --script 口播稿.md --video 口播.mp4 --out spec.json
   python3 scripts/make_spec.py --script 口播稿.md --srt 字幕.srt --density high --stdout
+  python3 scripts/make_spec.py --script 口播稿.md --srt 字幕.srt --style-path wanfeng --stdout
 """
 
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import os
 import re
@@ -54,6 +62,27 @@ ANIM_RULES = [
 
 DENSITY_GAP = {"sparse": 8.0, "standard": 5.0, "high": 2.5}
 DENSITY_CAP = {"sparse": 1, "standard": 1, "high": 2}  # 同屏并发卡上限
+
+# ---- 晚枫专用路径（--style-path wanfeng）----
+# 通用路径靠正则把句子命中成 8 类动效；晚枫路径不这么做 ——
+# 晚枫的成片是「手写场景表」：一段口播 = 一个场景，版式由内容决定。
+# 所以脚本在 wanfeng 模式下只做两件事：
+#   1. 实测时间轴（与通用路径完全一致）
+#   2. 切出场景骨架（时间区间 + 建议版式 + 该段口播原文）
+# 场景内容与文案留给 agent 按 reference/wanfeng-path.md 手写。
+WF_SCENE_MIN = 5.0      # 单场最短时长（秒）
+WF_SCENE_MAX = 12.0     # 单场最长时长（秒）
+WF_BOUNDARY = re.compile(
+    r"(第[一二三四五六七八九十]步|首先|其次|再次|最后|然后|接下来|所以|但是|不过|而且|"
+    r"重点是|关键是|一句话|总结一下|说白了|打个比方|举个例子)")
+WF_LAYOUTS = {
+    "hook":      "开场钩子（fs 全屏设计版式 + 圆形人头）",
+    "statement": "观点卡（overlay 真人打底 + 单卡）",
+    "evidence":  "证据卡 / 数字卡（overlay）",
+    "step":      "操作步骤（fs 全屏 + 截图 + 步骤条 + 圆形人头）",
+    "reveal":    "揭晓卡（overlay，强调结论）",
+    "cta":       "行动号召（片尾 CTA）",
+}
 
 # 人脸安全区（归一化）：卡片一律不得与此区相交（见 reference/overlay-layout.md）
 FACE_SAFE = {
@@ -258,19 +287,24 @@ def vis_overlap(a, b):
 ANIM_SLOTS = {}
 
 
-def build_spec(args):
+def resolve_timeline(args):
+    """解析稿件 + 对齐时间 + 探测时长与画幅。通用路径与晚枫专用路径共用这一段。"""
     with open(args.script, encoding="utf-8") as f:
         text = f.read()
 
     sentences = split_sentences(text, keep_meta=args.keep_meta_lines)
-    if not sentences:
-        sys.exit("口播稿里没解析出任何句子，检查格式（每句一行或按。！？分句）")
 
     real = []
     if args.srt:
         real = parse_srt(args.srt)
     if not real and args.timestamps:
         real = load_timestamps(args.timestamps)
+
+    # 有实测时间戳时不需要稿件分句（时间轴与文案都以字幕为准），
+    # 只有既没稿件句子、也没时间戳才真的没东西可用。
+    if not sentences and not real:
+        sys.exit("口播稿里没解析出任何句子，检查格式（每句一行或按。！？分句），"
+                 "或用 --srt / --timestamps 提供实测时间戳")
 
     media = probe_media(args.video or args.audio)
     hint = detect_duration_hint(text)
@@ -285,10 +319,8 @@ def build_spec(args):
 
     segs = []
     if real:
-        cur = 0.0
         for txt, st, en in real:
             segs.append({"start": round(st, 2), "end": round(max(en, st + 0.4), 2), "text": txt})
-            cur = max(cur, en)
         timing_source = "measured"
     else:
         pos = 0.0
@@ -306,6 +338,27 @@ def build_spec(args):
     if not total and segs:
         total = segs[-1]["end"]
 
+    aspect = args.aspect
+    if aspect == "auto":
+        if media and media.get("width") and media.get("height"):
+            aspect = "9:16" if media["height"] >= media["width"] else "16:9"
+        else:
+            aspect = "9:16"
+
+    return {"text": text, "segs": segs, "total": total,
+            "duration_source": duration_source, "timing_source": timing_source,
+            "aspect": aspect, "media": media}
+
+
+def build_spec(args):
+    tl = resolve_timeline(args)
+    segs = tl["segs"]
+    total = tl["total"]
+    timing_source = tl["timing_source"]
+    duration_source = tl["duration_source"]
+    aspect = tl["aspect"]
+    media = tl["media"]
+
     # ---- 命卡：密度 + 类型 ----
     gap = DENSITY_GAP[args.density]
     last_hit = -999.0
@@ -321,13 +374,6 @@ def build_spec(args):
         else:
             sg["animation"] = None
             sg["keywords"] = []
-
-    aspect = args.aspect
-    if aspect == "auto":
-        if media and media.get("width") and media.get("height"):
-            aspect = "9:16" if media["height"] >= media["width"] else "16:9"
-        else:
-            aspect = "9:16"
 
     for kind, _p, slots in ANIM_RULES:
         ANIM_SLOTS[kind] = slots
@@ -391,6 +437,102 @@ def build_spec(args):
     return spec, summary, media
 
 
+def group_scenes(segs):
+    """把字幕切成场景骨架：每场 5–12s，遇到结构词提前断场，末场太短并入上一场。"""
+    groups = []
+    cur = []
+    for i, cue in enumerate(segs):
+        cur.append(cue)
+        dur = cue["end"] - cur[0]["start"]
+        if dur < WF_SCENE_MIN:
+            continue
+        nxt = segs[i + 1] if i + 1 < len(segs) else None
+        if nxt is not None and dur < WF_SCENE_MAX and WF_BOUNDARY.search(nxt["text"]):
+            groups.append(cur)
+            cur = []
+            continue
+        if dur >= WF_SCENE_MAX:
+            groups.append(cur)
+            cur = []
+    if cur:
+        groups.append(cur)
+    # 末场太短（不足最短时长）并入上一场，避免出现 1 秒的碎场
+    if len(groups) >= 2 and (groups[-1][-1]["end"] - groups[-1][0]["start"]) < WF_SCENE_MIN:
+        groups[-2].extend(groups.pop())
+    return groups
+
+
+def guess_layout(text, idx, n):
+    """按内容猜建议版式。只是建议 —— 最终版式由 agent 按 wanfeng-path.md §5 定。"""
+    if idx == 0:
+        return "hook"
+    if idx == n - 1:
+        return "cta"
+    if re.search(r"第[一二三四五六七八九十]步|打开|选择|点击|点「|搜「|去试试|丢进|上传", text):
+        return "step"
+    if re.search(r"\d+\s*(?:块|元|万|亿|倍|%|％|秒|分钟|款|个|人)", text) or "免费" in text:
+        return "evidence"
+    if re.search(r"答案|最后告诉你|结果|你看|揭晓", text):
+        return "reveal"
+    return "statement"
+
+
+def build_scene_plan(args):
+    """晚枫专用路径：只出场景骨架，不做正则命中，也不做 slot 分配。"""
+    tl = resolve_timeline(args)
+    segs = tl["segs"]
+    groups = group_scenes(segs)
+
+    scenes = []
+    for i, group in enumerate(groups):
+        txt = "".join(c["text"] for c in group)
+        layout = guess_layout(txt, i, len(groups))
+        st, en = group[0]["start"], group[-1]["end"]
+        scenes.append({
+            "id": i + 1,
+            "start": round(st, 2),
+            "end": round(en, 2),
+            "duration": round(en - st, 2),
+            "layout": layout,
+            "layout_hint": WF_LAYOUTS[layout],
+            "mode": "fs" if layout in ("hook", "step") else "overlay",
+            "head": layout in ("hook", "step"),
+            "head_pos": "bottom-left" if layout == "hook" else "top-right",
+            "cues": [c["text"] for c in group],
+            "text": txt,
+            "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案",
+        })
+
+    warnings = []
+    if tl["timing_source"] != "measured":
+        warnings.append("时间戳为估算（4 字/秒），交付前必须试听对齐 —— 见 SKILL.md 硬规则 R1")
+    warnings.append("本文件是**骨架**：场景版式、文案、圆形人头位置须按 reference/wanfeng-path.md 手写后才可渲染")
+    if args.density != "standard":
+        warnings.append("晚枫专用路径不使用 --density，密度由场景表人工控制（该参数已忽略）")
+
+    plan = {
+        "$schema": "mograph/wanfeng-scene-plan@1",
+        "meta": {
+            "style_path": "wanfeng",
+            "renderer_hint": "pillow-frame",
+            "source_script": os.path.basename(args.script),
+            "source_video": os.path.basename(args.video or args.audio or ""),
+            "aspect": tl["aspect"],
+            "duration": round(tl["total"] or 0, 2),
+            "duration_source": ("timeline" if (tl["timing_source"] == "measured"
+                                               and tl["duration_source"] == "chars-only")
+                                else tl["duration_source"]),
+            "timing_source": tl["timing_source"],
+            "scenes": len(scenes),
+            "generated_by": "scripts/make_spec.py v1.1.0",
+            "spec_ref": "reference/wanfeng-path.md",
+        },
+        "warnings": warnings,
+        "scenes": scenes,
+    }
+    return plan
+
+
 def emit_png_plan(spec, out_dir):
     plan = []
     for sg in spec["segments"]:
@@ -412,6 +554,37 @@ def emit_png_plan(spec, out_dir):
     return p
 
 
+def main_wanfeng(args):
+    """晚枫专用路径的终端输出：打印场景骨架表。"""
+    plan = build_scene_plan(args)
+    out = args.out
+    if out and not args.stdout:
+        os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+        with open(out, "w", encoding="utf-8") as f:
+            json.dump(plan, f, ensure_ascii=False, indent=2)
+
+    m = plan["meta"]
+    counts = collections.Counter(s["layout"] for s in plan["scenes"])
+    print("== 晚枫专用路径 · 场景骨架 ==")
+    print("源视频：%s｜%ss（时长来源：%s）｜%s"
+          % (m["source_video"] or "未提供", m["duration"], m["duration_source"], m["aspect"]))
+    print("时间戳：%s｜场景：%d 场｜渲染器：pillow-frame"
+          % ("实测" if m["timing_source"] == "measured" else "估算（4 字/秒）", m["scenes"]))
+    print("版式：" + "｜".join("%s %d" % (k, v) for k, v in sorted(counts.items())))
+    for s in plan["scenes"]:
+        print("  #%-2d %6.2f–%6.2fs  %-9s %-7s %s"
+              % (s["id"], s["start"], s["end"], s["layout"], s["mode"], s["layout_hint"]))
+    for w in plan["warnings"]:
+        print("⚠️ %s" % w)
+    if args.emit_png_plan:
+        print("提示：晚枫专用路径不出 ffmpeg 兜底计划（无 slot 概念），已忽略 --emit-png-plan")
+    if out and not args.stdout:
+        print("已写出：%s" % out)
+    if args.stdout:
+        print(json.dumps(plan, ensure_ascii=False, indent=2))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="口播稿 → overlay-spec.json")
     ap.add_argument("--script", required=True, help="口播稿 .md/.txt")
@@ -422,6 +595,9 @@ def main():
     ap.add_argument("--srt", help="SRT 字幕，实测时间戳")
     ap.add_argument("--timestamps", help="JSON 时间戳 [{text,start,end}]")
     ap.add_argument("--density", default="standard", choices=list(DENSITY_GAP))
+    ap.add_argument("--style-path", default="generic", choices=["generic", "wanfeng"],
+                    help="风格路径：generic=正则命中出 overlay-spec.json；"
+                         "wanfeng=出场景骨架（见 reference/wanfeng-path.md）")
     ap.add_argument("--aspect", default="auto", choices=["auto", "9:16", "16:9"])
     ap.add_argument("--engine", default="auto", choices=["auto", "remotion", "hyperframes", "none"])
     ap.add_argument("--max-slots", type=int, default=None, help="同屏并发卡上限（默认按密度：克制/标准 1、高密度 2）")
@@ -435,6 +611,9 @@ def main():
 
     if not os.path.isfile(args.script):
         sys.exit("找不到口播稿：%s" % args.script)
+
+    if args.style_path == "wanfeng":
+        return main_wanfeng(args)
 
     spec, summary, media = build_spec(args)
 

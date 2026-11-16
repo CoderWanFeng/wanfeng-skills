@@ -25,8 +25,8 @@
 | [**personal-website-builder**](skills/personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](skills/opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
-| [**mograph**](skills/mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用），在人的上下左右定时弹出并渲染成片 | 口播视频包装、出镜科普、数据 lower-third | — |
-| [**ai-style-video**](skills/ai-style-video/) | 晚枫AI动画：把任意选题做成 8 种风格的竖屏 MG 静音样片（1080×1920 / 24–25s）：先选风格 → 按清单交素材 → 渲染样片，自带文字重叠检测与缺素材占位 | 不出镜的 MG 短视频、产品/功能/事件解读 | — |
+| [**mograph**](skills/mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用），在人的上下左右定时弹出并渲染成片。内置两条路径：通用路径走检索驱动；**晚枫专用路径**是自有风格的完整打法（Pillow 自绘 + 手写场景表 + 圆形人头 + 步骤条版式 + 语速映射 + 响度归一），开工前先选 | 口播视频包装、出镜科普、数据 lower-third、做自己账号的固定调性 | — |
+| [**ai-style-video**](skills/ai-style-video/) | 晚枫AI动画（一句话生成 AI 视频）：把任意选题做成 8 种风格 × 6 种画幅的 MG 短片（24–25s）：开场四问「选风格 → 选画幅 → 选配音 → 交素材」，风格和画幅互相独立，自带文字重叠检测、缺素材占位与 ffmpeg 混流 | 不出镜的 MG 短视频、产品/功能/事件解读、竖屏抖音小红书 + 横屏B站YouTube | — |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
 
@@ -51,7 +51,8 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 - 「我想学 XX 这个开源项目怎么用」 → 触发 `opensource-housekeeper`
 - 「帮我把这个项目推到 GitHub」 → 触发 `opensource-housekeeper`
 - 「这条口播视频帮我自动剪辑，根据讲的内容加点动效卡」 → 触发 `mograph`
-- 「这个选题帮我做一条不出镜的竖屏 MG 短视频」 → 触发 `ai-style-video`
+- 「这条口播视频按我们自己的风格剪，走晚枫专用」 → 触发 `mograph`（晚枫专用路径）
+- 「这个选题帮我做一条不出镜的 MG 短视频，横屏的」 → 触发 `ai-style-video`
 
 ---
 
@@ -151,8 +152,8 @@ skills/<skill-name>/
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定 | 2026-07-03 |
 | wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
-| mograph（晚枫自动剪辑） | 🚧 v1 首发（骨架脚本本地跑通；渲染链路待 v1.1 实测） | 2026-11 |
-| ai-style-video（晚枫AI动画） | ✅ v2.0 稳定（8 种风格本地跑通；字体跨平台；不限题材；不做配音） | 2026-11-13 |
+| mograph（晚枫自动剪辑） | 🚧 v1.1（通用路径骨架脚本本地跑通；**晚枫专用路径已跑通全链路并交付成片** —— Pillow 自绘 + 手写场景表 + 圆形人头 + 语速映射 + 两遍法响度归一，见 skills/mograph/reference/wanfeng-path.md） | 2026-11-16 |
+| ai-style-video（晚枫AI动画） | ✅ v2.3 稳定（8 种风格 + I 自定义本地跑通；6 种画幅 9:16/2:3/4:5/1:1/16:9/4:3，与风格互相独立；三档配音 S 静音 / V1 系统电子音 / V2 本地模型克隆；字体跨平台；全程零付费） | 2026-11-16 |
 
 ---
 

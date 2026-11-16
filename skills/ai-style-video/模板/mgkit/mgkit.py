@@ -49,12 +49,25 @@ except ImportError as e:  # pragma: no cover
         f"mgkit 找不到 fonts.py（应与 mgkit.py 同目录）：{e}\n"
         f"预期位置：{MGKIT_DIR}") from e
 
+# 画幅预设：目标画布由 MG_CANVAS / 工程根 canvas.json 决定，默认 9:16。
+# 渲染器统一从这里拿 CANVAS，画幅逻辑不用各自实现一遍。
+try:
+    from canvas import CANVAS, get_canvas, describe  # noqa: F401
+except ImportError:  # pragma: no cover - canvas.py 不在 sys.path 时按同目录加载
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location(
+        "mgkit_canvas", Path(__file__).resolve().parent / "canvas.py")
+    _mod = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+    CANVAS, get_canvas, describe = _mod.CANVAS, _mod.get_canvas, _mod.describe
+
 __all__ = [
     "OverlapGuard", "Box", "EvidenceSpec",
     "evidence_path", "load_evidence", "load_evidence_or_raw", "open_evidence",
     "mark_text_layer", "register_layer_texts", "set_content_offset",
     "write_report", "fit_scale", "reg_evidence", "resolve_evidence",
     "missing_materials", "missing_by_dir", "load_font", "resolve_font", "describe_fonts",
+    "CANVAS", "get_canvas", "describe",
     "EVID", "EVID_DIR", "SHOTS_DIR", "SHOTS_HD_DIR", "ROOT",
 ]
 
