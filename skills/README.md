@@ -5,7 +5,7 @@
 
 ---
 
-## 📚 Skill 一览（11 个）
+## 📚 Skill 一览（13 个）
 
 | Skill | 用途 | 适用场景 | 触发词举例 | 在线体验 |
 |---|---|---|---|---|
@@ -17,8 +17,10 @@
 | [**personal-website-builder**](personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | 「我想做个博客」「搭个个人网站」「建个简历站」 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | 「我想学 XX 怎么用」「这项目干嘛」「帮我推到 GitHub」「拉一下 llama.cpp 跑起来」 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
 | [**free-ai-models**](free-ai-models/) | 搜罗全网可以免费使用的大模型（直接用 / 软件内置 / 平台免费额度） | 找免费 GPT/Claude/Gemini、找软件里能白嫖的模型、找永久免费 API | 「免费大模型」「GPT 免费吗」「Cursor 里哪个免费」「API 免费额度」 | — |
-| [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（MiniMax 克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | 「做个数字人视频」「让我的照片说话」「用我的声音念这段话」「做一条十秒口播」 | — |
-| [**mograph**](mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用卡），在人的上下左右定时弹出并渲染成片。通用路径「检索驱动」：运行时由本地 AI 联网拉社区最新的 Remotion / HyperFrames 实现；**晚枫专用路径**：自有风格完整打法（Pillow 自绘 + 手写场景表 + 圆形人头 + 步骤条 + 语速映射 + 响度归一），开工前先选 | 口播视频包装、出镜科普、lower-third 数据卡、做自己账号的固定调性 | 「自动剪辑」「口播加动画」「给视频贴片」「上下左右弹卡」「加数据卡」「用 Remotion 给口播做叠加」「晚枫专用」「按我们自己的风格剪」 | — |
+| [**wanfeng-digital-human**](wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片。**零成本**：只扣软件积分，不填密钥、不绑支付；台词由模型用内置音色念出，可事后替换成自己的原声 | 数字人口播、不露脸出镜、照片说话、先花零成本试效果 | 「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「用积分做数字人」 | — |
+| [**wanfeng-digital-human-pro**](wanfeng-digital-human-pro/) | 💰 **晚枫数字人 Pro**：完整口播长视频生产线。三画面后端（MiniMax H3 / 自托管 H3 / 软件积分）× 两语音后端（MiniMax 克隆 / 本地 Ming），MiniMax 再分官方 API 与推荐平台 API；交付分段配音、出镜片段、`a_roll.json` 时间码表、`a_roll.srt` 与拼接片 | 30 秒以上长口播、要本人克隆音色、批量做系列、有 GPU 实例想压成本 | 「用我自己的声音做口播」「做条 2 分钟的数字人长视频」「批量做矩阵号短视频」 | — |
+| [**mograph**](mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用卡），在人的上下左右定时弹出并渲染成片。通用路径「检索驱动」：运行时由本地 AI 联网拉社区最新的 Remotion / HyperFrames 实现；**晚枫专用路径**：自有风格完整打法（Pillow 自绘 + 手写场景表 + 圆形人头 + 步骤条 + 语速映射 + 响度归一），开工前先选（该路径另已独立成付费版 [mograph-pro](mograph-pro/)，本 skill 内为同源实现、免费可用） | 口播视频包装、出镜科普、lower-third 数据卡、做自己账号的固定调性 | 「自动剪辑」「口播加动画」「给视频贴片」「上下左右弹卡」「加数据卡」「用 Remotion 给口播做叠加」「晚枫专用」「按我们自己的风格剪」 | — |
+| [**mograph-pro**](mograph-pro/) | 💰 **晚枫自动剪辑 Pro（付费版）**：一条真人口播 → 有版式的成片 + 封面。10 步一条龙（删减授权 → 定版式 → 配图采集 → 场景表 → 静帧 → 重渲 → 终检 → 响度 → 交接 → 封面换皮），Pillow 2 倍超采样自绘、fs 全屏设计版式、圆形人头、步骤条、手写场景表、语速映射、两遍法响度归一、固定底图封面换皮。**本地没有合适的 logo 会自己从官方源下载**（准确性优先于好看，来源登记进台账）。**自包含，不装 Node、不起浏览器、不联网找现成动效代码** | 做自己账号的固定调性成片、需要封面换皮、要把整套打法单独交付给别人 | 「按我们自己的风格剪」「走晚枫那条路」「Pro 版剪」「做完顺便换张封面」「封面换皮」「换 logo」「产品 logo」 | — |
 | [**ai-style-video**](ai-style-video/) | **一句话生成 AI 视频**：任意素材（描述/文档/截图/数据）→ MG 短视频（24–25s / 9 场景）。**开场四问**：选风格（A–H + I 自定义）→ 选画幅（9:16 / 2:3 / 4:5 / 1:1 / 16:9 / 4:3，与风格互相独立）→ 选配音（S 静音 / V1 系统电子音 / V2 本地模型克隆音色）→ 交素材。自带文字重叠检测、缺素材占位、跨平台字体解析、画幅适配层、ffmpeg 混流 | 不出镜的 MG 短视频、产品/功能/事件/教程解读、要横版（B站/YouTube）也要竖版（抖音/小红书）、想克隆自己音色配音 | 「做条不出镜的 MG 视频」「选个风格重做这条」「这条改横屏」「用我的声音念这段」「素材要哪些」「证据图发虚」 | — |
 
 ---
@@ -45,8 +47,10 @@ mp-saver
 - **[cover-hero](cover-hero/)** — 配图：6 套模板 + 严格视觉 DNA + Puppeteer 渲染
 - **[mp-saver](mp-saver/)** — 公众号文章保存器：v2.0 纯 HTTP 版 → MHTML 单文件，不登录、双击可看；v2.0 起只需 Python 标准库
 - **[knowledge-short-video](knowledge-short-video/)** — 短视频：覆盖 20+ 步骤，从口播稿到渲染产物
-- **[wanfeng-digital-human](wanfeng-digital-human/)** — 数字人：一段素材 + 一句话，出 4–10 秒会说话的短片（克隆音色 + 自动字幕）
+- **[wanfeng-digital-human](wanfeng-digital-human/)** — 数字人（零成本）：一段素材 + 一句话，出 4–10 秒会说话的短片，只扣软件积分，模型念台词、可换原声
+- **[wanfeng-digital-human-pro](wanfeng-digital-human-pro/)** — 💰 数字人 Pro：完整口播生产线，三画面后端 × 两语音后端，交付时间码表与拼接片
 - **[mograph](mograph/)** — 晚枫自动剪辑：真人已出镜的视频 + 口播稿 → 按讲话内容在四周弹卡（不重拍、不剪镜头）
+- **[mograph-pro](mograph-pro/)** — 💰 晚枫自动剪辑 Pro（付费版）：晚枫那条线独立成**自包含** skill —— 成片 + 封面一条龙，设计令牌 / 版式库 / 封面固定资产 / 商业授权一起交付
 - **[ai-style-video](ai-style-video/)** — 晚枫AI动画，不出镜的风格 MG 片：任何选题 → 选风格（8 种 + 自定义）→ 选画幅（6 种，竖屏到横屏都行）→ 选配音 → 按清单交素材 → 样片
 
 ### 🌐 个人项目 / 建站
@@ -67,13 +71,15 @@ mp-saver
 | AI 领域怎么选今天的话题？ | [aihot-topic-selector](aihot-topic-selector/) |
 | 文章写完了，给它配个封面 | [cover-hero](cover-hero/) |
 | 我想做短视频，怎么起步？ | [knowledge-short-video](knowledge-short-video/) |
-| 我想用我的脸和声音做口播短片 | [wanfeng-digital-human](wanfeng-digital-human/) |
+| 我想零成本试一条会说话的数字人短片 | [wanfeng-digital-human](wanfeng-digital-human/) |
+| 我要用自己的克隆音色做 30 秒以上的口播长视频 | [wanfeng-digital-human-pro](wanfeng-digital-human-pro/) |
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想学一个开源项目、把它真正用起来 | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
 | 视频已经拍好了，只想在讲话时旁边弹出数据卡 / 图表 | [mograph](mograph/) |
+| 要一条自己账号固定调性的成片，还要封面换皮 | [mograph-pro](mograph-pro/) |
 | 手上有一推资料（官网/公告/数据），想快速出条短视频（竖屏横屏都行），人不出镜 | [ai-style-video](ai-style-video/) |
 
 ---
@@ -194,18 +200,22 @@ skills/<skill-name>/
 | cover-hero | ✅ 稳定 | 2026-07 |
 | mp-saver | ✅ v2.0 稳定（纯 HTTP 零依赖） | 2026-08-13 |
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
-| personal-website-builder | ✅ 稳定 | 2026-06 |
-| opensource-housekeeper | ✅ v2 稳定（已优化可用性） | 2026-07-03 |
+| personal-website-builder | ✅ v2.0 稳定（对话式建站，6 种类型；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
+| opensource-housekeeper | ✅ v2.0 稳定（已优化可用性；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / version / author / examples；reference/ 已改名 references/） | 2026-11-17 |
+| doc-speedreader（晚枫速读侠） | ✅ v1.0.0 已上架（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples；reference/ 已改名 references/） | 2026-11-17 |
+| repowiki-generator（晚枫知识库） | ✅ v1.0.0 可用（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
 | free-ai-models | ✅ v1 稳定 | 2026-07-12 |
-| wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
-| mograph（晚枫自动剪辑） | 🚧 v1.1（通用路径骨架脚本本地跑通；**晚枫专用路径已跑通全链路并交付成片** —— Pillow 自绘 + 手写场景表 + 圆形人头 + 语速映射 + 两遍法响度归一，见 mograph/reference/wanfeng-path.md） | 2026-11-16 |
-| ai-style-video（晚枫AI动画） | ✅ v2.3 稳定（一句话生成 AI 视频：8 种内置风格 + I 自定义；6 种画幅 9:16/2:3/4:5/1:1/16:9/4:3，与风格互相独立；三档配音方案 S/V1/V2；全程本地零付费；逐字级字幕对齐、横版自动重排不在范围内） | 2026-11-16 |
+| wanfeng-digital-human（晚枫数字人） | ✅ v2.0 可用（只走软件积分，零成本、4–10 秒，无需密钥；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
+| wanfeng-digital-human-pro（晚枫数字人 Pro） | ✅ v2.0 可用（三画面后端 × 两语音后端；原 wanfeng-h3 已并入，云端 H3 端到端待验收） | 2026-11-17 |
+| mograph（晚枫自动剪辑） | 🚧 v1.3（通用路径骨架脚本本地跑通；**晚枫专用路径已跑通全链路并交付成片** —— Pillow 自绘 + 手写场景表 + 圆形人头 + 语速映射 + 两遍法响度归一，见 mograph/references/wanfeng-path.md；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples；reference/ 已改名 references/） | 2026-11-17 |
+| mograph-pro（晚枫自动剪辑 Pro） | ✅ v1.1 **付费版**（自包含：10 步执行流 + 设计令牌 + 版式库 + 封面固定资产 + 商业授权 LICENSE.md；与免费版 mograph 的晚枫线同源）**新增：封面 logo 本地没有合适的就自己从官方源下载（准确性优先于好看，来源登记进 asset-manifest.json）**；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples；reference/ 已改名 references/（指向免费版 mograph 的 GitHub 路径 7 处已同步为 references/，与 mograph 改名联动，需一同推送 GitHub） | 2026-11-17 |
+| ai-style-video（晚枫AI动画） | ✅ v2.3 稳定（一句话生成 AI 视频：8 种内置风格 + I 自定义；6 种画幅 9:16/2:3/4:5/1:1/16:9/4:3，与风格互相独立；三档配音方案 S/V1/V2；全程本地零付费；逐字级字幕对齐、横版自动重排不在范围内；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
 
 ---
 
 ## 📝 添加新 skill
 
-在 `/Users/wanfeng/code/wanfeng-skills/todo/` 目录建一个待办文件夹，放设计笔记 + 需求起点。
+在仓库根的 `todo/` 目录建一个待办文件夹，放设计笔记 + 需求起点。
 然后用 `skill-creator` 创建 skill 目录到 `skills/` 下。
 
-详见：[/Users/wanfeng/code/wanfeng-skills/skills/personal-website-builder/SKILL.md](personal-website-builder/SKILL.md) 内的成熟范式。
+详见：[personal-website-builder/SKILL.md](personal-website-builder/SKILL.md) 内的成熟范式。
