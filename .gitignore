@@ -18,3 +18,6 @@ docs/skillhub-publish/
 
 # SkillHub 发布用 staging 副本（由 docs/skillhub-publish/publish.py 生成，可再生）
 .build/
+
+# macOS 系统文件
+.DS_Store
