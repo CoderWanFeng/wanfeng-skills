@@ -17,7 +17,7 @@
   .stage{position:relative;width:1080px;height:1920px;overflow:hidden}
   video.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .clip{position:absolute;pointer-events:none}
-  /* slot 定位（与 reference/overlay-layout.md §1 一致） */
+  /* slot 定位（与 references/overlay-layout.md §1 一致） */
   .slot-top{left:6%;right:6%;top:58px;text-align:center}
   .slot-bottom{left:6%;right:6%;bottom:76px;text-align:center}
   .slot-left{left:32px;top:460px;width:250px}

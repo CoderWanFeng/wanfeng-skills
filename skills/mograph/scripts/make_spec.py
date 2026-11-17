@@ -13,12 +13,12 @@
 两条风格路径（--style-path）：
   - generic（默认）：上面这四件事全做，出 overlay-spec.json，供 Remotion / HyperFrames 渲染。
   - wanfeng（晚枫专用）：只做 1、2，再把字幕切成「场景骨架」（时间区间 + 建议版式），
-    出 wanfeng-scene-plan.json；场景内容与文案由 agent 按 reference/wanfeng-path.md 手写，
+    出 wanfeng-scene-plan.json；场景内容与文案由 agent 按 references/wanfeng-path.md 手写，
     渲染器是 Pillow 自绘，不是浏览器。
 
 它不做的事（交给 agent / 下游）：
-  - 不联网检索（见 reference/research-protocol.md，由 agent 执行）
-  - 不写渲染代码（见 reference/engine-*.md）
+  - 不联网检索（见 references/research-protocol.md，由 agent 执行）
+  - 不写渲染代码（见 references/engine-*.md）
   - 不核实稿件里的数字真伪
 
 用法：
@@ -69,7 +69,7 @@ DENSITY_CAP = {"sparse": 1, "standard": 1, "high": 2}  # 同屏并发卡上限
 # 所以脚本在 wanfeng 模式下只做两件事：
 #   1. 实测时间轴（与通用路径完全一致）
 #   2. 切出场景骨架（时间区间 + 建议版式 + 该段口播原文）
-# 场景内容与文案留给 agent 按 reference/wanfeng-path.md 手写。
+# 场景内容与文案留给 agent 按 references/wanfeng-path.md 手写。
 WF_SCENE_MIN = 5.0      # 单场最短时长（秒）
 WF_SCENE_MAX = 12.0     # 单场最长时长（秒）
 WF_BOUNDARY = re.compile(
@@ -84,7 +84,7 @@ WF_LAYOUTS = {
     "cta":       "行动号召（片尾 CTA）",
 }
 
-# 人脸安全区（归一化）：卡片一律不得与此区相交（见 reference/overlay-layout.md）
+# 人脸安全区（归一化）：卡片一律不得与此区相交（见 references/overlay-layout.md）
 FACE_SAFE = {
     "9:16": {"x": (0.30, 0.70), "y": (0.18, 0.76)},
     "16:9": {"x": (0.28, 0.72), "y": (0.18, 0.70)},
@@ -500,13 +500,13 @@ def build_scene_plan(args):
             "head_pos": "bottom-left" if layout == "hook" else "top-right",
             "cues": [c["text"] for c in group],
             "text": txt,
-            "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案",
+            "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案",
         })
 
     warnings = []
     if tl["timing_source"] != "measured":
         warnings.append("时间戳为估算（4 字/秒），交付前必须试听对齐 —— 见 SKILL.md 硬规则 R1")
-    warnings.append("本文件是**骨架**：场景版式、文案、圆形人头位置须按 reference/wanfeng-path.md 手写后才可渲染")
+    warnings.append("本文件是**骨架**：场景版式、文案、圆形人头位置须按 references/wanfeng-path.md 手写后才可渲染")
     if args.density != "standard":
         warnings.append("晚枫专用路径不使用 --density，密度由场景表人工控制（该参数已忽略）")
 
@@ -525,7 +525,7 @@ def build_scene_plan(args):
             "timing_source": tl["timing_source"],
             "scenes": len(scenes),
             "generated_by": "scripts/make_spec.py v1.1.0",
-            "spec_ref": "reference/wanfeng-path.md",
+            "spec_ref": "references/wanfeng-path.md",
         },
         "warnings": warnings,
         "scenes": scenes,
@@ -597,7 +597,7 @@ def main():
     ap.add_argument("--density", default="standard", choices=list(DENSITY_GAP))
     ap.add_argument("--style-path", default="generic", choices=["generic", "wanfeng"],
                     help="风格路径：generic=正则命中出 overlay-spec.json；"
-                         "wanfeng=出场景骨架（见 reference/wanfeng-path.md）")
+                         "wanfeng=出场景骨架（见 references/wanfeng-path.md）")
     ap.add_argument("--aspect", default="auto", choices=["auto", "9:16", "16:9"])
     ap.add_argument("--engine", default="auto", choices=["auto", "remotion", "hyperframes", "none"])
     ap.add_argument("--max-slots", type=int, default=None, help="同屏并发卡上限（默认按密度：克制/标准 1、高密度 2）")

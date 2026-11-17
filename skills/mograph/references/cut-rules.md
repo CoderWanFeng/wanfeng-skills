@@ -459,10 +459,10 @@ python3 scripts/cut_plan.py --video raw.MOV --out plan.json --reorder 5,1,2,3,4,
 
 | 文件 | 位置 | 内容 |
 |---|---|---|
-| `reference/cut-feature.md` | skill 内 | **功能说明书**（先看这份）：怎么单独跑、输出什么、跑完核对什么 |
+| `references/cut-feature.md` | skill 内 | **功能说明书**（先看这份）：怎么单独跑、输出什么、跑完核对什么 |
 | `scripts/cut_plan.py` | skill 内 | 工具本体（v2.0.0） |
 | `scripts/verify_cuts.py` | skill 内 | 71 号回归校验脚本 |
-| `reference/wanfeng-path.md` §2.1 | skill 内 | 删减在晚枫专用路径里的位置（Step 0） |
+| `references/wanfeng-path.md` §2.1 | skill 内 | 删减在晚枫专用路径里的位置（Step 0） |
 | `内容更新/short/71-混元hy4-flash/05-真人口播/删减规律研究.md` | 项目里 | 71 号删减规律研究全文（30 块全表、25 句对照、删除量构成、阈值检验） |
 | `内容更新/short/71-混元hy4-flash/05-真人口播/删减计划-工具输出.md` | 项目里 | 工具在本片上的输出报告（保序版） |
 | `内容更新/short/71-混元hy4-flash/05-真人口播/删减计划-重排版.md` | 项目里 | 工具在本片上的输出报告（重排版） |

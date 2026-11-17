@@ -8,32 +8,191 @@
     ~/.workbuddy/binaries/python/envs/default/bin/python3   # PIL 12.x + numpy + cv2
 
 固定资产（已沉淀进 skill，勿删）：
-    底图        reference/assets/cover/封面-底图-混元WB.jpg     # 墙面人像，1:1 像素底
-    头发参考帧  reference/assets/cover/hy4-frame7.png          # 同段视频第 7 秒帧，补头顶用
+    底图        references/assets/cover/封面-底图-混元WB.jpg     # 墙面人像，1:1 像素底
+    头发参考帧  references/assets/cover/hy4-frame7.jpg          # 同段视频第 7 秒帧，补头顶用
+    （分发渠道不允许随包上传图片时，本地可能没有这两个文件 —— 脚本会自动下载，见 _download_asset：
+      AtomGit 国内源优先，GitHub 原始文件兜底。用户打不开 GitHub 也不影响。）
 
 用法：把本文件复制到 <选题>/AI剪辑输出/src/cover.py，改下面 CONFIG，然后跑。
      只改标着【每期必改】的项；标【勿改】的是配准/版式实测值，动了必翻车（见 wanfeng-cover.md 踩坑表）。
 """
 import os
+import glob
+import json
+import urllib.error
+import urllib.parse
+import urllib.request
 import numpy as np
 import cv2
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
+# ---- 封面固定资产的线上副本（分发渠道不允许随包上传图片时，从这里下载）----
+# 两个仓库同源（AtomGit 由 GitHub 同步过来），下载路径一致。
+# 国内优先 AtomGit（GitHub 常常打不开），GitHub 兜底；两边都按「新布局 → 旧布局」各试一遍。
+ATOMGIT_API = "https://atomgit.com/api/v5/repos/CoderWanFeng1/wanfeng-skills/contents"
+ATOMGIT_RAW = "https://atomgit.com/CoderWanFeng1/wanfeng-skills/raw/main"
+GH_RAW = "https://raw.githubusercontent.com/CoderWanFeng/wanfeng-skills/main"
+GH_PAGE = ("https://github.com/CoderWanFeng/wanfeng-skills/tree/main/"
+           "skills/mograph/references/assets/cover")
+AG_PAGE = "https://atomgit.com/CoderWanFeng1/wanfeng-skills"
+# 镜像/远程可能落后几个提交：旧布局是 reference/（单数）、头发帧是 .png，这些也要能命中
+COVER_DIRS = ("skills/mograph/references/assets/cover",
+              "skills/mograph/reference/assets/cover")
+NAME_ALTS = {"hy4-frame7.jpg": "hy4-frame7.png"}
+
+
+def _http_get(url, timeout):
+    req = urllib.request.Request(url, headers={"User-Agent": "wanfeng-mograph-cover"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read()
+
+
+def _pct(url):
+    """把 URL 里的中文/空格转义（AtomGit 返回的地址里带原始中文文件名）。"""
+    return urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%")
+
+
+def _atomgit_download_url(name):
+    """走 AtomGit 的 contents 接口查真实下载地址。
+
+    ⚠ 别指望 https://atomgit.com/<用户>/<仓库>/raw/main/<路径>：那个地址返回的是占位 SVG/HTML，
+    真正能下的是接口给的 blobs 地址（带 blob sha）。查不到（镜像还没同步到）就返回 None。
+    """
+    for _ in range(2):                       # 接口偶尔抽风，重试一次
+        for rel in COVER_DIRS:
+            api = "%s/%s?ref=main" % (ATOMGIT_API, urllib.parse.quote(rel))
+            try:
+                items = json.loads(_http_get(api, 15).decode("utf-8"))
+            except Exception:
+                continue
+            if not isinstance(items, list):
+                continue
+            for nm in (name, NAME_ALTS.get(name)):
+                for it in items:
+                    if it.get("name") == nm and it.get("download_url"):
+                        return _pct(it["download_url"])
+    return None
+
+
+def _img_ext(data):
+    """按文件头判断真实格式。镜像里头发帧可能还是旧的 .png，不能只看扩展名。"""
+    if data[:3] == b"\xff\xd8\xff":
+        return ".jpg"
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return ".png"
+    return None
+
+
+def _cand_urls(name):
+    """按优先级列出候选下载地址：(来源, 域名, url)。域名用来「一个源连不上就整站跳过」。"""
+    out = []
+    ag = _atomgit_download_url(name)
+    if ag:
+        out.append(("AtomGit 国内源", "raw.atomgit.com", ag))
+    # 接口挂了/限流时试一把直链（返回占位图会被文件头校验挡掉，不会写进缓存）
+    out.append(("AtomGit 直链", "atomgit.com",
+                "%s/%s/%s" % (ATOMGIT_RAW, COVER_DIRS[0], urllib.parse.quote(name))))
+    for base, label, host in ((ATOMGIT_RAW, "AtomGit 直链", "atomgit.com"),
+                              (GH_RAW, "GitHub 原始文件", "raw.githubusercontent.com")):
+        for rel in COVER_DIRS:
+            for nm in (name, NAME_ALTS.get(name)):
+                if not nm:
+                    continue
+                url = "%s/%s/%s" % (base, rel, urllib.parse.quote(nm))
+                if url not in [u for _, _, u in out]:
+                    out.append((label, host, url))
+    return out
+
+
+def _download_asset(name):
+    """本地找不到封面固定资产时下载到缓存目录（缓存命中就不重复下）。
+
+    缓存目录：$MOGRAPH_ASSET_CACHE（兼容旧的 $MOGRAPH_PRO_ASSET_CACHE）或 ~/.cache/wanfeng-mograph/cover。
+    顺序：AtomGit（国内直连，快）→ GitHub（能连通时兜底）。
+    """
+    cache = (os.environ.get("MOGRAPH_ASSET_CACHE")
+             or os.environ.get("MOGRAPH_PRO_ASSET_CACHE")
+             or os.path.expanduser("~/.cache/wanfeng-mograph/cover"))
+    stem = os.path.splitext(name)[0]
+    for ext in (".jpg", ".png"):                 # 缓存里可能是换过格式的同一张图
+        hit = os.path.join(cache, stem + ext)
+        if os.path.exists(hit):
+            return hit
+    os.makedirs(cache, exist_ok=True)
+
+    errs, dead = [], set()
+    for label, host, url in _cand_urls(name):
+        if host in dead:                         # 这个源连不上，后面的路径不用再试
+            continue
+        print("封面固定资产本地缺失，正在从 %s 下载：%s" % (label, url))
+        try:
+            data = _http_get(url, 15)
+        except urllib.error.HTTPError as e:      # 404 之类：换个路径继续
+            errs.append("%s: HTTP %s" % (label, e.code))
+            continue
+        except Exception as e:                   # 连不上/DNS 挂了：整站跳过
+            errs.append("%s: %s" % (label, e))
+            dead.add(host)
+            continue
+        ext = _img_ext(data)                     # 占位图/错误页一律判失败，别把坏图写进缓存
+        if not ext:
+            errs.append("%s: 返回 %d 字节的非图片内容" % (label, len(data)))
+            continue
+        dest = os.path.join(cache, stem + ext)
+        tmp = dest + ".part"
+        with open(tmp, "wb") as f:
+            f.write(data)
+        os.replace(tmp, dest)
+        print("已下载到：%s（%d KB）" % (dest, len(data) // 1024))
+        return dest
+
+    raise RuntimeError("；".join(errs) or "没有可用的下载源")
+
+
 # ============================================================ CONFIG ============================================================
 def _skill_asset(name):
-    """按「本机 skill 仓库 → SkillHub 安装目录」顺序找固定资产，找到第一个为止。"""
-    cands = [
-        "/Users/wanfeng/晚枫工作室/code/wanfeng-skills/skills/mograph/reference/assets/cover",   # 晚枫本机仓库
-        os.path.expanduser("~/.workbuddy/skills/wanfeng-mograph__skillhub/reference/assets/cover"),  # SkillHub 安装版
+    """找封面固定资产：环境变量 → 本机仓库 → 各家 agent 的 skill 安装目录 → 当前目录 → 联网下载。
+
+    这个脚本会被复制到用户的选题工程里跑，不能写死绝对路径。
+    `references/assets/cover` 与 `reference/assets/cover` 两种布局都认（旧版包是单数）。
+    找不到时先设 MOGRAPH_ASSET_DIR 指向 skill 包内的 cover 目录；仍找不到就自动下载。
+    """
+    roots = []
+    env = os.environ.get("MOGRAPH_ASSET_DIR") or os.environ.get("MOGRAPH_PRO_ASSET_DIR")
+    if env:
+        roots.append(env)
+    here = os.path.dirname(os.path.abspath(__file__))
+    roots += [
+        os.path.expanduser("~/晚枫工作室/code/wanfeng-skills/skills/mograph"),
+        os.path.expanduser("~/晚枫工作室/code/wanfeng-skills/skills/mograph-pro"),
+        here, os.path.join(here, ".."), os.getcwd(), os.path.join(os.getcwd(), ".."),
     ]
-    for d in cands:
-        p = os.path.join(d, name)
-        if os.path.exists(p):
-            return p
-    raise FileNotFoundError("找不到封面固定资产 %s，请检查 skill 是否完整安装" % name)
+    for pat in ("~/.workbuddy/skills/*", "~/.agents/skills/*",
+                "~/.qoder/skills/*", "~/.claude/skills/*"):
+        roots += sorted(glob.glob(os.path.expanduser(pat)))
+
+    subs = ("references/assets/cover", "reference/assets/cover", "assets/cover")
+    names = (name, NAME_ALTS.get(name))
+    for r in roots:
+        for sub in subs:
+            for nm in names:
+                p = os.path.join(r, sub, nm) if nm else None
+                if p and os.path.exists(p):
+                    return p
+    # 本地全都没有 → 联网下载（AtomGit 优先，GitHub 兜底）
+    try:
+        return _download_asset(name)
+    except Exception as e:
+        raise FileNotFoundError(
+            "找不到封面固定资产 %s，且自动下载失败（%s）。\n"
+            "  1) 设环境变量 MOGRAPH_ASSET_DIR 指向本机已有的 references/assets/cover 目录；\n"
+            "  2) 或手动下载该文件，放进 skill 的 references/assets/cover/ 再跑：\n"
+            "     国内 https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/references/assets/cover\n"
+            "     海外 %s\n"
+            "  （需要 封面-底图-混元WB.jpg 与 hy4-frame7.jpg 两个文件）" % (name, e, GH_PAGE))
 
 BASE = _skill_asset("封面-底图-混元WB.jpg")        # 【勿改】底图
-HEAD_SRC = _skill_asset("hy4-frame7.png")          # 【勿改】头发参考帧
+HEAD_SRC = _skill_asset("hy4-frame7.jpg")          # 【勿改】头发参考帧
 OUT = "发布包/封面-XXX.jpg"          # 【每期必改】输出路径
 
 # ---- 文案（每期必改）----
@@ -225,7 +384,9 @@ def build():
     else:
         word_w = 0
 
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    out_dir = os.path.dirname(OUT)
+    if out_dir:                              # OUT 只写文件名时别 makedirs('')
+        os.makedirs(out_dir, exist_ok=True)
     canvas.convert("RGB").save(OUT, quality=95, subsampling=1)
     print("saved", OUT, "word_w", word_w)
 

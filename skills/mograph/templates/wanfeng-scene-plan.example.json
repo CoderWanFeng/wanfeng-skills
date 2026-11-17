@@ -11,10 +11,10 @@
     "timing_source": "measured",
     "scenes": 9,
     "generated_by": "scripts/make_spec.py v1.1.0",
-    "spec_ref": "reference/wanfeng-path.md"
+    "spec_ref": "references/wanfeng-path.md"
   },
   "warnings": [
-    "本文件是**骨架**：场景版式、文案、圆形人头位置须按 reference/wanfeng-path.md 手写后才可渲染"
+    "本文件是**骨架**：场景版式、文案、圆形人头位置须按 references/wanfeng-path.md 手写后才可渲染"
   ],
   "scenes": [
     {
@@ -33,7 +33,7 @@
         "这个大模型今天发布了"
       ],
       "text": "所有打工人注意了特别适合办公的hy4 flash这个大模型今天发布了",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 2,
@@ -55,7 +55,7 @@
         "括我这里面用到的一些动画"
       ],
       "text": "而且人人都可以免费使用没有任何的技术门槛并且悄悄告诉大家现在大家看到的这个视频就是我用hy4自动剪辑出来的是不是这些动画效果都做的非常好括我这里面用到的一些动画",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 3,
@@ -74,7 +74,7 @@
         "最后我给大家说我用的是哪个工具"
       ],
       "text": "还有一些截图包括截图上那些标记都是他自己标注的最后我给大家说我用的是哪个工具",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 4,
@@ -93,7 +93,7 @@
         "免费使用就只需要两步"
       ],
       "text": "看到最后我告诉大家怎么自动剪视频咱们先说hy4 flash免费使用就只需要两步",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 5,
@@ -113,7 +113,7 @@
         "没安装的话点开这个链接"
       ],
       "text": "第一步打开workbuddy腾讯出的这个AI工具我相信我的粉丝应该绝大多数都安装了没安装的话点开这个链接",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 6,
@@ -136,7 +136,7 @@
         "选择技能"
       ],
       "text": "第二步在这个模型列表里直接选择hy4 flash对就是这么简单我是怎么剪视频的呢在workbuddy这个专家技能连接器里面大家来选择点点进去之后选择技能",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 7,
@@ -156,7 +156,7 @@
         "大家直接点它"
       ],
       "text": "然后搜索晚枫AI晚枫自动剪视频这是我发布上来免费给大家使用的一个技能大家直接点它",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 8,
@@ -176,7 +176,7 @@
         "大家赶紧去试试吧"
       ],
       "text": "然后他就会让你提供你自己的视频你随便给他一个什么视频看看他剪辑的效果是不是和我今天这个视频一样大家赶紧去试试吧",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     },
     {
       "id": 9,
@@ -197,8 +197,8 @@
         "用完了回来在评论区告诉我"
       ],
       "text": "而且不仅这个技能是免费的你还可以用hy4Flash去剪辑视频一点积分都不花大家赶紧去试试吧有什么问题打在评论区用完了回来在评论区告诉我",
-      "note": "待填：按 reference/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     }
   ],
-  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：71-混元hy4-flash 的口播稿 + hy4-flash.srt，--style-path wanfeng）。字段含义：start/end=场景时间区间（原始口播时间，不是成片时间）；layout=建议版式（hook/statement/evidence/step/reveal/cta，仅供参考，最终按 wanfeng-path.md §5 定）；mode=overlay|fs；head=是否加圆形人头；head_pos=head_pos 建议位置（hook 走左下、其余走右上）；cues=该场包含的字幕原文；text=拼接后的整场文案；note=待办提示。本文件是**骨架不是分镜稿**，正式渲染前必须按 reference/wanfeng-path.md §5/§6 手写每一场的 layers。"
+  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：71-混元hy4-flash 的口播稿 + hy4-flash.srt，--style-path wanfeng）。字段含义：start/end=场景时间区间（原始口播时间，不是成片时间）；layout=建议版式（hook/statement/evidence/step/reveal/cta，仅供参考，最终按 wanfeng-path.md §5 定）；mode=overlay|fs；head=是否加圆形人头；head_pos=head_pos 建议位置（hook 走左下、其余走右上）；cues=该场包含的字幕原文；text=拼接后的整场文案；note=待办提示。本文件是**骨架不是分镜稿**，正式渲染前必须按 references/wanfeng-path.md §5/§6 手写每一场的 layers。"
 }

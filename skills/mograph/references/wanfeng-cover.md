@@ -19,14 +19,42 @@
 
 | 文件 | 作用 |
 |---|---|
-| `reference/assets/cover/封面-底图-混元WB.jpg` | **唯一底图**。1728×2304，人像 + 墙面，原字「免费用AI / 自动剪视频」+ WorkBuddy 标识 |
-| `reference/assets/cover/hy4-frame7.png` | 混元源片第 7 秒整帧。**补头顶头发的参考帧**，与底图人像 1:1 像素配准（dx=85, dy=390） |
-| `reference/assets/cover/封面-成品示例-GLM3E.jpg` | 换皮成品的基准参照（字改「免费用GLM / 每天领3亿」+ ZCODE logo），新封面先对它再对稿 |
-| `reference/assets/cover/封面-校验示例-字发净空.jpg` | 净空校验的标准画法：左成品 / 右原帧同区域并排 + 字底/投影/发顶三条标注线。新封面照这个格式出证据图 |
-| `templates/cover_from_base.example.py` | 换皮脚本模板（已验证逐像素复现成品，max diff = 0） |
+| `references/assets/cover/封面-底图-混元WB.jpg` | **唯一底图**。1728×2304，人像 + 墙面，原字「免费用AI / 自动剪视频」+ WorkBuddy 标识 |
+| `references/assets/cover/hy4-frame7.jpg` | 混元源片第 7 秒整帧。**补头顶头发的参考帧**，与底图人像 1:1 像素配准（dx=85, dy=390） |
+| `references/assets/cover/封面-成品示例-GLM3E.jpg` | 换皮成品的基准参照（字改「免费用GLM / 每天领3亿」+ ZCODE logo），新封面先对它再对稿 |
+| `references/assets/cover/封面-校验示例-字发净空.jpg` | 净空校验的标准画法：左成品 / 右原帧同区域并排 + 字底/投影/发顶三条标注线。新封面照这个格式出证据图 |
+| `templates/cover_from_base.example.py` | 换皮脚本模板（已验证复现成品，max diff = 8，JPEG 噪声级） |
+
+> **平台体积约束（2026-11-17 实测）**：WorkBuddy 开放平台技能包**上限 3MB**，超了直接报「解析失败：文件大小不能超过 3MB」。
+> 本包资产已按此线压缩：`hy4-frame7.jpg` 用 JPEG q96（429KB，与原 PNG 最大偏差 8/255，>8 的像素为 0）、
+> 成品示例缩至 60%、校验示例 q80、流程图 256 色调色板，全包约 1.6MB。
+> **`封面-底图-混元WB.jpg` 不可再压**——脚本要从它采样字色与墙色，压了颜色就偏。
+> 新增图片前先量体积：`find . -size +200k`，逼近 3MB 平台会拒收。
 
 > 原始出处（仅溯源用，不依赖）：成品 = `内容更新/short/58-glm3亿/发布包/封面-每天领3亿.jpg`；
 > 校验画法 = 同选题 `AI剪辑输出/校验帧/封面-头发与字净空校验.jpg`。
+
+### 0.1 图片缺失时怎么办（换机器 / 分发渠道不带图片）
+
+换皮脚本**内置下载兜底**：本地全找不到时自动把资产拉到 `~/.cache/wanfeng-mograph/cover/`
+（`MOGRAPH_ASSET_CACHE` 可改目录），下完再跑脚本即可。**不要因为找不到图就跳过 Step H。**
+
+下载源两档，路径完全一致（AtomGit 由 GitHub 同步）：
+
+| 顺位 | 源 | 地址 |
+|---|---|---|
+| 1 | **AtomGit 国内源**（GitHub 打不开时用这个） | `https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/references/assets/cover` |
+| 2 | GitHub 原始文件 | `https://raw.githubusercontent.com/CoderWanFeng/wanfeng-skills/main/skills/mograph/references/assets/cover/<文件名>` |
+
+> ⚠ **AtomGit 不能用 `.../raw/main/<路径>` 直链**（2026-11-17 实测：返回的是一个 64×48 的占位 SVG 和一段 HTML，不是原图）。
+> 脚本走的是 `api/v5/repos/.../contents/<目录>?ref=main` 接口，从返回的 `download_url`（`raw.atomgit.com/.../blobs/<sha>/...`）下载。
+> 手动下载请直接开目录页点文件。
+
+**手动兜底**：打开上面任一目录页，下载 `封面-底图-混元WB.jpg` 与 `hy4-frame7.jpg`，
+放进 skill 的 `references/assets/cover/`，或放到任一目录后用 `MOGRAPH_ASSET_DIR` 指过去。
+
+> 下载只解决「图片从哪来」，**不改变授权范围**：封面底图与头发参考帧仍是受保护资产，
+> 只能用于「在固定底图上换字换 logo」的封面换皮用途。
 
 **环境**：托管解释器 `~/.workbuddy/binaries/python/envs/default/bin/python3`
 （PIL 12.x + numpy + cv2 5.0 都在这里；`/usr/bin/python3` 没有 cv2，会直接报错）。
@@ -108,7 +136,7 @@ logo 图标       (864,1150) 300px；字标 y=1301 字号 152 字距 -6（宽度
 |---|---|---|---|
 | 1 | **投影盖字**（用户反馈「字怎么这么暗」） | `alpha_composite(文字, 投影)` 顺序反了，半透明投影压在字上，蓝字实测 (22,36,70)，暗了整整一档 | 必须 `alpha_composite(投影层, 文字层)`，**投影在下** |
 | 2 | **TencentSans 拉丁是斜的** | 「GLM」「ZCODE」直接用中文字体排，字是歪的 | 中英拆段：拉丁/数字用 Arial Bold 直立体，按基线对齐 |
-| 3 | **inpaint 抹字连头发一起抹**（用户反馈「发型很奇怪」） | 底图原字压在头顶上方，抹字后 y580-700 留一块模糊暗斑，发型缺一块 | 用 `hy4-frame7.png` 补回：底图人像就是这帧 1:1 贴入的，配准位移 dx=85/dy=390，逐像素贴回 + per-channel 色调增益 |
+| 3 | **inpaint 抹字连头发一起抹**（用户反馈「发型很奇怪」） | 底图原字压在头顶上方，抹字后 y580-700 留一块模糊暗斑，发型缺一块 | 用 `hy4-frame7.jpg` 补回：底图人像就是这帧 1:1 贴入的，配准位移 dx=85/dy=390，逐像素贴回 + per-channel 色调增益 |
 | 4 | **椅子颜色渗进墙面** | 铺平暗雾时取左侧墙色平均，把画面左下的椅子采进来了 | 只取右侧 y1020-1300 的**中位数**墙色，逐行填 |
 | 5 | **换 logo 字标出画** | ZCODE 152 号仍右溢 | 字距收紧 -6，宽度落回 508px；字标用 `bbox` 垂直居中（`cy-(bb[1]+bb[3])/2`） |
 | 6 | **行距太挤**（用户反馈） | 第二行 272 号时字底 602、头发顶 626，净空 24px，投影蹭发 | 字号微缩 3% + 第二行 cy 下移到 490，行距 82px、净空 33px |

@@ -22,7 +22,7 @@
 
 依据：内容更新/short/71-混元hy4-flash 的实证（184.14s 原片 → 84.36s 底片，
 27 个刀口，删除量中 88.65s 是静音、仅 16.15s 是真实语音内容）。
-规则细节见 reference/cut-rules.md。
+规则细节见 references/cut-rules.md。
 
 依赖：
   必需 —— ffmpeg / ffprobe
@@ -47,7 +47,7 @@ import subprocess
 import sys
 import unicodedata
 
-# ---- 经验阈值（来自 71 号实证，见 reference/cut-rules.md）----
+# ---- 经验阈值（来自 71 号实证，见 references/cut-rules.md）----
 SILENCE_NOISE_DB = -32      # silencedetect 噪声门限
 SILENCE_MIN_DUR = 0.55      # 最短气口 0.55s（低于此的缝不算停顿）
 BLOCK_GAP = 1.0             # 相邻发声区间间隔 < 1.0s 视为同一次表达，合为一块

@@ -217,8 +217,8 @@
 
 | 文件 | 内容 |
 |---|---|
-| `reference/cut-feature.md` | 删减功能说明书（做底片用） |
-| `reference/cut-rules.md` | 删减规则全文 |
-| `reference/research-protocol.md` | 联网检索协议（找动效**代码**用；找图用本文的 §3） |
-| `reference/overlay-layout.md` | 位置语义与人脸安全区（放图前先看安全区） |
-| `reference/wanfeng-path.md` | 晚枫专用路径（Step A2 在 §2.3，标注规范在 §5.6） |
+| `references/cut-feature.md` | 删减功能说明书（做底片用） |
+| `references/cut-rules.md` | 删减规则全文 |
+| `references/research-protocol.md` | 联网检索协议（找动效**代码**用；找图用本文的 §3） |
+| `references/overlay-layout.md` | 位置语义与人脸安全区（放图前先看安全区） |
+| `references/wanfeng-path.md` | 晚枫专用路径（Step A2 在 §2.3，标注规范在 §5.6） |
