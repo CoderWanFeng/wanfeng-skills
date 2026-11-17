@@ -12,12 +12,10 @@ allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 examples_zh:
 - "这个项目很火，帮我装上跑起来，顺便教会我用"
 - "把我这个文件夹推到 GitHub"
-- "看不懂这个仓库，带我读一遍"
 - "给这个项目生成一份 wiki 文档"
 examples_en:
 - "This project looks great. Install it, run it, and teach me how to use it"
 - "Push my local folder to GitHub"
-- "Walk me through this repository step by step"
 - "Generate a wiki documentation for this project"
 ---
 
