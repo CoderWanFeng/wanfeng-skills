@@ -10,7 +10,7 @@
 4. `render_frame(t)` 出口跑 GUARD.check()，每帧开头 GUARD.reset()
 
 用法：
-    cd <选题目录> && python3 "<Skill>/模板/mgkit/patch_renderers.py"
+    cd <选题目录> && python3 "<Skill>/mgkit/patch_renderers.py"
     # 选题根目录也可用 MG_ROOT 指定，默认取当前工作目录
 """
 from __future__ import annotations

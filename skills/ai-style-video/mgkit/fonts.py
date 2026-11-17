@@ -24,7 +24,7 @@
 
 1. 环境变量      `MG_FONT_SANS_BOLD=/path/to.ttf:2`（冒号后的 index 可省）
 2. 系统字体      macOS / Windows / Linux 常见候选逐个探测
-3. 项目字体目录   <选题>/fonts、<Skill>/模板/fonts、用户字体目录，按文件名匹配
+3. 项目字体目录   <选题>/fonts、<Skill>/fonts、用户字体目录，按文件名匹配
 4. 品牌档还没命中  退回对应的系统档
 5. 都没有        抛错并告诉用户该设哪个环境变量
 

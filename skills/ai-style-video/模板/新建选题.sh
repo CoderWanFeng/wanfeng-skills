@@ -101,15 +101,16 @@ ratio_note() {
 RATIO_NOTE="$(ratio_note "$RATIO")"
 
 style_src() {
+  # 渲染器平铺在 Skill 根的 风格库/ 下（平台只允许一层子目录，别再套 MG样片-*/）
   case "$1" in
-    A) echo "$SKILL/模板/风格库/MG样片" ;;
-    B) echo "$SKILL/模板/风格库/MG样片-亮色动效" ;;
-    C) echo "$SKILL/模板/风格库/MG样片-复古拼贴" ;;
-    D) echo "$SKILL/模板/风格库/MG样片-故障艺术" ;;
-    E) echo "$SKILL/模板/风格库/MG样片-像素游戏" ;;
-    F) echo "$SKILL/模板/风格库/MG样片-暖色治愈" ;;
-    G) echo "$SKILL/模板/风格库/MG样片-简笔画" ;;
-    H) echo "$SKILL/模板/风格库/MG样片-工笔画" ;;
+    A) echo "$SKILL/风格库/build_mg.py" ;;
+    B) echo "$SKILL/风格库/build_mg_bright.py" ;;
+    C) echo "$SKILL/风格库/build_mg_retro.py" ;;
+    D) echo "$SKILL/风格库/build_mg_glitch.py" ;;
+    E) echo "$SKILL/风格库/build_mg_pixel.py" ;;
+    F) echo "$SKILL/风格库/build_mg_warm.py" ;;
+    G) echo "$SKILL/风格库/build_mg_sketch.py" ;;
+    H) echo "$SKILL/风格库/build_mg_gongbi.py" ;;
     *) return 1 ;;
   esac
 }
@@ -146,7 +147,7 @@ if [[ -d "$DEST" ]]; then
 fi
 
 mkdir -p "$DEST/素材-官网截图-HD" "$DEST/素材-证据图" "$DEST/MG样片-$STYLE_NAME"
-cp "$SRC"/*.py "$DEST/MG样片-$STYLE_NAME/"
+cp "$SRC" "$DEST/MG样片-$STYLE_NAME/"   # style_src 现在返回单个渲染器文件
 cp "$SKILL/参考/内容编排方法论.md" "$DEST/"
 
 # 画幅配置写进工程根，渲染器自动读取（MG_CANVAS 环境变量优先级更高）
@@ -158,7 +159,7 @@ EOF
 
 # mgkit 复制进选题目录，渲染器自包含，不依赖任何外部路径
 mkdir -p "$DEST/mgkit"
-cp "$SKILL/模板/mgkit/"*.py "$DEST/mgkit/"
+cp "$SKILL/mgkit/"*.py "$DEST/mgkit/"
 
 cat > "$DEST/选题资料.md" <<EOF
 # $TOPIC · 选题资料

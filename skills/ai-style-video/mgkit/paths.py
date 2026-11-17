@@ -8,7 +8,7 @@
   3. 回退到 MG_ROOT 指定的选题根目录（未设置则不猜路径，靠前两级）
 
 用法：
-    import sys; sys.path.insert(0, "<Skill>/模板/mgkit")
+    import sys; sys.path.insert(0, "<Skill>/mgkit")
     from paths import EVID_DIR, SHOTS_DIR, MGKIT_DIR
 
 Skill 目录被移动/改名后无需改代码：所有默认值都从本文件位置或环境变量推导。
@@ -44,8 +44,9 @@ def _find_root() -> Path:
 
 
 ROOT = _find_root()
-# <Skill>/模板/mgkit/paths.py → <Skill>
-SKILL_ROOT = Path(__file__).resolve().parents[2]
+# <Skill>/mgkit/paths.py → <Skill>
+# 本文件在 <Skill>/mgkit/paths.py（旧布局是 模板/mgkit/，用 parents[2]）
+SKILL_ROOT = Path(__file__).resolve().parents[1]
 
 MGKIT_DIR = Path(os.environ.get("MG_MGKIT_DIR") or (ROOT / "mgkit"))
 EVID_DIR = Path(os.environ.get("MG_EVID_DIR") or (ROOT / "素材-证据图"))

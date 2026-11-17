@@ -32,7 +32,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-MGKIT_SRC = HERE / "mgkit"
+MGKIT_SRC = HERE.parent / "mgkit"   # mgkit 在 Skill 根（模板/ 的上一级）
 
 sys.path.insert(0, str(MGKIT_SRC))
 from patch_renderers import patch_canvas  # noqa: E402

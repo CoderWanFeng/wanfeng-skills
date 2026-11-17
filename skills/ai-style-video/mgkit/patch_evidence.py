@@ -10,7 +10,7 @@ mgkit.evidence_path() 拿证据图，再跑这个脚本反而会把它们报成
 "找不到 load_shot"。
 
 用法：
-    cd <选题目录> && python3 "<Skill>/模板/mgkit/patch_evidence.py"
+    cd <选题目录> && python3 "<Skill>/mgkit/patch_evidence.py"
     # 选题根目录也可用 MG_ROOT 指定，默认取当前工作目录
 """
 from __future__ import annotations
