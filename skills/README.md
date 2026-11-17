@@ -200,7 +200,7 @@ skills/<skill-name>/
 | cover-hero | ✅ 稳定 | 2026-07 |
 | mp-saver | ✅ v2.0 稳定（纯 HTTP 零依赖） | 2026-08-13 |
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
-| personal-website-builder | ✅ v2.0 稳定（对话式建站，6 种类型；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
+| personal-website-builder | ✅ v2.3 稳定（对话式建站，6 种类型；**Step 0 文件完整性自检与还原** —— 针对安装平台过滤 `.gitignore` 隐藏文件、`.template` 后缀文件与 `.vue` 组件文件；新增 `scripts/gen-restricted-files.py` 生成器，把 12 个受限文件的生成规律固化成代码，一键重建 + 三项自检；**新增归档分发** —— 平台限制包内最多一层子目录，`templates/` 转成 `templates-<框架>.tar.gz` 进包，归档内保留完整目录结构与隐藏文件（平台扫不到也就过滤不掉），`init-*.sh` 经 `scripts/resolve-template.sh` 自动解包；已实测装包后 5 种类型建站 + `npm run build` 全部通过；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
 | opensource-housekeeper | ✅ v2.0 稳定（已优化可用性；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / version / author / examples；reference/ 已改名 references/） | 2026-11-17 |
 | doc-speedreader（晚枫速读侠） | ✅ v1.0.0 已上架（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples；reference/ 已改名 references/） | 2026-11-17 |
 | repowiki-generator（晚枫知识库） | ✅ v1.0.0 可用（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
