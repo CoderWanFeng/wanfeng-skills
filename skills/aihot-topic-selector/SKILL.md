@@ -1,4 +1,16 @@
 ---
+display_name: AIHOT 每日选题
+display_name_en: AIHOT Daily Topic Picker
+description_zh: "每天从 AIHOT 热点里挑一条能做的选题：拉数据 → 写当日热点汇总 → 按核心两问筛到一条 → 建好 task 目录与选题依据。"
+description_en: "Picks one workable topic a day from AIHOT trending data: fetch, summarize the day, narrow down with two core questions, then scaffold the task folder with the rationale."
+version: 1.0.0
+author: 晚枫工作室
+examples_zh:
+  - "从今天 AIHOT 热点里给我挑一个选题"
+  - "拉一下 AIHOT 数据，选一条能做的"
+examples_en:
+  - "Pick a topic from today's AIHOT trends"
+  - "Fetch AIHOT data and choose one workable topic"
 name: aihot-topic-selector
 description: 从 AIHOT 热点里选题。每天跑一次：拉数据 → 写每日热点汇总 → 按核心 2 问选 1 条 → 建 task 目录。配套 scripts/fetch_aihot.py 拉数据。本 skill 独立运行，不涉及后续公众号/口播稿等下游流程。
 ---
