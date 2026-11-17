@@ -3,12 +3,13 @@
 > 一个**可复用的 AI Skill 集合** —— 让 AI Agent 通过对话完成自媒体内容生产、个人建站、开源协作等场景的完整工作流。
 
 [![GitHub](https://img.shields.io/badge/GitHub-CoderWanFeng%2Fwanfeng--skills-blue?logo=github)](https://github.com/CoderWanFeng/wanfeng-skills)
+[![AtomGit](https://img.shields.io/badge/AtomGit-CoderWanFeng1%2Fwanfeng--skills-orange?logo=git)](https://atomgit.com/CoderWanFeng1/wanfeng-skills)
 
 ---
 
 ## ✨ 这是什么？
 
-本仓库沉淀了 **8 个相互独立、可自由组合**的 AI Skill。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
+本仓库沉淀了 **11 个相互独立、可自由组合**的 AI Skill（完整清单见 [skills/README.md](skills/README.md)）。每个 Skill 都是一个针对真实场景的「对话式工作流」，AI 通过读取 Skill 定义，自动完成从「用户开口」到「产物交付」的完整链路。
 
 设计原则：**纯对话、一问一答、人话解释、零假设、不强推**。
 
@@ -24,8 +25,10 @@
 | [**knowledge-short-video**](skills/knowledge-short-video/) | 知识类短视频全流程（口播稿 → 视觉 → 动画 → TTS → 渲染） | 短视频制作、知识科普 | — |
 | [**personal-website-builder**](skills/personal-website-builder/) | 对话式引导创建个人网站（博客/知识库/作品集/简历） | 个人建站、博客搭建 | [👉 建站搭子](https://qclaw.qq.com/as/5oDmikXxsQEo) |
 | [**opensource-housekeeper**](skills/opensource-housekeeper/) | 晚枫开源管家：给零基础小白做开源项目陪跑——找到项目 → 讲清它是干嘛的 → 拉下来跑起来 → 读懂它 → 改一处、用出效果；也能反向发布项目、生成项目文档 | 开源小白、学用开源项目、跨平台发布 | [👉 晚枫开源管家](https://qclaw.qq.com/as/4VlrmxmvAnlV) |
-| [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片（克隆音色 + 自动字幕） | 数字人口播、不露脸出镜、照片说话 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
+| [**wanfeng-digital-human**](skills/wanfeng-digital-human/) | 把一段视频或一张照片变成 4–10 秒会说话的数字人短片。**零成本**：只扣软件积分，不用密钥、不绑支付；台词模型用内置音色念，可换本人原声 | 数字人口播、不露脸出镜、照片说话、零成本试效果 | [👉 数字人](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
+| [**wanfeng-digital-human-pro**](skills/wanfeng-digital-human-pro/) | 💰 **晚枫数字人 Pro**：完整口播长视频生产线。三画面后端（MiniMax H3 / 自托管 H3 / 软件积分）× 两语音后端（MiniMax 克隆 / 本地 Ming），MiniMax 再分官方与推荐平台 API；交付分段配音、出镜片段、时间码表与拼接片 | 30 秒以上长口播、本人克隆音色、批量系列、有 GPU 想压成本 | — |
 | [**mograph**](skills/mograph/) | 晚枫自动剪辑：给真人口播视频按讲话内容自动加动效卡（数字滚动 / 图表 / 分屏对比 / 清单 / 引用），在人的上下左右定时弹出并渲染成片。内置两条路径：通用路径走检索驱动；**晚枫专用路径**是自有风格的完整打法（Pillow 自绘 + 手写场景表 + 圆形人头 + 步骤条版式 + 语速映射 + 响度归一），开工前先选 | 口播视频包装、出镜科普、数据 lower-third、做自己账号的固定调性 | — |
+| [**mograph-pro**](skills/mograph-pro/) | 💰 **晚枫自动剪辑 Pro（付费版）**：一条真人口播 → 有版式的成片 + 封面。10 步一条龙（删减授权 → 定版式 → 配图采集 → 场景表 → 静帧 → 重渲 → 终检 → 响度 → 交接 → 封面换皮），Pillow 2 倍超采样自绘、fs 全屏设计版式、圆形人头、步骤条、手写场景表、语速映射、两遍法响度归一、固定底图封面换皮。**本地没有合适的 logo 会自己从官方源下载**（准确性优先于好看，来源登记进台账）。**自包含，不装 Node、不起浏览器** | 做自己账号的固定调性成片、需要封面换皮、要把整套打法单独交付给别人 | — |
 | [**ai-style-video**](skills/ai-style-video/) | 晚枫AI动画（一句话生成 AI 视频）：把任意选题做成 8 种风格 × 6 种画幅的 MG 短片（24–25s）：开场四问「选风格 → 选画幅 → 选配音 → 交素材」，风格和画幅互相独立，自带文字重叠检测、缺素材占位与 ffmpeg 混流 | 不出镜的 MG 短视频、产品/功能/事件解读、竖屏抖音小红书 + 横屏B站YouTube | — |
 
 📖 详细说明见 [skills/README.md](skills/README.md)
@@ -40,6 +43,9 @@
 # 1. 克隆仓库
 git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 
+#    国内网络打不开 GitHub？用 AtomGit 镜像（由 GitHub 同步，内容与路径完全一致）
+git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
+
 # 2. 在你的 AI Agent（Trae / Cursor / Claude Code 等）中加载对应 Skill 目录
 #    例如加载 cover-hero：
 #      /skills/cover-hero/SKILL.md
@@ -52,6 +58,7 @@ git clone https://github.com/CoderWanFeng/wanfeng-skills.git
 - 「帮我把这个项目推到 GitHub」 → 触发 `opensource-housekeeper`
 - 「这条口播视频帮我自动剪辑，根据讲的内容加点动效卡」 → 触发 `mograph`
 - 「这条口播视频按我们自己的风格剪，走晚枫专用」 → 触发 `mograph`（晚枫专用路径）
+- 「这条口播视频按晚枫 Pro 版剪，做完顺便换张封面」 → 触发 `mograph-pro`（付费版晚枫自动剪辑 Pro）
 - 「这个选题帮我做一条不出镜的 MG 短视频，横屏的」 → 触发 `ai-style-video`
 
 ---
@@ -151,8 +158,10 @@ skills/<skill-name>/
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
 | personal-website-builder | ✅ 稳定 | 2026-06 |
 | opensource-housekeeper | ✅ v2 稳定 | 2026-07-03 |
-| wanfeng-digital-human | ✅ v1 可用（待配 MiniMax Key） | 2026-11 |
+| wanfeng-digital-human（晚枫数字人） | ✅ v2.0 可用（只走软件积分，零成本、4–10 秒，无需密钥） | 2026-11-17 |
+| wanfeng-digital-human-pro（晚枫数字人 Pro） | ✅ v2.0 可用（三画面后端 × 两语音后端；原 wanfeng-h3 已并入，云端 H3 端到端待验收） | 2026-11-17 |
 | mograph（晚枫自动剪辑） | 🚧 v1.1（通用路径骨架脚本本地跑通；**晚枫专用路径已跑通全链路并交付成片** —— Pillow 自绘 + 手写场景表 + 圆形人头 + 语速映射 + 两遍法响度归一，见 skills/mograph/reference/wanfeng-path.md） | 2026-11-16 |
+| mograph-pro（晚枫自动剪辑 Pro） | ✅ v1.1 **付费版**（自包含：10 步执行流 + 设计令牌 + 版式库 + 封面固定资产 + 商业授权 LICENSE.md；与免费版 mograph 的晚枫线同源）**新增：封面 logo 本地没有合适的就自己从官方源下载（准确性优先于好看，来源登记进 asset-manifest.json）** | 2026-11-17 |
 | ai-style-video（晚枫AI动画） | ✅ v2.3 稳定（8 种风格 + I 自定义本地跑通；6 种画幅 9:16/2:3/4:5/1:1/16:9/4:3，与风格互相独立；三档配音 S 静音 / V1 系统电子音 / V2 本地模型克隆；字体跨平台；全程零付费） | 2026-11-16 |
 
 ---
@@ -169,3 +178,7 @@ skills/<skill-name>/
 ## 📄 License
 
 MIT
+
+> 各 skill 目录的授权以该目录自带的说明为准 —— `mograph-pro` 是**付费产品**，
+> 适用 [skills/mograph-pro/LICENSE.md](skills/mograph-pro/LICENSE.md) 的商业授权条款，
+> 不适用仓库根的 MIT。

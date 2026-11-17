@@ -8,3 +8,13 @@ workflow/
 # Python 编译缓存（可再生，禁止入库）
 __pycache__/
 *.py[cod]
+
+# 付费 skill 包，暂不入库（待上架渠道确定后再决定是否公开源码）
+skills/mograph-pro/
+skills/wanfeng-digital-human-pro/
+
+# SkillHub 发布笔记 + 批量发布脚本（内部运维资料，含账号发布流程，不入库）
+docs/skillhub-publish/
+
+# SkillHub 发布用 staging 副本（由 docs/skillhub-publish/publish.py 生成，可再生）
+.build/

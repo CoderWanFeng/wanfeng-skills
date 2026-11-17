@@ -1,0 +1,155 @@
+[
+  {
+    "name": "ai-style-video",
+    "original": "assets/skillhub-icons/图标/ai-style-video.png",
+    "original_bytes": 818163,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/ai-style-video.png",
+    "compressed_bytes": 244534,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "doc-speedreader",
+    "original": "assets/skillhub-icons/图标/doc-speedreader.png",
+    "original_bytes": 742958,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/doc-speedreader.png",
+    "compressed_bytes": 228872,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "mograph-pro",
+    "original": "assets/skillhub-icons/图标/mograph-pro.png",
+    "original_bytes": 797250,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/mograph-pro.png",
+    "compressed_bytes": 242818,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "mograph",
+    "original": "assets/skillhub-icons/图标/mograph.png",
+    "original_bytes": 798125,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/mograph.png",
+    "compressed_bytes": 244929,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "opensource-housekeeper",
+    "original": "assets/skillhub-icons/图标/opensource-housekeeper.png",
+    "original_bytes": 788961,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/opensource-housekeeper.png",
+    "compressed_bytes": 239972,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "personal-website-builder",
+    "original": "assets/skillhub-icons/图标/personal-website-builder.png",
+    "original_bytes": 749006,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/personal-website-builder.png",
+    "compressed_bytes": 230048,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "repowiki-generator",
+    "original": "assets/skillhub-icons/图标/repowiki-generator.png",
+    "original_bytes": 756632,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/repowiki-generator.png",
+    "compressed_bytes": 234001,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "wanfeng-digital-human-pro",
+    "original": "assets/skillhub-icons/图标/wanfeng-digital-human-pro.png",
+    "original_bytes": 753443,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/wanfeng-digital-human-pro.png",
+    "compressed_bytes": 230791,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
+    "name": "wanfeng-digital-human",
+    "original": "assets/skillhub-icons/图标/wanfeng-digital-human.png",
+    "original_bytes": 811572,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/wanfeng-digital-human.png",
+    "compressed_bytes": 247370,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  }
+]
