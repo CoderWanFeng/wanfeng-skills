@@ -1,5 +1,5 @@
 ---
-name: 晚枫数字人
+name: wanfeng-digital-human
 display_name: 晚枫数字人
 display_name_en: WanFeng Digital Human
 description: 一句话做一条 4–10 秒的数字人短片：给你的一段视频或一张照片，配上画面里会说话的你，可选字幕。**完全零成本**——只消耗这个软件自带的积分，不绑任何付费接口、不需要密钥、不产生任何费用。当用户说「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「不露脸怎么做视频」「用积分做数字人」「零成本试一下数字人」时使用。要克隆自己的声音、要做 30 秒以上的长视频、要多段拼接和动效混剪，用「晚枫数字人 Pro」。
@@ -11,12 +11,10 @@ allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion, present_fil
 examples_zh:
 - "做个数字人视频，让我的照片说话"
 - "做一条十秒口播，台词是……"
-- "用积分零成本试一下数字人"
 - "这条数字人视频帮我加上字幕"
 examples_en:
 - "Make a digital human video — make my photo talk"
 - "Create a 10-second talking clip with this line: ..."
-- "Try a zero-cost digital human with my credits"
 - "Add subtitles to this digital human clip"
 ---
 

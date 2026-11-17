@@ -29,7 +29,7 @@ import sys
 from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(SKILL_ROOT / "engine" / "src"))
+sys.path.insert(0, str(SKILL_ROOT))
 
 RATIOS = {
     "9:16": (9, 16),
