@@ -1,6 +1,24 @@
 ---
 name: "opensource-housekeeper"
+display_name: 晚枫开源管家
+display_name_en: OpenSource Housekeeper
 description: "晚枫开源管家：给完全不懂技术的小白做开源项目陪跑——从「听说这个项目很厉害」到「我真的用起来了」全程带路。在 GitHub/AtomGit/Gitee 上找到想学的开源项目，先用人话讲清它是干嘛的、怎么装的、能帮上什么忙，再拉下来装好依赖跑起来，然后带你读懂它的结构、改一处验证、真正用出效果；也能反向帮你把本地项目发布上架，或把项目整理成结构化知识库文档。完全不懂技术也没关系，所有术语都有大白话解释，所有命令都先讲原理再执行，每一步失败都有人话兜底。Invoke when user wants to learn and actually USE an open-source project as a beginner, OR publish their own project, OR generate project documentation."
+description_zh: "给完全不懂技术的小白做开源项目陪跑：从「听说这个项目很厉害」到「我真的用起来了」全程带路。先用人话讲清这个项目是干嘛的、怎么装、能帮上什么忙，再拉下来装好依赖跑起来，然后带你读懂结构、改一处验证、真正用出效果；也能反向把本地项目发布到 GitHub / AtomGit / Gitee，或整理成结构化知识库文档。所有术语都有大白话解释，所有命令都先讲原理再执行，每一步失败都有人话兜底。"
+description_en: "A guided companion for complete beginners learning an open-source project end to end: explain in plain language what the project does and how to install it, clone it, install dependencies, get it running, then walk through the code structure, make one small change and verify the result. It also publishes a local project to GitHub / AtomGit / Gitee, or turns it into structured documentation. Every term gets a plain-language explanation, every command is explained before it runs, and every failure comes with a human-readable fallback."
+version: 2.0.0
+author: 晚枫工作室
+license: MIT-0
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+examples_zh:
+- "这个项目很火，帮我装上跑起来，顺便教会我用"
+- "把我这个文件夹推到 GitHub"
+- "看不懂这个仓库，带我读一遍"
+- "给这个项目生成一份 wiki 文档"
+examples_en:
+- "This project looks great. Install it, run it, and teach me how to use it"
+- "Push my local folder to GitHub"
+- "Walk me through this repository step by step"
+- "Generate a wiki documentation for this project"
 ---
 
 # 晚枫开源管家（OpenSource Housekeeper）
@@ -50,7 +68,7 @@ description: "晚枫开源管家：给完全不懂技术的小白做开源项目
 ## 🐣 Step -1 · 小白入门（可选，遇到术语时引用）
 
 > **不强制念给用户听**。当用户表现出不懂（比如问「SSH 是啥」「commit 什么意思」），**主动**把对应术语的人话解释念出来。
-> 完整 15 个概念在 [reference/beginner-glossary.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/beginner-glossary.md)。
+> 完整 15 个概念在 [references/beginner-glossary.md](references/beginner-glossary.md)。
 
 **最常用的 7 个**（对话里高频出现）：
 
@@ -73,7 +91,7 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
        以后 push 都不用再输密码。」
 ```
 
-> 详细 15 个概念 + 比喻 + 常见误解：[reference/beginner-glossary.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/beginner-glossary.md)
+> 详细 15 个概念 + 比喻 + 常见误解：[references/beginner-glossary.md](references/beginner-glossary.md)
 
 ---
 
@@ -133,7 +151,7 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 |---|---|
 | 「1」「我想学」「怎么用」「这项目干嘛」「帮我跑一下」「值得用吗」 | ⭐ 主线 1（学用） |
 | 「2」「发」「推上去」「开源我的项目」 | 主线 2（发布） |
-| 「3」「生成文档」「生成 wiki」「写 README」「整理项目文档」 | 主线 3（生成文档，直接调 [repowiki-generator](../repowiki-generator/SKILL.md)） |
+| 「3」「生成文档」「生成 wiki」「写 README」「整理项目文档」 | 主线 3（生成文档，直接调 repowiki-generator：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator ） |
 | 含糊不清 | 用具体例子再问一次：「比如『我想学 llama.cpp 怎么用』是 1；『把 my-tool 推到 GitHub』是 2；『给 my-tool 生成一份 wiki』是 3」 |
 
 > **不要默认走主线 2**。用户没提「发布」，八成是想学一个项目。
@@ -147,7 +165,7 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 ### Step 0.5 · 场景识别（可选，但强烈推荐）
 
 > **目的**：根据项目类型给用户最合适的 .gitignore + README 模板。
-> 4 种场景的完整模板在 [reference/scenario-templates.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md)。
+> 4 种场景的完整模板在 [references/scenario-templates.md](references/scenario-templates.md)。
 
 **对话**：
 
@@ -180,10 +198,10 @@ AI 答：「SSH Key 就是你家门钥匙——让 GitHub 知道这台电脑是�
 | 回答 | 下一步 |
 |---|---|
 | 1（代码） | 走默认代码模板（package.json / requirements.txt 等） |
-| 2（文档） | 走 [scenario-templates.md#场景 1](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
-| 3（素材） | 走 [scenario-templates.md#场景 2](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
-| 4（dotfiles） | 走 [scenario-templates.md#场景 3](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
-| 5（教程） | 走 [scenario-templates.md#场景 4](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/scenario-templates.md) |
+| 2（文档） | 走 [scenario-templates.md#场景 1](references/scenario-templates.md) |
+| 3（素材） | 走 [scenario-templates.md#场景 2](references/scenario-templates.md) |
+| 4（dotfiles） | 走 [scenario-templates.md#场景 3](references/scenario-templates.md) |
+| 5（教程） | 走 [scenario-templates.md#场景 4](references/scenario-templates.md) |
 | 6（自动） | AI 看目录标志性文件自动判断 |
 
 **自动识别规则**（回答 6 时 AI 自己跑）：
@@ -585,7 +603,7 @@ git push -u origin main
 ### 5.3 失败处理（5 段式：原文 + 人话 + 为什么 + 3 步 + 兜底）
 
 > **统一格式**：每个失败处理都按这个 5 段式写，绝不直接甩原文报错。
-> 完整 12 类报错的翻译在 [reference/error-decoder.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/error-decoder.md)。
+> 完整 12 类报错的翻译在 [references/error-decoder.md](references/error-decoder.md)。
 
 **失败场景一：认证失败**
 ```
@@ -1303,7 +1321,7 @@ grep -ril "{关键词}" --include="*.py" --include="*.js" --include="*.ts" \
    「项目真正的逻辑本体。它是用一种你暂时看不懂的文字写的，但我们不用读懂全部，
    只需要找到'改哪个文件能让它按我想要的方式跑'。」
 
-术语全表在 [reference/beginner-glossary.md](file:///Users/wanfeng/code/wanfeng-skills/skills/opensource-housekeeper/reference/beginner-glossary.md)。
+术语全表在 [references/beginner-glossary.md](references/beginner-glossary.md)。
 ```
 
 ---
@@ -1592,7 +1610,7 @@ grep -n "{目标字段}" {目标文件}
 ## 📚 主线 3 · 生成项目文档（可选）
 
 > **触发场景**：用户说「生成文档」「给这个项目生成文档」「生成 wiki」「生成项目知识库」「写 README」「整理项目文档」。
-> **目的**：复用 [repowiki-generator](../repowiki-generator/SKILL.md) skill，把刚发布或刚拉下来的项目自动整理成一份结构化的仓库知识库（风格参考 popdf 的 repowiki）。
+> **目的**：复用 repowiki-generator skill（另一个独立 skill，安装地址：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator ），把刚发布或刚拉下来的项目自动整理成一份结构化的仓库知识库（风格参考 popdf 的 repowiki）。
 
 ### 触发检测（每轮对话尾段扫一次）
 
