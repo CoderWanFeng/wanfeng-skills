@@ -11,12 +11,10 @@ examples_zh:
 - "我想做个博客，帮我搭一个"
 - "给我做一个作品集网站"
 - "帮我创建一个能直接打开的简历网页"
-- "做个 AI 工具导航站"
 examples_en:
 - "Help me build a personal blog site"
 - "Create a portfolio website for me"
 - "Make a resume web page I can open right away"
-- "Build an AI tools navigation site"
 ---
 
 # 晚枫个人网站
