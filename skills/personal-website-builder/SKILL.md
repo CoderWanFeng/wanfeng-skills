@@ -5,7 +5,7 @@ display_name_en: WanFeng Personal Website Builder
 description: "晚枫个人网站：通过对话引导用户创建个人网站（博客/知识库/AI 导航/作品集/简历），选择技术栈、目标目录后一键生成项目并自动打开预览。Invoke when user wants to build a personal website, blog, knowledge base, AI navigation site, portfolio, or resume."
 description_zh: "通过纯对话引导创建个人网站：博客、知识库、AI 导航站、作品集、简历五种类型任选，选定技术栈与目标目录后一键生成可运行项目并自动打开预览，内置多平台部署方案（Netlify/Vercel/Cloudflare/CloudBase/GitHub Pages）与故障排查手册。"
 description_en: "Guided conversational creation of personal websites — blog, knowledge base, AI navigation site, portfolio, or resume. Pick a tech stack and a target directory, get a runnable project generated in one shot with live preview, plus built-in deployment recipes and troubleshooting."
-version: 2.0.0
+version: 2.3.0
 author: 晚枫工作室
 examples_zh:
 - "我想做个博客，帮我搭一个"
@@ -33,15 +33,15 @@ personal-website-builder/
 ├── README.md             # skill 自身的说明
 ├── references/           # 详细参考文档
 │   ├── placeholders.md   # 占位符登记表（执行时必读）
+│   ├── file-integrity-check.md  # 文件完整性自检与还原（Step 0 必读）
 │   ├── tech-stacks.md    # 技术栈对比 + 决策树
 │   ├── deployment.md     # 5 种部署方式详解
 │   ├── troubleshooting.md
-│   └── frameworks/       # 各框架的详细说明
-│       ├── hexo.md
-│       ├── vitepress.md
-│       ├── vue3-vite.md
-│       ├── portfolio.md
-│       └── resume.md
+│   ├── framework-hexo.md
+│   ├── framework-vitepress.md
+│   ├── framework-vue3-vite.md
+│   ├── framework-portfolio.md
+│   └── framework-resume.md
 ├── templates/            # 项目模板（init 脚本从这里复制）
 │   ├── hexo/
 │   ├── vitepress/
@@ -70,7 +70,8 @@ personal-website-builder/
 │   ├── deploy-github-pages.sh
 │   ├── verify-deploy.sh        # 部署后 URL 验证
 │   ├── optimize-images.sh      # 图片压缩
-│   └── optimize-all.sh         # 构建产物优化
+│   ├── optimize-all.sh         # 构建产物优化
+│   └── gen-restricted-files.py # 按规律重建受限文件（第 0 步用）
 └── tests/
     └── smoke.sh          # 端到端冒烟测试
 ```
@@ -96,7 +97,129 @@ personal-website-builder/
 
 ---
 
-## 对话流程（5 步强制 + 1 步可选）
+## 对话流程（1 步自检 + 5 步强制 + 1 步可选）
+
+### 第 0 步：文件完整性自检与还原（强制，不可跳过）
+
+> **为什么需要**：本 skill 通过 ZIP 包安装到第三方平台时，平台可能过滤掉
+> **以 `.` 开头的隐藏文件**（`templates/*/.gitignore`）、
+> **带 `.template` 后缀的文件**（`templates/*/package.json.template`）、
+> **带 `.vue` 后缀的组件文件**（`templates/vue3-vite/src/**/*.vue`）。
+> - `.gitignore` 缺失会让 `init-vitepress.sh` / `init-vue3.sh` / `init-portfolio.sh` /
+>   `init-resume.sh` 的 `cp` 失败并被 `set -e` 中止（项目目录已建、依赖已装、git 未初始化），
+>   `init-hexo.sh` 则会静默跳过、留下没有忽略规则的脏仓库；
+> - `.vue` 缺失会让 `init-vue3.sh` 在「复制所有源码文件」这一步就中止，
+>   且 **AI 导航站（Vue 3 + Vite）这一类型整体不可用**。
+
+**执行自检**（在第 1 步对话开始前）—— 首选随包附带的生成器，一条命令搞定：
+
+```bash
+cd <skill 根目录>   # 包含 SKILL.md 的那一层
+python3 scripts/gen-restricted-files.py --check
+```
+
+退出码 `0` = 12/12 齐全；`1` = 有缺失或漂移（脚本会逐个列出）。
+它同时做三项交叉校验：`.vue` 引用的 CSS 变量是否都在 `style.css` 里定义、
+`.gitignore` 的产物目录是否等于 `substitute.sh` 的 `get_dist()`、
+`package.json.template` 的依赖版本是否等于 init 脚本的 `npm install`。
+
+> 纯手工兜底（生成器脚本本身也被平台过滤时用）：
+> ```bash
+> find . -type f \( -name ".gitignore" -o -name "*.template" -o -name "*.vue" \) | sort
+> ```
+
+> **两种分发形态（脚本会自动识别，不用你判断）**：
+>
+> | 形态 | 特征 | 模板位置 |
+> |---|---|---|
+> | **目录形态** | skill 根下有 `templates/` 目录 | `templates/<框架>/…`，直接读 |
+> | **归档形态** | skill 根下有 `templates-<框架>.tar.gz` | 归档内 `templates/<框架>/…`，`init-*.sh` 自动解包 |
+>
+> 第三方平台限制压缩包内最多一层子目录，而框架模板天生带嵌套目录，
+> 所以打包脚本把 `templates/` 转成了归档。**归档内部的 `.gitignore` / `.vue`
+> 平台扫不到，也就过滤不掉** —— 这是本 skill 能装上平台的关键。
+>
+> `gen-restricted-files.py --check` 会自动识别当前形态并给出正确结论：
+> 归档形态下它直接检查归档内部，报「12/12 齐全（归档形态）」，
+> **不会**误报「文件全丢」让你去无谓地重建。
+>
+> 需要把归档展开成目录形态手工排查时：
+> ```bash
+> python3 scripts/gen-restricted-files.py --extract
+> ```
+
+**期望恰好 12 个文件**（5 个 `.gitignore` + 2 个 `.template` + 5 个 `.vue`）：
+
+```
+templates/hexo/.gitignore
+templates/portfolio/.gitignore
+templates/resume/.gitignore
+templates/vitepress/.gitignore
+templates/vitepress/package.json.template
+templates/vue3-vite/.gitignore
+templates/vue3-vite/package.json.template
+templates/vue3-vite/src/App.vue
+templates/vue3-vite/src/components/HeaderNav.vue
+templates/vue3-vite/src/components/ToolCard.vue
+templates/vue3-vite/src/views/Category.vue
+templates/vue3-vite/src/views/Home.vue
+```
+
+**判定与动作**：
+
+| 自检结果 | 动作 |
+|---|---|
+| 12/12 齐全 | 报告一句「完整性自检通过」，直接进入第 1 步 |
+| 缺 `.gitignore` / `.vue` | 🔴 **阻断级**：必须先还原（见下），再进入第 1 步 |
+| 缺 `.template` | 🟡 非阻断：建议一并还原，然后进入第 1 步 |
+**还原步骤**（缺失时必做）—— **方式 A 优先，方式 B 兜底**：
+
+**方式 A：跑生成器脚本（首选）**
+
+```bash
+cd <skill 根目录>
+
+# 1) 只补缺失的文件（幂等：已正确的文件一个字节都不动）
+python3 scripts/gen-restricted-files.py
+
+# 2) 重跑自检，退出码必须变成 0
+python3 scripts/gen-restricted-files.py --check
+```
+
+`scripts/gen-restricted-files.py` 把 `references/file-integrity-check.md` 第 2 节的**生成规律
+固化成代码**：三张规格表（`.gitignore` 分组结构 / `package.json` 字段布局 / 5 个 Vue SFC 三段式）
++ 渲染函数 + 三项自检（CSS 变量闭环、产物目录对齐 `get_dist()`、依赖版本对齐 init 脚本）。
+纯 Python 3 标准库，不联网、不引第三方包。
+**任何一项自检不通过，它一个文件都不会写**，避免把坏模板写进包里。
+
+**方式 B：按文档原文逐字写回（生成器脚本本身不可用时）**
+
+1. 读 `references/file-integrity-check.md` 第 2.4 节 —— 内含 12 个文件的**完整原文**与
+   生成规律 / 内容规律（`.gitignore` 的分组结构、构建产物目录与 `substitute.sh` 的
+   `get_dist()` 必须一致等不变量；`.vue` 的 SFC 三段式、组件契约与数据驱动结构）。
+2. 把缺失的文件**逐字写回 `templates/<框架>/` 下的原路径**
+   （写 skill 目录，不是用户的目标项目目录）。`.vue` 是源码主体，**必须逐字照抄**，
+   不要凭印象重写模板或样式。
+3. 重跑自检命令，必须变成 12/12。
+
+**两种方式共同的收尾**：
+
+4. 向用户报告一行：`已还原 N 个文件：<清单>`，然后**才**开始第 1 步。
+
+> `.template` 缺失不影响项目生成（init 脚本用 `npm init -y` + `npm pkg set` 现场生成
+> 真实 `package.json`），但仍建议一并还原，以保留依赖与脚本的离线权威副本。
+
+> **兜底**：若 `.vue` 缺失且**生成器也跑不起来**（脚本本身被平台过滤、用户又不便提供原文），
+> **第 2 步技术栈选择时主动排除「AI 导航网站」**，改推 VitePress（知识库型）或纯静态类型，
+> 并向用户说明原因 —— 不要等到第 5 步执行时才失败。
+
+**给用户的说明（可直接照说）**：
+
+```
+我先做一次文件完整性自检 —— 有些安装平台会过滤掉以 . 开头的隐藏文件（如 .gitignore）、
+带 .template 后缀的文件和 .vue 组件文件。这三类文件本 skill 的建站脚本依赖，
+缺失会导致建站中断，所以我先确认并在必要时还原，再开始正式流程。
+```
 
 ### 第 1 步：开场 + 网站类型选择
 
@@ -146,13 +269,17 @@ personal-website-builder/
 
 #### 选项 3：AI 导航网站
 
+> ⚠️ **前置条件**：本类型依赖 `templates/vue3-vite/src/**/*.vue`（5 个组件文件）。
+> 若第 0 步自检发现 `.vue` 缺失且无法还原，**不要提供本选项**，改推选项 2（VitePress）
+> 或纯静态类型，并告知用户原因。
+
 ```
 AI 导航网站有 2 个推荐方案：
 
 1. ⭐ Vue 3 + Vite + Vue Router（现代主流，组件化灵活）
 2. Next.js + React（SEO 友好，适合需要服务端渲染的场景）
 
-推荐选 Vue 3 方案，对个人项目来说更轻量、部署更简单。选哪个？
+推荐选 Vue 3 方案，对个人项目来说更轻量，部署更简单。选哪个？
 ```
 
 #### 选项 4：个人作品集
@@ -384,6 +511,9 @@ AI 导航网站有 2 个推荐方案：
 | 用户想修改之前的选项 | 允许重新开始任意一步 |
 | 网络问题导致初始化失败 | 提示用户检查网络，重试或手动初始化 |
 | 占位符未替换 | substitute.sh --check 检查模板合规性 |
+| `templates/*/.gitignore` 缺失 | init 脚本 `cp` 失败 + `set -e` → 脚本中止。按 `references/file-integrity-check.md` 第 2.4 节还原后再跑 |
+| `templates/vue3-vite/src/**/*.vue` 缺失 | init-vue3.sh 第 2 步中止，且 AI 导航站类型不可用。按同文档第 2.4 节逐字还原；还原不了就排除该类型 |
+| `templates/*/package.json.template` 缺失 | 不阻断生成（init 用 `npm init -y` 现场生成真实 package.json），但建议按同一文档还原 |
 
 ---
 
@@ -404,7 +534,8 @@ AI 导航网站有 2 个推荐方案：
 ## 更多信息
 
 - **占位符列表**：`references/placeholders.md`（执行 init 脚本时自动读取）
+- **文件完整性自检与还原**：`references/file-integrity-check.md`（Step 0 必读）
 - **技术栈对比**：`references/tech-stacks.md`
 - **部署详解**：`references/deployment.md`
 - **故障排查**：`references/troubleshooting.md`
-- **框架细节**：`references/frameworks/*.md`
+- **框架细节**：`references/framework-*.md`

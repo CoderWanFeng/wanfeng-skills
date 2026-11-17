@@ -27,17 +27,51 @@ personal-website-builder/
 ├── README.md               # 本文件
 ├── references/             # 详细参考文档
 │   ├── placeholders.md     # 占位符登记表
+│   ├── file-integrity-check.md  # 文件完整性自检与还原（安装后先读）
 │   ├── tech-stacks.md      # 技术栈对比
 │   ├── deployment.md       # 5 种部署方式
 │   ├── troubleshooting.md
-│   └── frameworks/         # 各框架详解
+│   ├── framework-*.md      # 各框架详解
 ├── templates/              # 项目模板（init 脚本从这里复制）
 ├── scripts/                # 初始化 + 辅助脚本
+│   └── gen-restricted-files.py  # 按规律重建受限文件（自检用）
 └── tests/
     └── smoke.sh            # 端到端冒烟测试
 ```
 
 ## 给 AI agent 看的使用说明
+
+### 0. 文件完整性自检（强制，先于一切）
+
+部分安装平台会过滤掉**以 `.` 开头的隐藏文件**、**带 `.template` 后缀的文件**
+和**带 `.vue` 后缀的组件文件**。本 skill 有 12 个文件受此影响：
+5 个 `templates/*/.gitignore` + 2 个 `templates/*/package.json.template`
++ 5 个 `templates/vue3-vite/src/**/*.vue`。
+
+**首选做法：跑随包附带的生成器**（一条命令自检 + 一条命令补齐）：
+
+```bash
+python3 scripts/gen-restricted-files.py --check   # 只检查，退出码 0 = 12/12 齐全
+python3 scripts/gen-restricted-files.py            # 补齐缺失的文件（幂等）
+python3 scripts/gen-restricted-files.py --force    # 强制重建全部 12 个
+python3 scripts/gen-restricted-files.py --extract  # 归档形态 → 展开成 templates/ 目录
+```
+
+生成器把 `references/file-integrity-check.md` 里的**生成规律固化成代码**（三张规格表 +
+渲染函数），纯 Python 3 标准库、不联网。写入前必过三项自检：
+CSS 变量闭环、产物目录对齐 `substitute.sh` 的 `get_dist()`、依赖版本对齐 init 脚本 ——
+任一不通过则一个文件都不写。
+
+> **归档形态**：第三方平台限制压缩包内最多一层子目录，而框架模板天生带嵌套目录，
+> 所以打包时 `templates/` 会转成 `templates-<框架>.tar.gz` 放进包根。
+> 归档内部保留完整目录结构，`.gitignore` / `.vue` 待在平台扫不到的 tar 里，不会被过滤。
+> `init-*.sh`（经 `scripts/resolve-template.sh`）会自动解包再复制，**用户无感知**。
+> 生成器能自动识别当前形态，不会误报「文件全丢」。
+
+若不足 12 个，**先还原再干活** —— `.gitignore` 缺失会让 4 个 init 脚本 `cp` 失败并被
+`set -e` 中止；`.vue` 缺失会让「AI 导航站」类型整体不可用。
+生成器不可用时的兜底（按原文逐字写回）见
+[`references/file-integrity-check.md`](references/file-integrity-check.md)。
 
 ### 1. 加载 skill
 
@@ -121,6 +155,7 @@ PROJECT_ROOT="$(./scripts/pick-dirname.sh "$PARENT_DIR" "$BASENAME")"
 
 - 只支持 Unix-like 系统（macOS / Linux），Windows 通过 WSL
 - 默认 bash 3.2 兼容（macOS 自带），不依赖 bash 4+ 关联数组
+- 部分安装平台会过滤隐藏文件、`.template` 后缀文件与 `.vue` 组件文件，安装后需按 `references/file-integrity-check.md` 自检并还原
 - CloudBase 部署需要 GUI 或预配置 API Key
 - VitePress 1.6+ 的死链检查可能误伤文档里的 `localhost` 引用，模板已加 `ignoreDeadLinks`
 

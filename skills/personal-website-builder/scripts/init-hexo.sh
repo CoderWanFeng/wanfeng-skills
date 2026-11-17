@@ -23,7 +23,10 @@ fi
 
 # ⚠️ 必须先解析 SCRIPT_DIR，再 cd 到 PROJECT_ROOT
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-TEMPLATE_DIR="$(dirname "$SCRIPT_DIR")/templates/hexo"
+source "$SCRIPT_DIR/resolve-template.sh"
+TEMPLATE_DIR="$(resolve_template_dir hexo)"
+TEMPLATE_STAGE="${TMPDIR:-/tmp}/pwb-template-$$"
+trap 'rm -rf "$TEMPLATE_STAGE"' EXIT
 
 cd "$PROJECT_ROOT"
 

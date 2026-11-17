@@ -19,7 +19,10 @@ if [ -z "$AUTHOR_NAME" ]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-TEMPLATE_DIR="$(dirname "$SCRIPT_DIR")/templates/vue3-vite"
+source "$SCRIPT_DIR/resolve-template.sh"
+TEMPLATE_DIR="$(resolve_template_dir vue3-vite)"
+TEMPLATE_STAGE="${TMPDIR:-/tmp}/pwb-template-$$"
+trap 'rm -rf "$TEMPLATE_STAGE"' EXIT
 
 cd "$PROJECT_ROOT"
 
