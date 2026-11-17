@@ -11,12 +11,10 @@ examples_zh:
 - "给这个项目生成一份 wiki 文档"
 - "把这个仓库整理成知识库"
 - "帮我生成项目概述和开发者指南"
-- "为当前项目生成 repowiki"
 examples_en:
 - "Generate a wiki for this project"
 - "Turn this repository into a knowledge base"
 - "Write an overview and a developer guide for this repo"
-- "Create a repowiki for the current project"
 ---
 
 # 晚枫知识库
