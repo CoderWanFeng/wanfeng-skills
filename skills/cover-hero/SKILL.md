@@ -5,10 +5,6 @@ description: 为多平台文章 / 内容生成 HyperFrames 视觉风格的封面
 
 # cover-hero · 封面侠（多平台封面 & 配图）
 
-> **目录名**：`cover-hero/`
-> **中文名**：封面侠
-> **发布时间**：v3 — 多平台扩展版（2026-07-01）
-
 > 统一路径：**手写 HTML + Puppeteer 渲染 + HyperFrames 视觉风格系统**。
 > 多平台：**公众号 / 小红书 / 抖音 / 知乎 / B站 / 微博 / OG Card / Twitter Card**。
 > 不调 AI 生图（名人/Logo 走嵌入路径）。

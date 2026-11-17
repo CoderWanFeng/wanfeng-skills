@@ -5,8 +5,6 @@ description: 公众号文章保存器 — 不登录账号，用 urllib 直接抓
 
 # mp-saver · 公众号保存侠
 
-> **目录名**：`mp-saver/`
-> **中文名**：公众号保存侠
 > **依赖**：**Python ≥ 3.10**（零第三方包，只用标准库 `urllib` / `re` / `base64` / `mimetypes`）
 > **输出**：`.mhtml` 单文件（实际为「HTML + base64 内嵌图片」，v2.0 简化版）
 
