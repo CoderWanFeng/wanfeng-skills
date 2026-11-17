@@ -8,8 +8,8 @@
     ~/.workbuddy/binaries/python/envs/default/bin/python3   # PIL 12.x + numpy + cv2
 
 固定资产（已沉淀进 skill，勿删）：
-    底图        references/assets/cover/封面-底图-混元WB.jpg     # 墙面人像，1:1 像素底
-    头发参考帧  references/assets/cover/hy4-frame7.jpg          # 同段视频第 7 秒帧，补头顶用
+    底图        cover-assets/封面-底图-混元WB.jpg     # 墙面人像，1:1 像素底
+    头发参考帧  cover-assets/hy4-frame7.jpg          # 同段视频第 7 秒帧，补头顶用
     （分发渠道不允许随包上传图片时，本地可能没有这两个文件 —— 脚本会自动下载，见 _download_asset：
       AtomGit 国内源优先，GitHub 原始文件兜底。用户打不开 GitHub 也不影响。）
 
@@ -33,10 +33,12 @@ ATOMGIT_API = "https://atomgit.com/api/v5/repos/CoderWanFeng1/wanfeng-skills/con
 ATOMGIT_RAW = "https://atomgit.com/CoderWanFeng1/wanfeng-skills/raw/main"
 GH_RAW = "https://raw.githubusercontent.com/CoderWanFeng/wanfeng-skills/main"
 GH_PAGE = ("https://github.com/CoderWanFeng/wanfeng-skills/tree/main/"
-           "skills/mograph/references/assets/cover")
+           "skills/mograph/cover-assets")
 AG_PAGE = "https://atomgit.com/CoderWanFeng1/wanfeng-skills"
-# 镜像/远程可能落后几个提交：旧布局是 reference/（单数）、头发帧是 .png，这些也要能命中
-COVER_DIRS = ("skills/mograph/references/assets/cover",
+# ⚠ 平台只允许「根目录/一级目录/文件」，所以封面资产平铺在 cover-assets/ 下（别再套 references/assets/cover）。
+# 后两个是旧仓库布局，镜像/远程可能还没同步到新位置，留着兼容；头发帧旧版是 .png 也认。
+COVER_DIRS = ("skills/mograph/cover-assets",
+              "skills/mograph/references/assets/cover",
               "skills/mograph/reference/assets/cover")
 NAME_ALTS = {"hy4-frame7.jpg": "hy4-frame7.png"}
 
@@ -154,7 +156,7 @@ def _skill_asset(name):
     """找封面固定资产：环境变量 → 本机仓库 → 各家 agent 的 skill 安装目录 → 当前目录 → 联网下载。
 
     这个脚本会被复制到用户的选题工程里跑，不能写死绝对路径。
-    `references/assets/cover` 与 `reference/assets/cover` 两种布局都认（旧版包是单数）。
+    新位置是 `cover-assets/`（平铺）；旧包的 `references/assets/cover`、`reference/assets/cover` 也认。
     找不到时先设 MOGRAPH_ASSET_DIR 指向 skill 包内的 cover 目录；仍找不到就自动下载。
     """
     roots = []
@@ -171,7 +173,7 @@ def _skill_asset(name):
                 "~/.qoder/skills/*", "~/.claude/skills/*"):
         roots += sorted(glob.glob(os.path.expanduser(pat)))
 
-    subs = ("references/assets/cover", "reference/assets/cover", "assets/cover")
+    subs = ("cover-assets", "assets", "references/assets/cover", "reference/assets/cover")
     names = (name, NAME_ALTS.get(name))
     for r in roots:
         for sub in subs:
@@ -185,9 +187,9 @@ def _skill_asset(name):
     except Exception as e:
         raise FileNotFoundError(
             "找不到封面固定资产 %s，且自动下载失败（%s）。\n"
-            "  1) 设环境变量 MOGRAPH_ASSET_DIR 指向本机已有的 references/assets/cover 目录；\n"
-            "  2) 或手动下载该文件，放进 skill 的 references/assets/cover/ 再跑：\n"
-            "     国内 https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/references/assets/cover\n"
+            "  1) 设环境变量 MOGRAPH_ASSET_DIR 指向本机已有的 cover-assets 目录；\n"
+            "  2) 或手动下载该文件，放进 skill 的 cover-assets/ 再跑：\n"
+            "     国内 https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/cover-assets\n"
             "     海外 %s\n"
             "  （需要 封面-底图-混元WB.jpg 与 hy4-frame7.jpg 两个文件）" % (name, e, GH_PAGE))
 

@@ -1,4 +1,4 @@
-# 晚枫自动剪辑 · mograph
+# 晚枫自动剪视频 · mograph
 
 > SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph
 
@@ -10,7 +10,7 @@
 - 三条落地路线：Remotion → HyperFrames → 实在不行就用 ffmpeg
 
 > 💡 **想要和晚枫账号「完全一致」的风格？**
-> 用付费版 **晚枫自动剪辑 Pro（[`mograph-pro`](../mograph-pro/)）**：晚枫那条线的完整打包版，
+> 用付费版 **晚枫自动剪视频-Pro（[`mograph-pro`](../mograph-pro/)）**：晚枫那条线的完整打包版，
 > 含固定样式、封面底图与商业授权条款。购买链接：〔购买链接待补〕
 > 本 skill 里的晚枫路径功能一致、免费可用 —— 不想买也够用。
 
@@ -18,7 +18,7 @@
 
 ## 一、30 秒看懂它怎么用
 
-![晚枫自动剪辑 · 通用路径执行流](assets/execution-flow.png)
+![晚枫自动剪视频 · 通用路径执行流](assets/execution-flow.png)
 
 ```bash
 cd mograph

@@ -19,10 +19,10 @@
 
 | 文件 | 作用 |
 |---|---|
-| `references/assets/cover/封面-底图-混元WB.jpg` | **唯一底图**。1728×2304，人像 + 墙面，原字「免费用AI / 自动剪视频」+ WorkBuddy 标识 |
-| `references/assets/cover/hy4-frame7.jpg` | 混元源片第 7 秒整帧。**补头顶头发的参考帧**，与底图人像 1:1 像素配准（dx=85, dy=390） |
-| `references/assets/cover/封面-成品示例-GLM3E.jpg` | 换皮成品的基准参照（字改「免费用GLM / 每天领3亿」+ ZCODE logo），新封面先对它再对稿 |
-| `references/assets/cover/封面-校验示例-字发净空.jpg` | 净空校验的标准画法：左成品 / 右原帧同区域并排 + 字底/投影/发顶三条标注线。新封面照这个格式出证据图 |
+| `cover-assets/封面-底图-混元WB.jpg` | **唯一底图**。1728×2304，人像 + 墙面，原字「免费用AI / 自动剪视频」+ WorkBuddy 标识 |
+| `cover-assets/hy4-frame7.jpg` | 混元源片第 7 秒整帧。**补头顶头发的参考帧**，与底图人像 1:1 像素配准（dx=85, dy=390） |
+| `cover-assets/封面-成品示例-GLM3E.jpg` | 换皮成品的基准参照（字改「免费用GLM / 每天领3亿」+ ZCODE logo），新封面先对它再对稿 |
+| `cover-assets/封面-校验示例-字发净空.jpg` | 净空校验的标准画法：左成品 / 右原帧同区域并排 + 字底/投影/发顶三条标注线。新封面照这个格式出证据图 |
 | `templates/cover_from_base.example.py` | 换皮脚本模板（已验证复现成品，max diff = 8，JPEG 噪声级） |
 
 > **平台体积约束（2026-11-17 实测）**：WorkBuddy 开放平台技能包**上限 3MB**，超了直接报「解析失败：文件大小不能超过 3MB」。
@@ -30,6 +30,8 @@
 > 成品示例缩至 60%、校验示例 q80、流程图 256 色调色板，全包约 1.6MB。
 > **`封面-底图-混元WB.jpg` 不可再压**——脚本要从它采样字色与墙色，压了颜色就偏。
 > 新增图片前先量体积：`find . -size +200k`，逼近 3MB 平台会拒收。
+> **目录层级也有限制**：平台只认「根目录/一级目录/文件」，三层会报「目录层级超限」（2026-11-17 实测）。
+> 所以封面资产平铺在 `cover-assets/` 下，**不要**再套 `references/assets/cover/`。
 
 > 原始出处（仅溯源用，不依赖）：成品 = `内容更新/short/58-glm3亿/发布包/封面-每天领3亿.jpg`；
 > 校验画法 = 同选题 `AI剪辑输出/校验帧/封面-头发与字净空校验.jpg`。
@@ -43,15 +45,15 @@
 
 | 顺位 | 源 | 地址 |
 |---|---|---|
-| 1 | **AtomGit 国内源**（GitHub 打不开时用这个） | `https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/references/assets/cover` |
-| 2 | GitHub 原始文件 | `https://raw.githubusercontent.com/CoderWanFeng/wanfeng-skills/main/skills/mograph/references/assets/cover/<文件名>` |
+| 1 | **AtomGit 国内源**（GitHub 打不开时用这个） | `https://atomgit.com/CoderWanFeng1/wanfeng-skills/tree/main/skills/mograph/cover-assets` |
+| 2 | GitHub 原始文件 | `https://raw.githubusercontent.com/CoderWanFeng/wanfeng-skills/main/skills/mograph/cover-assets/<文件名>` |
 
 > ⚠ **AtomGit 不能用 `.../raw/main/<路径>` 直链**（2026-11-17 实测：返回的是一个 64×48 的占位 SVG 和一段 HTML，不是原图）。
 > 脚本走的是 `api/v5/repos/.../contents/<目录>?ref=main` 接口，从返回的 `download_url`（`raw.atomgit.com/.../blobs/<sha>/...`）下载。
 > 手动下载请直接开目录页点文件。
 
 **手动兜底**：打开上面任一目录页，下载 `封面-底图-混元WB.jpg` 与 `hy4-frame7.jpg`，
-放进 skill 的 `references/assets/cover/`，或放到任一目录后用 `MOGRAPH_ASSET_DIR` 指过去。
+放进 skill 的 `cover-assets/`，或放到任一目录后用 `MOGRAPH_ASSET_DIR` 指过去。
 
 > 下载只解决「图片从哪来」，**不改变授权范围**：封面底图与头发参考帧仍是受保护资产，
 > 只能用于「在固定底图上换字换 logo」的封面换皮用途。
