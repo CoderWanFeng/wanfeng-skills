@@ -1,4 +1,16 @@
 ---
+display_name: 免费大模型清单
+display_name_en: Free AI Models
+description_zh: "搜罗全网能免费用的大模型：直接可用的网站/产品、Cursor/Cline/Cherry Studio 等软件里可白嫖的模型、各家平台的免费额度与免费 API 配额，本地数据打底、联网兜底。"
+description_en: "Hunts down every free large model out there: ready-to-use sites and products, models you can pick for free inside Cursor, Cline, Cherry Studio and friends, plus free quotas and free API tiers from major providers."
+version: 1.0.0
+author: 晚枫工作室
+examples_zh:
+  - "现在有哪些免费的大模型能用"
+  - "Cursor 里能白嫖哪些模型，给我列个清单"
+examples_en:
+  - "Which free LLMs are available right now?"
+  - "List the models I can use for free in Cursor"
 name: "free-ai-models"
 description: "帮用户搜罗全网可以免费使用的大模型。覆盖三类信息：（1）直接免费可用的大模型网站/产品；（2）第三方软件（Cursor/Cline/VS Code/Cherry Studio 等）里可白嫖选择的模型；（3）各大平台（OpenAI/Claude/Gemini/通义/文心/DeepSeek 等）的免费额度/免费 API 配额。本地数据 + WebFetch 兜底，对话回答 + 可选生成 Markdown 清单。Invoke when user asks for free LLM, free GPT/Claude/Gemini, free API quota, free Cursor/Cline model, or wants a list of currently-free AI models."
 ---

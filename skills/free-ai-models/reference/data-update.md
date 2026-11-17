@@ -175,9 +175,9 @@ done
 
 ## 数据备份与回滚
 
-- **每次更新**：保留上一版本到 `reference/changelog/YYYYMMDD-{slug}.md`
+- **每次更新**：保留上一版本到 `reference/changelog-YYYYMMDD-{slug}.md`（同级平铺，平台只允许一层目录）
 - **回滚方式**：`git checkout reference/direct-free.md`（前提是本 skill 在 git 里）
-- **彻底重置**：删除 `reference/changelog/` 外的所有文件，按初始快照恢复
+- **彻底重置**：删除 `reference/changelog-*.md` 外的所有文件，按初始快照恢复
 
 ---
 
