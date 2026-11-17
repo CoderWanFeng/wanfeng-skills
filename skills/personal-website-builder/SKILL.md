@@ -1,6 +1,22 @@
 ---
 name: "personal-website-builder"
+display_name: 晚枫个人网站
+display_name_en: WanFeng Personal Website Builder
 description: "晚枫个人网站：通过对话引导用户创建个人网站（博客/知识库/AI 导航/作品集/简历），选择技术栈、目标目录后一键生成项目并自动打开预览。Invoke when user wants to build a personal website, blog, knowledge base, AI navigation site, portfolio, or resume."
+description_zh: "通过纯对话引导创建个人网站：博客、知识库、AI 导航站、作品集、简历五种类型任选，选定技术栈与目标目录后一键生成可运行项目并自动打开预览，内置多平台部署方案（Netlify/Vercel/Cloudflare/CloudBase/GitHub Pages）与故障排查手册。"
+description_en: "Guided conversational creation of personal websites — blog, knowledge base, AI navigation site, portfolio, or resume. Pick a tech stack and a target directory, get a runnable project generated in one shot with live preview, plus built-in deployment recipes and troubleshooting."
+version: 2.0.0
+author: 晚枫工作室
+examples_zh:
+- "我想做个博客，帮我搭一个"
+- "给我做一个作品集网站"
+- "帮我创建一个能直接打开的简历网页"
+- "做个 AI 工具导航站"
+examples_en:
+- "Help me build a personal blog site"
+- "Create a portfolio website for me"
+- "Make a resume web page I can open right away"
+- "Build an AI tools navigation site"
 ---
 
 # 晚枫个人网站

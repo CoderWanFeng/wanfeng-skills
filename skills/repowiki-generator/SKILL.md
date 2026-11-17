@@ -1,6 +1,22 @@
 ---
 name: repowiki-generator
+display_name: 晚枫知识库
+display_name_en: WanFeng Repowiki Generator
 description: 晚枫知识库：为任意项目生成结构化的仓库 Wiki 知识库文档（输出到 `.wanfeng-wiki/<lang>/`，风格参考 popdf 的 repowiki）。当用户希望 (1) 为当前项目生成仓库 Wiki / 项目知识库；(2) 把代码仓库结构化整理为可浏览的 Markdown 文档；(3) 输出项目概述、核心功能、API 参考、开发者指南；(4) 在某个项目下生成 `repowiki-metadata.json` 元数据；(5) 让 AI Agent 自动读懂项目整体架构并写出带 mermaid 图、cite 块、章节来源的 Markdown 文档时，使用此 skill。触发关键词：生成 repowiki、生成项目 wiki、生成仓库文档、生成项目知识库、输出项目概述、生成 API 参考文档、整理项目文档、repowiki、生成 wiki 文档、为项目生成文档、生成项目 README、生成开发者指南、生成安装文档、生成快速入门、为任意项目生成 wiki、analyze and document this project、generate project documentation。
+description_zh: "为任意项目生成结构化的仓库 Wiki 知识库：项目概述、快速入门、安装指南、命令行使用、核心功能详解、API 参考、开发者指南一次成型，输出到项目自身的 .wanfeng-wiki/<lang>/ 目录，自带 mermaid 架构图、cite 引用块与章节来源标注，AI Agent 可直接读懂。"
+description_en: "Generates a structured repository Wiki for any project — overview, quickstart, installation, CLI usage, core features, API reference, and developer guide in one pass — into the project's own .wanfeng-wiki/<lang>/ directory, with mermaid diagrams, cite blocks, and per-section source annotations that AI agents can read directly."
+version: 1.0.0
+author: 晚枫工作室
+examples_zh:
+- "给这个项目生成一份 wiki 文档"
+- "把这个仓库整理成知识库"
+- "帮我生成项目概述和开发者指南"
+- "为当前项目生成 repowiki"
+examples_en:
+- "Generate a wiki for this project"
+- "Turn this repository into a knowledge base"
+- "Write an overview and a developer guide for this repo"
+- "Create a repowiki for the current project"
 ---
 
 # 晚枫知识库

@@ -1,10 +1,26 @@
 ---
 name: "ai-style-video"
+display_name: 晚枫AI动画
+display_name_en: WanFeng AI Style Video
 description: "晚枫AI动画（一句话生成 AI 视频）：给一段描述、一份文档、一组截图、一条公告——任何能讲清楚的素材都能吃进去，做成 8 种风格（或用户自定义风格）× 6 种画幅（9:16/2:3/4:5/1:1/16:9/4:3）的 MG 短视频（24–25 秒、9 场景）。当用户想给一个选题做短视频时使用。开场四问依次是：①选风格（A–H 或 I 自定义，用户可用文字描述/参考图/文档表达风格偏好）；②选画幅（1–6 代号或直接给比例，与风格互相独立）；③选配音（S 静音 / V1 系统电子音 / V2 本地模型克隆音色，可选装 GPT-SoVITS / CosyVoice2 并让用户提交参考音频）；④按风格 + 画幅 + 配音方案交素材。之后按流程渲染样片、混音、收反馈。全程带重叠检测、缺素材占位、音画对齐兜底。安装方式之一：SkillHub https://skillhub.cn/skills/user_bf8c5b73/wanfeng-ai-style-video"
+description_zh: "一句话生成 AI 视频：给一段描述、一份文档、一组截图、一条公告，做成 8 种风格 × 6 种画幅的 MG 短视频（24–25 秒、9 场景），可选三档配音（静音 / 系统电子音 / 本地克隆音色），自带重叠检测、缺素材占位与音画对齐兜底，全程本地零付费。"
+description_en: "One sentence in, an AI motion-graphics video out: any material (description, documents, screenshots, data) becomes a 24–25s, 9-scene MG clip in 8 styles × 6 aspect ratios, with three voiceover tiers (silent / system TTS / locally cloned voice), plus overlap detection, placeholder fallback, and audio-video alignment — fully local, zero cost."
+version: 2.3.0
+author: 晚枫工作室
 user-invocable: true
 metadata:
   version: "2.3.0"
   last_modified: "2026-11-16"
+examples_zh:
+- "做条不出镜的 MG 视频讲讲这个功能"
+- "这条换成横屏重做"
+- "选个复古拼贴风格做这条"
+- "用我的声音给这条视频配音"
+examples_en:
+- "Make a faceless MG video explaining this feature"
+- "Redo this one in landscape"
+- "Use the retro-collage style for this clip"
+- "Voice this video with my own cloned voice"
 ---
 
 # 晚枫AI动画（ai-style-video）
