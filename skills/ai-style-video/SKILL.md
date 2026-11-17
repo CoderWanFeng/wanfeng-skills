@@ -14,12 +14,10 @@ metadata:
 examples_zh:
 - "做条不出镜的 MG 视频讲讲这个功能"
 - "这条换成横屏重做"
-- "选个复古拼贴风格做这条"
 - "用我的声音给这条视频配音"
 examples_en:
 - "Make a faceless MG video explaining this feature"
 - "Redo this one in landscape"
-- "Use the retro-collage style for this clip"
 - "Voice this video with my own cloned voice"
 ---
 
