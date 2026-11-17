@@ -1,4 +1,15 @@
 ---
+display_name: 知识短视频
+display_name_en: Knowledge Short Video
+description_zh: "知识类短视频全流程：口播稿（账号定位/栏目/钩子/≥20 句硬下限/拆段）→ 视觉风格 4 选 1 → 3:4 封面 → GSAP 动画视频 → TTS 配音 → 渲染 → 精简发布包。"
+description_en: "End-to-end knowledge short-video pipeline: script writing with hard length limits, one of four visual styles, a 3:4 cover, GSAP-animated video, TTS voiceover, rendering, and a lean publishing bundle."
+author: 晚枫工作室
+examples_zh:
+  - "用这个选题做一条知识类短视频"
+  - "帮我把这篇稿子做成 3:4 竖屏科普视频"
+examples_en:
+  - "Make a knowledge short video on this topic"
+  - "Turn this script into a 3:4 vertical explainer"
 name: knowledge-short-video
 description: 制作知识类短视频完整 skill（**主题通用** — 适用于任何 C 端知识科普：AI 工具 / 美食 / 职场 / 育儿 / 历史 / 健身 / 财经 ...）。Step 0 一次性确认 4 个开关（封面风格 4 选 1 / IP 信息默认不放 / 引导关注默认不引导 / 配音默认系统默认 TTS 或用户提供 4 参数+文档链接+代码路径）。覆盖：写口播稿（账号定位 + 三类栏目 + 钩子 + 小白细化 + **≥ 20 句硬下限 + segments.txt 拆段**）→ 选定视觉风格（swiss-grid/warm-grain/nyt-graph/embedded-captions）→ 3:4 封面 → GSAP 动画视频 composition（**不是图片拼接**）→ TTS 配音 → 渲染 → 3 文件精简发布包。每个任务 = 一个带 `YYYYMMDD_HHMMSS_` 时间戳的独立目录（避免连续任务冲突）。用户按自己的账号主题和定位替换示例占位符（`<主题>` / `<IP名>` / `<定位>` / `<slogan>`）。
 version: 2.2.0
