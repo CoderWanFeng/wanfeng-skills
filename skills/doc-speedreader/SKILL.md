@@ -11,12 +11,10 @@ examples_zh:
 - "帮我速读这份 PDF，讲讲它说什么"
 - "这个文件讲什么？给我摘要"
 - "把这份 Word 转成 Markdown"
-- "快速读一下这个链接里的内容"
 examples_en:
 - "Skim this PDF for me and tell me what it says"
 - "What is this document about? Give me a summary"
 - "Convert this Word file into Markdown"
-- "Quick-read the content at this link"
 ---
 
 # doc-speedreader · 速读侠（把任意文档变成能读的文字）
