@@ -25,6 +25,8 @@ skills/ZIP/
 dist/
 # SkillHub 发布笔记 + 批量发布 / 图标脚本（内部运维资料，含账号发布流程）
 docs/skillhub-publish/
+# 研发用私有背景资料（同行项目清单等，只在本机看，不公开）
+docs/research/
 # 发布与打包的 staging 副本、zip-backup 备份（由 publish.py / package-*.py 生成）
 .build/
 
