@@ -1,37 +1,36 @@
-"""ai-digital-human：基于 MiniMax 开放平台的「声音 + 形象 + 口播」一体化生产工具。"""
+"""晚枫数字人（轻量版）引擎：只做本地媒体处理。
 
-from .client import (
-    MiniMaxError,
-    clone_voice,
-    create_video_task,
-    generate_image,
-    list_voices,
-    t2a,
-    upload_file,
-    wait_video_task,
-)
-from .pipeline import generate_persona_images, generate_talking_videos, synthesize_script
-from .pricing import (
-    count_charged_chars,
-    estimate_cost,
-    estimate_image_cost,
-    estimate_video_cost,
+这条技能的画面由软件自带的积分能力生成，声音由模型自己念——**不调用任何接口**，
+所以引擎里没有任何 API 客户端、没有计价、没有密钥。留下的只有 ffmpeg 封装：
+读素材、抽参考帧、裁比例、贴音轨、挂字幕。
+"""
+
+from .media import (
+    concat_audio,
+    concat_videos,
+    detect_silences,
+    extract_frame,
+    frame_rate,
+    mux_audio,
+    normalize_ratio,
+    probe,
+    resolve_ratio,
+    split_audio,
+    stream_duration,
+    transcode_audio,
 )
 
 __all__ = [
-    "MiniMaxError",
-    "clone_voice",
-    "count_charged_chars",
-    "create_video_task",
-    "estimate_cost",
-    "estimate_image_cost",
-    "estimate_video_cost",
-    "generate_image",
-    "generate_persona_images",
-    "generate_talking_videos",
-    "list_voices",
-    "synthesize_script",
-    "t2a",
-    "upload_file",
-    "wait_video_task",
+    "concat_audio",
+    "concat_videos",
+    "detect_silences",
+    "extract_frame",
+    "frame_rate",
+    "mux_audio",
+    "normalize_ratio",
+    "probe",
+    "resolve_ratio",
+    "split_audio",
+    "stream_duration",
+    "transcode_audio",
 ]

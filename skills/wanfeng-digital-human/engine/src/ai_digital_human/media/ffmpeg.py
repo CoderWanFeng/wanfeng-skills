@@ -88,7 +88,7 @@ def extract_frame(video: str | Path, timestamp: float, dest: str | Path) -> Path
 
 def transcode_audio(src: str | Path, dest: str | Path,
                     sample_rate: int = 32000, bitrate: str = "128k") -> Path:
-    """转成单声道 mp3（MiniMax 参考音频要求 WAV/MP3）。"""
+    """转成单声道 mp3（参考音频只接受 WAV/MP3）。"""
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     run(["-i", str(src), "-vn", "-ac", "1", "-ar", str(sample_rate),
@@ -181,7 +181,7 @@ def split_audio(src: str | Path, out_dir: str | Path, *,
                 max_seconds: float = 14.0, prefix: str = "seg") -> list[Path]:
     """把音频按静音点切成不超过 max_seconds 的片段。
 
-    MiniMax H3 的参考音频单段上限 15 秒，因此这里留 1 秒余量。
+    参考音频单段上限 15 秒，因此这里留 1 秒余量。
     """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
