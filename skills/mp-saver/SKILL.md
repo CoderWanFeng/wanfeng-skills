@@ -1,4 +1,16 @@
 ---
+display_name: 公众号文章保存器
+display_name_en: WeChat Article Saver
+description_zh: "不登录直接保存公众号文章：带微信 UA 抓取、修补懒加载图片、内嵌全部图片存成单文件 mhtml，离线可看；支持批量与 index.md 清单，纯标准库零依赖。"
+description_en: "Saves WeChat official-account articles without logging in: fetches with a WeChat UA, fixes lazy-loaded images, and writes a single self-contained .mhtml that opens offline. Batch mode and an index.md are included; stdlib only."
+version: 2.0.0
+author: 晚枫工作室
+examples_zh:
+  - "把这几篇公众号文章保存下来"
+  - "这个 mp.weixin.qq.com 链接存成离线可看的文件"
+examples_en:
+  - "Save these WeChat articles"
+  - "Archive this mp.weixin.qq.com link as an offline file"
 name: mp-saver
 description: 公众号文章保存器 — 不登录账号，用 urllib 直接抓 mp.weixin.qq.com/s/... 链接的 HTML（带 WeChat UA + Referer），智能提取标题 + unlazy 修补 + 加 <base href> → 保存为单文件。v2.0 起去掉 Playwright/Chromium 依赖，只用 Python 标准库，秒级启动，零第三方包，输出仍是 .mhtml 文件（HTML 源码 + 所有图片 base64 内嵌，离线双击 Chrome/Edge/Safari 即可看完整图文）。支持批量（一次性保存多篇）、自动生成 index.md 清单、可选 --max-images 限内嵌图片数。触发词：「保存公众号文章」「下载公众号文章」「mp.weixin.qq.com 存一下」「把这几篇文章存下来」「公众号另存为」「不登录保存公众号」。
 ---
