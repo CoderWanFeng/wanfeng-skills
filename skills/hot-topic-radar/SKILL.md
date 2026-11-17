@@ -1,4 +1,16 @@
 ---
+display_name: 热点雷达
+display_name_en: Hot Topic Radar
+description_zh: "7×24 小时监控全网热搜（微博/抖音/知乎/小红书/B站/头条/百度），按关键词过滤、按领域相关性打分、按热度排序，输出今天值得跟的选题清单，自带白名单、去重与跨平台聚合。"
+description_en: "Monitors trending topics across Weibo, Douyin, Zhihu, Xiaohongshu, Bilibili, Toutiao and Baidu around the clock, filters by your keywords, scores domain relevance and ranks by heat, then returns the topics worth covering today."
+version: 1.0.0
+author: 晚枫工作室
+examples_zh:
+  - "今天有什么值得跟的 AI 热点"
+  - "按我的关键词筛一遍热搜，去重后给我排个序"
+examples_en:
+  - "What AI topics are trending today?"
+  - "Filter the trending list by my keywords, dedupe and rank it"
 name: hot-topic-radar
 description: 自媒体选题雷达。7×24h 监控全网热搜（微博/抖音/知乎/小红书/B站/今日头条/百度等），按用户关键词过滤、按领域相关性打分、按热度排序，输出"今天值得跟"的选题清单。配套关键词白名单、记忆去重、跨平台聚合。本 skill 是独立任务，不涉及后续创作/发布等下游流程。
 ---
