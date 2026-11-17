@@ -25,7 +25,7 @@ doc-speedreader/
 ├── scripts/
 │   ├── install.sh          # 一键装 markitdown[all]
 │   └── convert.sh          # 4 种模式调 markitdown
-├── reference/
+├── references/
 │   ├── quickstart.md       # 5 分钟跑通
 │   ├── formats.md          # 15+ 格式支持矩阵
 │   ├── safety.md           # 路径安全约束
@@ -46,7 +46,7 @@ doc-speedreader/
 | 新格式支持（如新加的 Office 365 格式） | 出现即加 | 维护者 |
 | 修复脚本 bug | 即时 | 维护者 |
 | 新增 troubleshooting 案例 | 用户报上来就加 | 维护者 |
-| `reference/formats.md` 表格更新 | MarkItDown 升级时 | 维护者 |
+| `references/formats.md` 表格更新 | MarkItDown 升级时 | 维护者 |
 
 ---
 
@@ -99,7 +99,7 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ 'markitdown[all]'
 pip install --only-binary=:all: 'markitdown[all]'
 ```
 
-详见 [reference/troubleshooting.md](reference/troubleshooting.md)。
+详见 [references/troubleshooting.md](references/troubleshooting.md)。
 
 ### 转 PDF 没文字
 

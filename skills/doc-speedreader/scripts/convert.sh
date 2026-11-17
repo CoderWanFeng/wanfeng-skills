@@ -12,7 +12,7 @@
 #   - stdin → convert_stream()（需指定 file_extension）
 #   - --response → convert_response()（用户自控网络层）
 #
-# 详细路径校验规则见 reference/safety.md
+# 详细路径校验规则见 references/safety.md
 
 set -eo pipefail
 # 注：不用 set -u，因为后续 case 分支里 ${2:-} 等可能没传，避免 unbound variable 误报
@@ -45,7 +45,7 @@ case "$INPUT" in
   cat slides.pptx | bash convert.sh --stream .pptx
   bash convert.sh --response https://api.example.com/file.docx
 
-详细文档见 ../reference/quickstart.md
+详细文档见 ../references/quickstart.md
 EOF
         exit 0
         ;;
@@ -248,7 +248,7 @@ except Exception as e:
     print(f'[错误] 转换失败: {e}', file=sys.stderr)
     print('', file=sys.stderr)
     print('可能原因：', file=sys.stderr)
-    print('  1. 文件格式不支持（详见 ../reference/formats.md）', file=sys.stderr)
+    print('  1. 文件格式不支持（详见 ../references/formats.md）', file=sys.stderr)
     print('  2. 文件已损坏（PDF 扫描件需要 OCR 插件）', file=sys.stderr)
     print('  3. 文件被加密 / 加密文档', file=sys.stderr)
     print('  4. 权限不够', file=sys.stderr)

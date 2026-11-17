@@ -1,19 +1,45 @@
 ---
 name: doc-speedreader
-description: 把任意文档（PDF/Word/PPT/Excel/图片/音频/HTML/CSV/ZIP/EPUB/YouTube URL 等 15+ 格式）一键转成 Markdown，并按需生成一句话总结 / 结构化摘要 / 完整副本。基于 Microsoft MarkItDown。触发词：「帮我速读这份 PDF」「这个文件讲什么」「转成 Markdown」「给我摘要」「文档转一下」「加快读文档」「读得更快」「读这个文档」「文件里讲了什么」。
+display_name: 晚枫速读侠
+display_name_en: WanFeng Doc Speedreader
+description: 晚枫文档速读——把任意文档（PDF/Word/PPT/Excel/图片/音频/HTML/CSV/ZIP/EPUB/YouTube URL 等 15+ 格式）一键转成 Markdown，并按需生成一句话总结 / 结构化摘要 / 完整副本。基于 Microsoft MarkItDown。触发词：「帮我速读这份 PDF」「这个文件讲什么」「转成 Markdown」「给我摘要」「文档转一下」「加快读文档」「读得更快」「读这个文档」「文件里讲了什么」。
+description_zh: "把任意文档一键转成 Markdown 并按需给摘要：一句话总结 + 3 个重点、分章节摘要、全文文字副本三选一。支持 PDF/Word/PPT/Excel/图片/HTML/CSV/ZIP/EPUB/网页链接等 15+ 格式，基于微软开源 MarkItDown，全程本地处理，文件不上传任何服务器。"
+description_en: "Turns any document into Markdown in one shot, with your choice of a one-line summary plus 3 key points, a section-by-section digest, or a full text copy. Supports 15+ formats (PDF/Word/PPT/Excel/images/HTML/CSV/ZIP/EPUB/URLs) on Microsoft's open-source MarkItDown — everything runs locally, your files never leave your machine."
+version: 1.0.0
+author: 晚枫工作室
+examples_zh:
+- "帮我速读这份 PDF，讲讲它说什么"
+- "这个文件讲什么？给我摘要"
+- "把这份 Word 转成 Markdown"
+- "快速读一下这个链接里的内容"
+examples_en:
+- "Skim this PDF for me and tell me what it says"
+- "What is this document about? Give me a summary"
+- "Convert this Word file into Markdown"
+- "Quick-read the content at this link"
 ---
 
-# doc-speedreader · 速读侠（基于 MarkItDown 的快速读文档 skill）
+# doc-speedreader · 速读侠（把任意文档变成能读的文字）
 
 > SkillHub 安装：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-doc-speedreader
 
-> **目录名**：`doc-speedreader/`
-> **中文名**：速读侠
-> **依赖**：Microsoft MarkItDown（`pip install 'markitdown[all]'`）
-> **Python**：≥ 3.10
+> **它替你解决的事**：别人扔给你一份文件，你不想从头读到尾，甚至不想打开它。丢给速读侠，它当场告诉你这份文件在讲什么，或者把它变成你能直接复制走的文字。
 
-> 把任意文档 → Markdown → 一句话总结 / 结构化摘要 / 完整副本
-> **本 skill 完全独立**，不与其他 skill 做任何关联。
+> **你会拿到三样里的其中一样**（它会问你要哪样，你没选就给第一样）：
+> - 一句话总结 + 3 个重点 —— 扫一眼就知道这份东西值不值得细看
+> - 分章节摘要 —— 带数字、带结论、带"接下来该做什么"
+> - 全文的文字副本 —— 存在你自己电脑上，方便贴进笔记，或者交给别的 AI 接着处理
+
+> **能直接丢给它的**：Word、PPT、Excel、PDF、电子书（EPUB）、网页链接、表格文件（CSV / JSON）、ZIP 压缩包、有字幕的视频链接。
+
+> **它做不到什么，先讲清楚，免得你抱有期待**：
+> - 扫描件和被拍照的文件，里面的字它认不出来，只能读到"什么时候拍的"这类信息。想让它在图片里识字，要另外装一个工具再配一个付费服务的密钥；需要时它会告诉你怎么办，你也可以直接找专门做这件事的工具。
+> - 录音、播客，默认转不成文字，同样要额外配置。
+> - 它给你的是干净的文字稿，不是排版漂亮的成品：字体、颜色、表格样式、图片里的东西都会丢。Excel 里的公式和图表也可能读不到，很老的 .doc 格式不支持。
+
+> **用之前要准备什么**：电脑上有 Python 3.10 以上，再加一次性的安装（缺什么它会自己检查、带着你装，只做一次）。往后读文件、转文字这一步都在你自己电脑上完成，不经过任何服务器；至于给你的总结，是你当前用的这个 AI 写的。
+
+> **为什么可以信**：底下用的是微软开源的 MarkItDown，不是自己攒出来的解析脚本；这套提问流程是晚枫工作室天天读文档攒出来的实际用法。
 
 ---
 
@@ -167,7 +193,7 @@ mkdir -p "$TASK_DIR"
 - 拒绝 `/etc/` `/var/` `/root/` 等系统目录
 - 拒绝 `~/.ssh/` `~/.aws/` 等敏感目录
 - URL 限制：`http` / `https` only，拒绝 `file://` `ftp://` 等
-- 见 [reference/safety.md](reference/safety.md)
+- 见 [references/safety.md](references/safety.md)
 
 ---
 
@@ -181,7 +207,7 @@ mkdir -p "$TASK_DIR"
 4. **3 步**：用户能立刻执行的 3 个具体动作
 5. **兜底**：本 skill 无能为力时的退路（如"换工具"或"再试一次"）
 
-完整 8 个常见报错的 5 段式回答见 [reference/troubleshooting.md](reference/troubleshooting.md)。
+完整 8 个常见报错的 5 段式回答见 [references/troubleshooting.md](references/troubleshooting.md)。
 
 ---
 
@@ -204,15 +230,15 @@ cat file.pdf | bash scripts/convert.sh --stream .pdf
 bash scripts/convert.sh --response https://example.com/doc.pdf
 ```
 
-详细文档见 [reference/quickstart.md](reference/quickstart.md)。
+详细文档见 [references/quickstart.md](references/quickstart.md)。
 
 ---
 
 ## 相关文档（仅本 skill 内部）
 
-- **快速上手**：[reference/quickstart.md](reference/quickstart.md)
-- **15+ 格式矩阵**：[reference/formats.md](reference/formats.md)
-- **安全约束**：[reference/safety.md](reference/safety.md)
-- **失败兜底 8 例**：[reference/troubleshooting.md](reference/troubleshooting.md)
+- **快速上手**：[references/quickstart.md](references/quickstart.md)
+- **15+ 格式矩阵**：[references/formats.md](references/formats.md)
+- **安全约束**：[references/safety.md](references/safety.md)
+- **失败兜底 8 例**：[references/troubleshooting.md](references/troubleshooting.md)
 - **摘要模板**：[templates/summary-template.md](templates/summary-template.md)
 - **维护说明**：[README.md](README.md)
