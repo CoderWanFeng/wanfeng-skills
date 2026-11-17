@@ -1,4 +1,12 @@
 ---
+description_zh: "一键跑完 WorkBuddy 成长中心每天的免费积分：Buddy 加油站签到、派猫猫旅行领奖励、能量够时自动开盲盒。跨平台、纯标准库、读本机登录态直调官方接口。"
+author: 晚枫工作室
+examples_zh:
+  - "帮我把今天的 WorkBuddy 积分领了"
+  - "签到 + 派猫猫 + 开盲盒一次跑完"
+examples_en:
+  - "Claim my WorkBuddy credits for today"
+  - "Run check-in, Buddy travel and blind box in one go"
 name: workbuddy-daily-credits
 display_name: WorkBuddy 每日积分自动领取（签到+猫猫+盲盒）
 display_name_en: WorkBuddy Daily Credits (check-in · Buddy travel · blind box)
