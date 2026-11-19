@@ -151,5 +151,22 @@
     ],
     "compressed_format": "PNG",
     "under_limit": true
+  },
+  {
+    "name": "wanfeng-writing-partner",
+    "original": "assets/skillhub-icons/图标/wanfeng-writing-partner.png",
+    "original_bytes": 837040,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/wanfeng-writing-partner.png",
+    "compressed_bytes": 257069,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
   }
 ]
