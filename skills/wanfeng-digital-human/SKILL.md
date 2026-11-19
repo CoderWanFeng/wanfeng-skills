@@ -2,8 +2,8 @@
 name: wanfeng-digital-human
 display_name: 晚枫数字人
 display_name_en: WanFeng Digital Human
-description: 一句话做一条 4–10 秒的数字人短片：给你的一段视频或一张照片，配上画面里会说话的你，可选字幕。**完全零成本**——只消耗这个软件自带的积分，不绑任何付费接口、不需要密钥、不产生任何费用。当用户说「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「不露脸怎么做视频」「用积分做数字人」「零成本试一下数字人」时使用。要克隆自己的声音、要做 30 秒以上的长视频、要多段拼接和动效混剪，用「晚枫数字人 Pro」。
-description_zh: "一句话做一条 4–10 秒的数字人短片：一段你的视频或一张正脸照片，配上会说话的画面与台词，可选字幕。完全零成本，只消耗软件自带积分，不填密钥、不绑支付、不产生任何费用。要克隆自己的音色、做 30 秒以上的长视频或多段拼接，用晚枫数字人 Pro。"
+description: 一句话做一条 4–10 秒的数字人短片：给你的一段视频或一张照片，配上画面里会说话的你，可选字幕。**完全零成本**——只消耗这个软件自带的积分，不绑任何付费接口、不需要密钥、不产生任何费用。当用户说「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「不露脸怎么做视频」「用积分做数字人」「零成本试一下数字人」时使用。要克隆自己的声音、要做 30 秒以上的长视频、要多段拼接和动效混剪，用「晚枫数字人-Pro」。
+description_zh: "一句话做一条 4–10 秒的数字人短片：一段你的视频或一张正脸照片，配上会说话的画面与台词，可选字幕。完全零成本，只消耗软件自带积分，不填密钥、不绑支付、不产生任何费用。要克隆自己的音色、做 30 秒以上的长视频或多段拼接，用晚枫数字人-Pro。"
 description_en: "Make a 4–10 second talking-head digital human clip from one line: give a short video or a front-facing photo, add a line of speech, and get a talking portrait with optional subtitles. Completely free — it only spends built-in software credits, no keys, no payment, no hidden fees. For voice cloning, 30s+ long videos, or multi-segment editing, use WanFeng Digital Human Pro."
 version: 2.0.0
 author: 晚枫工作室
@@ -70,7 +70,7 @@ examples_en:
 | 从视频里挑一张正脸当基准 | 逐帧对齐的口型（只能做到大致同步） |
 | 视频自带字幕文件（可选） | 保证每帧都像你本人 |
 
-**如果你要的是「我的声音 + 我的脸 + 一条完整口播」**，直接说「用晚枫数字人 Pro」，别在这条线上耗。
+**如果你要的是「我的声音 + 我的脸 + 一条完整口播」**，直接说「用晚枫数字人-Pro」，别在这条线上耗。
 
 ---
 
