@@ -49,7 +49,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 
 ## 📚 Skill 一览
 
-16 个公开 Skill + 2 个付费 Skill，按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
+17 个公开 Skill + 2 个付费 Skill，按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
 
 ### 🔍 选题与资讯
 
@@ -64,6 +64,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 | Skill | 一句话用途 |
 |---|---|
 | [cover-hero](skills/cover-hero/) | 公众号 / 小红书 / 抖音等 8 平台的封面 + 配图（HTML 模板渲染）[👉 在线体验](https://qclaw.qq.com/as/BQ2Cw50sNfcy) |
+| [wanfeng-writing-partner](skills/wanfeng-writing-partner/) | 晚枫写作搭子：AI 热点 / 产品体验 / 官方资料 → 可直接发布的中文长文，7 步全流程（选题→标题→结构→配图→图床→引用→检查） |
 | [mp-saver](skills/mp-saver/) | 不登录保存公众号文章为单文件 MHTML，离线可看、可直接喂 LLM [👉 介绍文章](https://www.python4office.cn/ads/ai/tools/公众号保存侠/20261116-公众号保存侠skill-不登录存成单个文件/) |
 | [doc-speedreader](skills/doc-speedreader/) | 晚枫速读侠：任意文档（PDF/Word/PPT 等 15+ 格式）一键转 Markdown + 摘要 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-doc-speedreader) |
 
@@ -96,7 +97,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 Skill 之间相互独立，但串起来就是完整生产线：
 
 ```
-图文线   [选题雷达/AIHOT] → 人工写作 → [cover-hero] 配图 → 发布
+图文线   [选题雷达/AIHOT] → [wanfeng-writing-partner] 写长文（含配图/图床）→ 发布
 短视频线  [选题] → [knowledge-short-video] 出镜片 / [ai-style-video] 不出镜 MG 片 → 发布
 口播包装  已拍口播视频 + 讲稿 → [mograph] 弹卡动效成片 → [cover-hero] 同视觉封面
 存档线    [mp-saver] 公众号文章 → MHTML → [doc-speedreader] 转 Markdown → 喂 LLM
