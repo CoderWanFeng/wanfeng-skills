@@ -75,8 +75,8 @@ python3 scripts/beat_music.py --out <选题>/音乐/卡点音乐.wav --segments 
 python3 scripts/compose_video.py --images 试衣-01.png 试衣-02.png 试衣-03.png \
     --music 卡点音乐.wav --out 换装成片.mp4 --seg 2.0 --bpm 120
 
-# A5 抽帧质检
-python3 scripts/qc_frames.py <成片.mp4>
+# A5 抽帧质检（默认版清单；指定动作版改 --mode action）
+python3 scripts/qc_frames.py --video <成片.mp4> --out <选题>/成片/抽帧/ --n 8 --mode auto
 ```
 
 **两条硬约束**

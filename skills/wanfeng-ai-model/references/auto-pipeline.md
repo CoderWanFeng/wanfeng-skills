@@ -162,7 +162,7 @@ python3 scripts/compose_video.py \
 
 ## 7. 相关文档
 
-- 主入口与硬规则 → `../SKILL.md`
+- 主入口与硬规则 → [SKILL.md](../SKILL.md)
 - 提示词模板（含默认版代生成 / 换装） → `prompts.md`
 - 质检闸与台账 → `qc-gates.md`
 - 起号打法与发布文案 → `ops-playbook.md`

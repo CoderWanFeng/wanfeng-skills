@@ -18,10 +18,7 @@ skills/mograph-pro-pay/
 # ============================================================
 # 三、打包与发布产物（均可由源码或脚本再生，不入库）
 # ============================================================
-# Skill 压缩包交付目录（<skill-name>.zip 与 skills/ 目录一一对应，
-# 由 .build/package-workbuddy.py / package-mograph-pro.py 生成）
-skills/ZIP/
-# 早期打包产物遗留目录（已被 skills/ZIP/ 取代，待清理）
+# 打包产物生成到 dist/ 目录，由 .build/package-*.py 脚本输出
 dist/
 # SkillHub 发布笔记 + 批量发布 / 图标脚本（内部运维资料，含账号发布流程）
 docs/skillhub-publish/
