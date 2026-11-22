@@ -10,10 +10,43 @@
 
 **核心特性**：
 
-- 7 步工作流：选题素材 → 起标题 → 搭结构 → 配图 → 上传图床 → 插入引用 → 发布前检查
+- 7 步工作流：选题素材 → 起标题 → 判类型搭结构 → 配图 → 上传图床 → 插入图片与链接 → 发布前检查
+- **写法来自 4 篇高互动实证文章**：利益前置标题、第一句给结果、主动亮短板、共情自嘲、决策信息表格化、结尾按类型（见 `references/viral-patterns.md`）
+- **按文章类型分叉**：科普 / 教程 / 产品发布 / 免费福利 / 合作公告，不再一刀切「必含 AI 原理段、≤3 小节、Slogan 必写」
 - 两套配图方法：暖白风格插图（Pillow 自绘）+ 网页截图（含脱敏）
 - 图床流程**通用化**：只讲"上传到你的图床"，不绑定任何人的账号 / 仓库 / 密钥
-- 附带文章格式自检脚本，发布前一键过一遍硬性规则
+- 附带按类型判定的文章格式自检脚本，发布前一键过一遍硬性规则
+
+---
+
+## v1.2.1：链接按位置包装
+
+新增两条链接格式硬规则，落在 `references/writing-guide.md` §9.2、SKILL.md 第 6/7 步与文章模板：
+
+| 链接出现的位置 | 写法 |
+|---|---|
+| 单独成段（一段里只有这一条链接） | `> [标题：完整URL](完整URL)` 引用块 |
+| 嵌在正文句子里 | 前后用英文引号 `"` 包住：`规则写在 "[…](…)" 这一页` |
+
+链接本体 `[标题：完整URL](完整URL)` 不变。口诀：**独占一段就上 `>`，夹在话里就上 `""`**。
+保持原格式（豁免）：`### 参考链接` / `## 相关阅读` 列表项、图片来源斜体标注、front-matter、代码块内裸 URL、表格单元格内链接、官方原话引用块里原本带的链接。
+`check_article.py` 增加两条 WARN 提醒（不硬判 FAIL），并排除上述豁免位置，避免误报。
+
+---
+
+## v1.2.0：高互动写法实证
+
+从 4 篇已发布、被作者标记为高阅读高互动的公众号文章反推写法，新增 `references/viral-patterns.md`（**与 `writing-guide.md` 冲突时以实证为准**）。
+
+修正了旧版三处与实际爆款冲突的一刀切规则：
+
+| 旧规则 | 实证 | 现在 |
+|---|---|---|
+| 每篇必含一段 AI 原理 | 4 篇里 0 篇讲原理 | 仅科普 / 观点类必含 |
+| 主体 ≤ 3 个 `##` | 教程 5 节、发布 7–8 节 | 按类型 3 / 6 / 8 / 5 / 4 |
+| Slogan 一字不差 | 合作公告类不写 Slogan | 该类型可省略 |
+
+同步升级 `check_article.py`：新增 `--type`（auto 按标题推断），按类型判定小节上限 / Slogan / 参考链接，并新增亮短板、共情、表格、官方口径等 WARN 提醒。
 
 ---
 
@@ -38,6 +71,7 @@ wanfeng-writing-partner/
 ├── SKILL.md                       # ⭐ 主入口（7 步工作流 + frontmatter）
 ├── README.md                      # 本文件（维护说明）
 ├── references/
+│   ├── viral-patterns.md          # ⭐ 高互动写法实证（4 篇样本，冲突时以此为准）
 │   ├── writing-guide.md           # 写作规范详解（标题 / 结构 / 排版 / 链接）
 │   ├── image-workflow.md          # 配图与图床流程（截图 / 插图 / 上传 / 引用）
 │   └── privacy-checklist.md       # 发布前脱敏检查清单
@@ -79,6 +113,7 @@ python3 scripts/init_examples.py --project "<用户项目目录>"
 # 生成暖白示例插图（需 Pillow）
 python3 scripts/warm_illustration.py --out /tmp/illus
 
-# 文章发布前自检
+# 文章发布前自检（--type 可指定 science/tutorial/release/benefit/announce，默认 auto 推断）
 python3 scripts/check_article.py /path/to/article.md
+python3 scripts/check_article.py --type tutorial /path/to/article.md
 ```

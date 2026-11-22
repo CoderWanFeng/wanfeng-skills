@@ -2,10 +2,10 @@
 name: wanfeng-writing-partner
 display_name: 晚枫写作搭子
 display_name_en: WanFeng Writing Partner
-description: 晚枫写作搭子：把热点事件、官方文档或产品体验变成一篇可以直接发布的中文长文。覆盖全流程——事实核验、起标题、正文结构、配图生成（暖白插图 + 网页截图）、图床上传、链接格式与发布前检查。触发词：「写篇文章」「帮我写教程」「这个产品写个评测」「把这篇改写成文章」「起个标题」「配图怎么做」「上传图床」。
-description_zh: "把任何 AI 热点、产品体验或官方资料，变成一篇可以直接复制到公众号的 Markdown 长文。从选题到发布，7 步走完全流程，包括事实核验、标题写作、正文结构、配图（暖白插图和网页截图）、图床上传和格式检查。"
-description_en: "Turn any AI news, product experience, or official document into a publish-ready Chinese long-form article. Covers the full pipeline: fact verification, title writing, body structure, illustrations (warm-style + web screenshots), image hosting upload, and format checks."
-version: 1.1.0
+description: 晚枫写作搭子：把热点事件、官方文档或产品体验变成一篇可以直接发布的中文长文。覆盖全流程——事实核验、按文章类型搭结构、利益前置标题、主动亮短板的反公关写法、配图（暖白插图 + 网页截图）、图床上传、链接位置格式与分类型发布前检查。写法来自 4 篇高互动实证文章归纳。触发词：「写篇文章」「帮我写教程」「这个产品写个评测」「把这篇改写成文章」「起个标题」「配图怎么做」「上传图床」。
+description_zh: "把任何 AI 热点、产品体验或官方资料，变成一篇可以直接复制到公众号的 Markdown 长文。7 步走完全流程：事实核验、按类型搭结构、利益前置标题、主动亮短板、配图（暖白插图和网页截图）、图床上传、链接位置格式和分类型格式检查。写法来自 4 篇高互动实证文章归纳。"
+description_en: "Turn any AI news, product experience, or official document into a publish-ready Chinese long-form article. Full 7-step pipeline: fact verification, type-aware structure, benefit-first headlines, honest limitation disclosure, illustrations (warm-style + web screenshots), image hosting, position-aware link formatting, and type-aware pre-publish checks. Patterns distilled from 4 high-engagement published articles."
+version: 1.2.1
 author: 晚枫工作室
 examples_zh:
 - "帮我用 WorkBuddy 新功能写篇公众号文章"
@@ -21,9 +21,10 @@ examples_en:
 
 > **它替你解决的事**：从「看到一个 AI 热点/产品，想写一篇公众号文章」到「本地有一份可以直接复制进编辑器的 Markdown 成稿」，中间所有步骤——查资料、起标题、搭结构、做配图、传图床、检查格式——它都带你走一遍。
 >
-> **你会拿到**：一篇 1500–3000 字的中文长文 Markdown 文件，包含 frontmatter、正文、配图外链、参考链接和固定结尾。
+> **你会拿到**：一篇 1500–4000 字的中文长文 Markdown 文件，包含 frontmatter、正文、配图外链、参考链接和结尾。
 >
-> **这套方法是晚枫每天写文章实际在用的流程**，不是理论框架。
+> **这套方法来自晚枫实际在用的流程 + 4 篇高互动实证文章的写法归纳**，不是理论框架。
+> **动笔前先判文章类型**（科普 / 教程 / 产品发布 / 免费福利 / 合作公告），不同类型用不同结构 —— 见 [references/viral-patterns.md](references/viral-patterns.md)。
 
 ---
 
@@ -94,28 +95,47 @@ examples_en:
 
 ### 第2步 · 起标题
 
-用 `lengyi-title` 方法（如果已安装），或按以下规则：
+用 `lengyi-title` 方法（如果已安装），或按以下规则（**优先用实证模板**）：
 
-- 目标 22–27 字，硬上限 30 字
-- 必须含具体产品名或数字
-- 前 15 字能独立撑住一次点击
-- 后半段给新信息（结果/悬念/承诺），不重复前半段
-- 禁用"揭秘""震惊""不看后悔"类空洞词
+- **利益前置公式**（4 篇高互动样本 4/4 命中）：`免费/白嫖/领 + 具体数字 + 平台或产品名 + 低门槛承诺`
+  - 例：`免费领取 WorkBuddy 3万积分，教程来了！`、`在 WorkBuddy 里做视频，简单到 3 步就出片`
+- 建议 **18–32 字**，硬上限 36 字（含英文产品名可到 36）
+- 必须含具体产品名**和**具体数字（带单位；不写「大幅」「超多」「海量」）
+- 前 15 字把利益说完，后半段给结果或承诺，不重复前半段
+- 禁用 `揭秘` `震惊` `不看后悔` `深度解析` 类空洞词
 
-挑 6–8 个候选，实测字数，选最佳。
+挑 6–8 个候选，实测字数，选最佳。详见 [references/viral-patterns.md](references/viral-patterns.md) P1。
 
-### 第3步 · 搭正文结构
+### 第3步 · 判类型 + 搭正文结构
+
+**先判类型再搭骨架**。4 篇实证里**没有一篇讲 AI 原理**，别为了凑旧规范硬塞科普段：
+
+| 类型 | 主体 `##` 数 | 小标题风格 | AI 原理段 |
+|---|---|---|---|
+| 科普 / 观点 | ≤ 3 | 判断句，不像目录 | **必含** |
+| 手把手教程 | 4–6 | `01 / 02 / 03` 编号 + 动作 | 不必 |
+| 产品发布 / 评测 | 6–8 | 口语短句 | 不必 |
+| 免费福利 / 活动 | 3–5 | 「不当 X，也有 Y 的办法」 | 不必 |
+| 合作 / 身份公告 | 3 | 时间线（去年 → 今年 → 接下来） | 不必 |
 
 ```
-[开头] 大家好 + 事件钩子（80-150字）+ 一句话核心判断
+[开头] 固定问候「大家好，我是程序员晚枫」+ 第一句给结果 + 具体日期/身份 + 读者原话当钩子
    ↓
-[主体] 最多 3 个 ## 小节，语义递进
-   - 至少 1 段讲透 AI 原理（大白话，有"啊哈时刻"）
+[主体] 按上表选结构，语义递进
    - 每段 ≤ 3 行，重点加粗
-   - 并列信息用表格或列表
+   - 决策 / 对比 / 费用 / 评分信息一律表格化
+   - 写「能做什么」的同一节必须写「不能做什么 / 差在哪 / 多少钱」
+   - 区分「官方说的」与「我实测的」；官方原话用 > 引用块
    ↓
-[结尾] 升华 + 互动提问 + 固定 Slogan + 参考链接 + 相关阅读 + 引导图
+[结尾] 升华 + 具体互动 + 一条可复制指令 + 入口 + Slogan（按类型）+ 参考链接 + 相关阅读 + 引导图
 ```
+
+**四条实证硬规则**（详见 [references/viral-patterns.md](references/viral-patterns.md)）：
+
+1. **亮短板**：每篇至少 1 处主动摊开代价 / 边界，放在读者做决策之前，不藏文末；第三方评测指出不足要照写并认下来。
+2. **共情自嘲**：站读者一边（「大家都是靠薅免费额过日子的穷人，懂你」），只嘲讽现象和自己，不催单。
+3. **证据链**：每张截图配 `*图片来源：…*` 斜体注；官方邮件 / 证书 / 报告原话用 `>` 引用块；评测连分项得分和不足一起写。
+4. **口径严谨**：权益、费用、入选、规则类信息带「以官方审核和实际安排为准」「技能显示的是预估，不是最终账单」。
 
 **Frontmatter 格式**（5 字段，顺序固定）：
 
@@ -129,7 +149,7 @@ cover: 已验证的封面图URL
 ---
 ```
 
-详细写作规范见 [references/writing-guide.md](references/writing-guide.md)。
+详细写作规范见 [references/writing-guide.md](references/writing-guide.md)；实证写法见 [references/viral-patterns.md](references/viral-patterns.md)。
 
 ### 第4步 · 配图：截图或插图
 
@@ -205,31 +225,45 @@ picgo -c /你的配置路径/config.json upload /完整路径/图片.jpg
 *图：说明文字 · 来源：[官方页面名：https://example.com/page](https://example.com/page)*
 ```
 
-**链接格式**（非微信链接统一）：
+**链接格式**：非微信链接本体统一 `[标题：完整URL](完整URL)`，**再按它在正文里的位置包装**，本体写法不变：
 
-```markdown
-[标题：完整URL](完整URL)
-```
+1. **单独成段**（一段里只有这一条链接）→ 用 `>` 引用块包住：
 
-微信文章间的链接保持 `[标题](https://mp.weixin.qq.com/s/xxx)` 不加 URL 重复。
+   ```markdown
+   > [WorkBuddy 官方活动页：https://example.com/act](https://example.com/act)
+   ```
+
+2. **嵌在正文句子里** → 链接前后用**英文引号 `"`** 包住：
+
+   ```markdown
+   活动规则写在 "[WorkBuddy 官方说明：https://example.com/rules](https://example.com/rules)" 这一页。
+   ```
+
+**保持原格式、不套上面两条**：`### 参考链接` / `## 相关阅读` 列表项、图片与 `*图片来源：…*` 图注、front-matter、代码块内裸 URL、表格单元格里的链接、官方原话引用块里原本带的链接（详见 [references/writing-guide.md](references/writing-guide.md) §9.3）。微信文章间的链接仍是 `[标题](https://mp.weixin.qq.com/s/xxx)`，不加 URL 重复。
 
 ### 第7步 · 发布前检查
 
-逐项确认：
+逐项确认（**标 ⭐ 的按文章类型判断，不是一刀切**）：
 
-- [ ] 标题 ≤ 30 字，含产品名或数字
-- [ ] 正文 1500–3000 字，主体 ≤ 3 个 `##`
-- [ ] 至少 1 段讲透 AI 原理
-- [ ] 所有数字可溯源（官方文档/自己的截图）
-- [ ] 图片 URL 全部能打开（HTTP 200 + image content-type）
-- [ ] 没有未上传的占位链接
+- [ ] 标题 18–32 字（硬上限 36），含**具体数字 + 产品名**，前 15 字把利益说完
+- [ ] 正文 1500–4000 字
+- [ ] ⭐ 主体 `##` 数符合所选类型上限（科普 ≤3 / 教程 ≤6 / 发布 ≤8 / 福利 ≤5 / 公告 ≤4）
+- [ ] ⭐ 科普类才有「讲透 AI 原理」段；教程 / 发布 / 福利 / 公告类不硬塞
+- [ ] **至少 1 处主动亮短板**，且位于读者做决策之前
+- [ ] 至少 1 处共情 / 自嘲；区分「官方说的」与「我实测的」
+- [ ] 决策 / 对比 / 费用信息已表格化；每张图有 `*图片来源：…*`
+- [ ] 权益 / 费用 / 入选类信息带「以官方为准」口径
+- [ ] 结尾有具体互动 + 一条可复制指令 + 入口
+- [ ] 所有数字可溯源（官方文档 / 自己的截图），无编造
+- [ ] 图片 URL 全部能打开（HTTP 200 + image content-type），没有占位链接
 - [ ] 截图已脱敏（无真实姓名、头像、账号 ID）
 - [ ] 链接格式正确（非微信链接用 `[标题：URL](URL)`）
-- [ ] 参考链接 ≥ 3 条
-- [ ] 结尾 Slogan 一字不差
+- [ ] 链接按位置包装：单独成段用 `> 引用块`，嵌入正文用英文引号 `"` 包住
+- [ ] ⭐ 参考链接：科普 / 评测 / 福利类 ≥ 3 条；纯教程 / 公告类不强求
+- [ ] ⭐ 结尾 Slogan：教程 / 福利 / 发布类一字不差；合作公告类可省略
 - [ ] 代码围栏配对（` ``` ` 数量为偶数）
 
-可以用 `scripts/check_article.py` 自动检查大部分格式项。
+用 `scripts/check_article.py --type <类型> <文章.md>` 自动检查大部分项；`--type auto` 自动推断类型。
 
 ---
 
@@ -244,6 +278,7 @@ picgo -c /你的配置路径/config.json upload /完整路径/图片.jpg
 | 上传到用户自己的图床 | ✅（用户授权后） |
 | 部署网站 / 发布到公众号 | ❌ |
 | 在文章中编造数据 | ❌ |
+| 写成只夸不提代价 / 边界的公关稿 | ❌ |
 | 暴露任何人的图床地址、账号、密钥 | ❌ |
 
 ---
@@ -260,6 +295,7 @@ picgo -c /你的配置路径/config.json upload /完整路径/图片.jpg
 
 ## 相关文档
 
+- **⭐ 高互动写法实证（冲突时以此为准）**：[references/viral-patterns.md](references/viral-patterns.md)
 - **写作规范详解**：[references/writing-guide.md](references/writing-guide.md)
 - **配图与图床流程**：[references/image-workflow.md](references/image-workflow.md)
 - **脱敏检查清单**：[references/privacy-checklist.md](references/privacy-checklist.md)

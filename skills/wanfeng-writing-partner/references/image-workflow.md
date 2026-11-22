@@ -201,6 +201,8 @@ python3 scripts/warm_illustration.py --out /tmp/illus --only cover flow
 *图：XXX 功能界面 · 来源：[官方文档：https://example.com/docs](https://example.com/docs)*
 ```
 
+> 图注属于「图片来源斜体标注」，按 `writing-guide.md` §9.3 **保持原格式**：不加引号、不进引用块。只有正文里独占一段、或夹在句子中间的链接才套 §9.2 两条规则。
+
 ### 禁止事项
 
 - 不得把图片长期存在本地再引用本地路径

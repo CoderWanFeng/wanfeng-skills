@@ -5,9 +5,11 @@
 替代没有信息量的通用图库图。与「官网/网页截图」类配图互补：
 有界面就截图，没界面就画图。
 
-设计语言：
-    斜体 eyebrow + 细线  →  斜体黑标题  →  超大橙红强调
-    →  白卡 + 橙圆勾  →  冷灰/暖黄面板  →  底部斜体脚注
+设计语言（中文一律正体，不用斜体）：
+    eyebrow + 细线  →  正体黑标题  →  超大橙红强调
+    →  白卡 + 橙圆勾  →  冷灰/暖黄面板  →  底部脚注
+排版基调：字号层级拉开；行距 ≥ 1.6 倍字高；块与块之间留呼吸空隙，
+大字与下一行之间至少留一个字高的空隙，禁止两行大字贴在一起。
 
 用法：
     python3 warm_illustration.py --out /tmp/illus
@@ -17,11 +19,13 @@
 
 新增一张图：复制任意 fig_* 函数 → 改数据与文案 → 改 save() 的文件名
 → 在 FIGS 字典登记 → 运行 → 逐张目检。
-基元函数（card/text/itext/fit_text/badge_num/badge_check/arrow/panel/footer）
+基元函数（card/text/fit_text/badge_num/badge_check/arrow/panel/footer）
 保持不变，风格自然一致。
+
+历史：早期版本的 eyebrow / 标题 / 脚注用仿射剪切伪斜体，中文斜体
+可读性差、字与字挤在一起，已全部改回正体，并重排垂直间距。
 """
 import argparse
-import math
 import os
 import sys
 
@@ -76,6 +80,7 @@ def font(size, bold=True):
     key = (size, bold)
     if key not in _fc:
         fp = _find_font()
+        # Hiragino Sans GB.ttc: index 0 = W3 常规体，index 2 = W6 粗体（均为正体）
         _fc[key] = ImageFont.truetype(fp, int(size * S), index=2 if bold else 0)
     return _fc[key]
 
@@ -90,23 +95,6 @@ def glow(img, box, color, alpha=26, blur=16):
     ImageDraw.Draw(layer).ellipse(
         [x * S, y * S, (x + w) * S, (y + h) * S], fill=color + (alpha,))
     img.alpha_composite(layer.filter(ImageFilter.GaussianBlur(blur * S)))
-
-
-def itext(img, xy, s, size, color, bold=True, angle=12.0):
-    """斜体文字（仿射剪切伪斜体）。"""
-    f = font(size, bold)
-    tlen = int(f.getlength(s))
-    asc, desc = f.getmetrics()
-    pad = 24
-    k = math.tan(math.radians(angle))
-    w = tlen + pad * 2 + int(size * abs(k)) + 20
-    h = asc + desc + pad * 2
-    lay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    ImageDraw.Draw(lay).text((pad, pad), s, font=f, fill=color + (255,), anchor="lt")
-    sheared = lay.transform((w, h), Image.AFFINE, (1, -k, k * h, 0, 1, 0),
-                            resample=Image.BICUBIC)
-    img.alpha_composite(sheared, (int(xy[0] * S), int(xy[1] * S)))
-    return tlen / S
 
 
 def text(img, xy, s, size, color, bold=True, anchor="lt"):
@@ -173,14 +161,14 @@ def arrow(img, x, y, w=26, color=DIM2):
 
 
 def eyebrow(img, y, s, color=DIM2):
-    itext(img, (PAD, y), s, 29, color, bold=False)
+    text(img, (PAD, y), s, 29, color, bold=False)
     d = ImageDraw.Draw(img)
     d.line([PAD * S, (y + 52) * S, (W - PAD) * S, (y + 52) * S],
            fill=LINE + (255,), width=1 * S)
 
 
 def footer(img, h, s):
-    itext(img, (PAD, h - 48), s, 26, DIM2, bold=False)
+    text(img, (PAD, h - 48), s, 26, DIM2, bold=False)
 
 
 def panel(img, box, s, color=DIM, size=25, bold=True, radius=16, border=None, fill=None):
@@ -202,28 +190,28 @@ def save(img, name, out=None):
 # ---------------------------------------------------------------- 示例图
 
 def fig_cover(out=None):
-    """封面示例：超大橙红强调 + 右侧流程条。"""
+    """封面示例：超大橙红强调 + 右侧留白。"""
     H = 675
     img = new(H)
     glow(img, (-180, -260, 900, 620), ACCENT, 20, 26)
     glow(img, (760, 300, 620, 560), (255, 214, 170), 24, 26)
-    itext(img, (PAD, 54), "你的副标题写在这里", 29, DIM2, bold=False)
+    text(img, (PAD, 56), "你的副标题写在这里", 29, DIM2, bold=False)
     d = ImageDraw.Draw(img)
-    d.line([PAD * S, 106 * S, (W - PAD) * S, 106 * S], fill=LINE + (255,), width=1 * S)
-    itext(img, (PAD, 148), "你的文章", 74, INK, bold=True)
-    itext(img, (PAD, 246), "核心数字", 116, ACCENT, bold=True)
-    itext(img, (PAD, 412), "副标题说明写在这里", 40, DIM, bold=False)
+    d.line([PAD * S, 110 * S, (W - PAD) * S, 110 * S], fill=LINE + (255,), width=1 * S)
+    text(img, (PAD, 158), "你的文章", 76, INK, bold=True)
+    text(img, (PAD, 294), "核心数字", 116, ACCENT, bold=True)
+    text(img, (PAD, 478), "副标题说明写在这里", 40, DIM, bold=False)
     footer(img, H, "自制封面 · 暖白风格")
     return save(img, "example-cover.jpg", out)
 
 
 def fig_flow(out=None):
     """流程图示例：编号卡 + 箭头 + 底部说明条。"""
-    H = 600
+    H = 640
     img = new(H)
     glow(img, (-200, -240, 880, 560), ACCENT, 18, 24)
     eyebrow(img, 56, "完整流程")
-    itext(img, (PAD, 132), "五个环节讲清楚", 58, INK, bold=True)
+    text(img, (PAD, 130), "五个环节讲清楚", 58, INK, bold=True)
     steps = [
         ("第一步", "先做什么\n说明文字"),
         ("第二步", "再做什么\n说明文字"),
@@ -234,19 +222,19 @@ def fig_flow(out=None):
     n = len(steps)
     gap = 18
     cw = (W - PAD * 2 - gap * (n - 1)) / n
-    y, ch = 240, 190
+    y, ch = 246, 196
     for i, (t1, t2) in enumerate(steps):
         x = PAD + i * (cw + gap)
         card(img, (x, y, cw, ch), radius=22)
-        badge_num(img, x + 34, y + 40, i + 1, r=19)
-        fit_text(img, (x + 24, y + 74), t1, 29, INK, True, maxw=cw - 44)
-        yy = y + 118
+        badge_num(img, x + 34, y + 42, i + 1, r=19)
+        fit_text(img, (x + 24, y + 78), t1, 29, INK, True, maxw=cw - 44)
+        yy = y + 122
         for ln in t2.split("\n"):
             fit_text(img, (x + 24, yy), ln, 21, DIM, False, maxw=cw - 40)
-            yy += 32
+            yy += 36
         if i < n - 1:
             arrow(img, x + cw + 3, y + ch / 2, 12)
-    panel(img, (PAD, 456, W - PAD * 2, 62), "底部说明文字写在这里", size=27, radius=18)
+    panel(img, (PAD, 482, W - PAD * 2, 64), "底部说明文字写在这里", size=27, radius=18)
     footer(img, H, "一张图讲清楚整个流程")
     return save(img, "example-flow.jpg", out)
 
@@ -256,22 +244,20 @@ def fig_why(out=None):
     H = 600
     img = new(H)
     glow(img, (-200, -240, 880, 560), ACCENT, 18, 24)
-    eyebrow(img, 56, "关键数字")
-    itext(img, (PAD, 126), "核心结论", 58, INK, bold=True)
-    itext(img, (PAD, 196), "0 元", 104, ACCENT, bold=True)
+    eyebrow(img, 54, "关键数字")
+    text(img, (PAD, 114), "核心结论", 54, INK, bold=True)
+    text(img, (PAD, 228), "0 元", 96, ACCENT, bold=True)
     data = [("0.00x", "指标一"), ("0", "指标二"), ("150+", "指标三"), ("1M", "指标四")]
     n = len(data)
     gap = 18
     cw = (W - PAD * 2 - gap * (n - 1)) / n
-    y, ch = 348, 122
+    y, ch = 398, 112
     for i, (v, k) in enumerate(data):
         x = PAD + i * (cw + gap)
         card(img, (x, y, cw, ch), radius=22)
-        text(img, (x + cw / 2, y + 48), v, 50, ACCENT, True, anchor="mm")
-        text(img, (x + cw / 2, y + 90), k, 24, DIM, False, anchor="mm")
-    panel(img, (PAD, 486, W - PAD * 2, 52), "数据来源说明",
-          color=(176, 106, 46), size=25, radius=16, border=(250, 224, 200))
-    footer(img, H, "数字要当场实测再落笔")
+        text(img, (x + cw / 2, y + 42), v, 46, ACCENT, True, anchor="mm")
+        text(img, (x + cw / 2, y + 82), k, 22, DIM, False, anchor="mm")
+    footer(img, H, "数据来源写在图片说明里 · 数字要当场实测再落笔")
     return save(img, "example-why.jpg", out)
 
 
