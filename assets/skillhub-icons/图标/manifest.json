@@ -119,6 +119,23 @@
     "under_limit": true
   },
   {
+    "name": "wanfeng-ai-model",
+    "original": "assets/skillhub-icons/图标/wanfeng-ai-model.png",
+    "original_bytes": 259535,
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "compressed": "assets/skillhub-icons/图标/512x512-500KB/wanfeng-ai-model.png",
+    "compressed_bytes": 116330,
+    "compressed_dimensions": [
+      512,
+      512
+    ],
+    "compressed_format": "PNG",
+    "under_limit": true
+  },
+  {
     "name": "wanfeng-digital-human-pro",
     "original": "assets/skillhub-icons/图标/wanfeng-digital-human-pro.png",
     "original_bytes": 753443,

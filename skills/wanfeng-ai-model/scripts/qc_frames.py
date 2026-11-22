@@ -6,8 +6,8 @@ ffprobe 验证媒体 + 均匀抽帧，输出帧图片与 report.json，供 Agent
 （脸部漂移 / 服装漂移 / 动作还原 / 崩坏帧）。纯标准库 + ffmpeg。
 
 用法：
-    python3 qc_frames.py --video 成片.mp4 --out 抽帧/ --n 8                 # 默认全自动版
-    python3 qc_frames.py --video 成片.mp4 --out 抽帧/ --n 8 --mode action   # 指定动作版
+    python3 qc_frames.py --video 成片.mp4 --out 抽帧/ --n 8                 # 全自动流水线
+    python3 qc_frames.py --video 成片.mp4 --out 抽帧/ --n 8 --mode action   # 进阶指定动作版
     python3 qc_frames.py --video 成片.mp4 --out 抽帧/ --n 8 --width 540     # 缩宽省 token
 """
 import argparse
@@ -35,11 +35,12 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=8, help="抽帧数量（默认 8）")
     ap.add_argument("--width", type=int, default=None, help="缩放宽度（可选，省读取成本）")
     ap.add_argument("--mode", choices=["auto", "action"], default="auto",
-                    help="auto=默认全自动版（静帧动效/卡点）；action=指定动作版（白膜驱动走秀）")
+                    help="auto=全自动流水线（静帧动效/卡点）；action=进阶指定动作版（白膜驱动走秀）")
     args = ap.parse_args()
 
     CHECKS = {
-        "auto": ["脸部一致", "服装还原与跨套串色", "卡点切点是否干净", "黑帧/闪烁", "音画同步"],
+        "auto": ["脸部一致", "服装还原与跨套串色", "卡点切点是否干净", "黑帧/闪烁", "音画同步",
+                 "多姿势镜头切换是否干净且同脸同衣", "真动片段首帧一致与动作流畅"],
         "action": ["脸部漂移", "服装漂移", "动作还原", "崩坏帧"],
     }
 

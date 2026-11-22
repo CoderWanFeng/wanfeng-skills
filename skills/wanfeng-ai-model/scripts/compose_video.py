@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
 """把 N 张试衣图 + 卡点音乐合成一条「卡点换装」短片（全自动，无需网页操作）。
 
-两种画面来源：
-  1) 默认：静帧 + 缓慢推近动效（ffmpeg zoompan），零视频生成成本，跑得快，适合先测效果。
-  2) --motion：传入 VideoGen 生成的 N 个真动片段，逐段替换，模特真的会走。
+N = SHOTS（出场镜头数）：A/C 档 = 服装套数；B/D 档（多姿势）= 套数 × 姿势数（默认 9）。
 
-无论哪种，切点都硬切在音乐小节线上（见 beat_music.py 的 cut_points）。
+两种画面来源（由 MOTION_MODE 决定）：
+  1) static（默认）：静帧 + 缓慢推近动效（ffmpeg zoompan），零视频生成成本，跑得快。
+  2) --motion（video 档）：传入 VideoGen 生成的 N 个真动片段，逐段替换，模特真的会走。
+     片段数必须与 --images 一致（脚本会校验）。
+
+无论哪种，切点都硬切在音乐拍线上。--seg 与 --bpm 配合：
+  single 档 seg=2.0s（4 拍一小节）；multi 档 seg=1.0s（2 拍，切得更密、节奏更强）。
 
 用法：
+  # A 档：3 张站立试衣图
   python3 compose_video.py --images 试衣-01.png 试衣-02.png 试衣-03.png \
-      --music 卡点音乐.wav --out 换装成片.mp4
+      --music 卡点音乐.wav --out 换装成片.mp4 --seg 2.0 --bpm 120
+  # B 档：9 张多姿势试衣图
+  python3 compose_video.py --images 试衣-01.png … 试衣-09.png \
+      --music 卡点音乐.wav --out 换装成片.mp4 --seg 1.0 --bpm 120
+  # C/D 档：VideoGen 真动片段（每个镜头 1 段）
   python3 compose_video.py --images ... --motion clip1.mp4 clip2.mp4 clip3.mp4 \
       --music ... --out ... --bpm 120
   python3 compose_video.py --images ... --out ... --no-music   # 只要画面

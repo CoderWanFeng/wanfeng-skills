@@ -173,14 +173,16 @@ def main():
     ap.add_argument("--segments", type=int, default=3, help="服装套数 / 片段数（默认 3）")
     ap.add_argument("--bpm", type=float, default=120, help="BPM（默认 120）")
     ap.add_argument("--seg", type=float, default=None,
-                    help="每段秒数；留空则自动 = 4*60/bpm，保证切点落在小节线")
+                    help="每段秒数；留空自动 = 4*60/bpm（一小节）。多姿势档可设 1.0s（2 拍）")
     ap.add_argument("--seed", type=int, default=20261123, help="随机种子（复现用）")
     ap.add_argument("--report", default=None, help="可选：输出 report.json 路径")
     a = ap.parse_args()
 
-    seg = a.seg if a.seg else 4 * 60.0 / a.bpm
-    if abs(seg - 4 * 60.0 / a.bpm) > 0.01:
-        print(f"[warn] --seg={seg:.3f}s 与小节线 {4*60/a.bpm:.3f}s 不一致，切点可能不卡拍")
+    beat_len = 60.0 / a.bpm
+    seg = a.seg if a.seg else 4 * beat_len
+    ratio = seg / beat_len
+    if abs(ratio - round(ratio)) > 0.01:
+        print(f"[warn] --seg={seg:.3f}s 不是单拍 {beat_len:.3f}s 的整数倍，切点可能不卡拍")
 
     pcm, total, beat = build(a.segments, seg, a.bpm, a.seed)
     with wave.open(a.out, "wb") as w:
