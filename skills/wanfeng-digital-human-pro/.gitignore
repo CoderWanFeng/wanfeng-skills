@@ -1,0 +1,15 @@
+# 运行时的东西一律不进技能包
+.env
+input/
+output/
+config/voices.json
+logs/
+manifest.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store

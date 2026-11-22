@@ -9,10 +9,10 @@
 - **不调用任何付费接口**（不联网生成、不花云端算力）
 - 三条落地路线：Remotion → HyperFrames → 实在不行就用 ffmpeg
 
-> 💡 **想要和晚枫账号「完全一致」的风格？**
-> 用付费版 **晚枫自动剪视频-Pro（[`mograph-pro`](../mograph-pro/)）**：晚枫那条线的完整打包版，
-> 含固定样式、封面底图与商业授权条款。购买链接：〔购买链接待补〕
-> 本 skill 里的晚枫路径功能一致、免费可用 —— 不想买也够用。
+> 💡 **想要完整维护的晚枫成片工作流？**
+> 本 skill 继续免费保留通用路径、晚枫专用路径和封面示例，可用于基础体验。
+> 付费版 **晚枫自动剪视频-Pro（`mograph-pro`）** 提供完整维护版、配套资产、持续更新与交付支持。
+> [WorkBuddy 购买与安装](https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj)。
 
 ---
 

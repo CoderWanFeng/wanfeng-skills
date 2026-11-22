@@ -1,0 +1,20 @@
+# 上传到 WorkBuddy 技能市场时，用本文件替换 SKILL.md 顶部的 frontmatter。
+# 本地使用不需要它——本地的 SKILL.md 只保留 name / description / allowed-tools。
+# 字段依据：open.workbuddy.cn/docs/skill
+
+name: digital-human-video
+display_name: 晚枫数字人-Pro
+display_name_en: Digital Human Video
+description: AI 数字人开工前的本地工作台：把一份口播长稿切成任何数字人平台都能直接开工的分段脚本——台词切段、参考素材体检、每段提示词排版。平台无关，不代你调用 MiniMax / 可灵 / Vidu / HeyGen / D-ID / 万相 / 智影 / 火山 / 自托管 ComfyUI，产出是文本与 JSON 的施工图。当用户说「帮我把稿子切成 <平台> 能用的分段」「数字人开工前需要准备哪些素材」「按 MiniMax 规范给我 prompt」「批量给每段写好提示词」「我在做系列口播，先把素材和脚本对齐」时使用。不生成 mp4、不做 A-roll 拼接、不加字幕；出片交给平台，剪辑交给「晚枫自动剪视频 Pro」。
+description_zh: 平台无关的数字人**施工图**生成器。把长口播稿切段、把参考素材本地体检、把每段提示词按目标平台规范写好，产物直接复制到 MiniMax / 可灵 / Vidu / HeyGen / D-ID 等任意数字人平台即可开工。触发词：帮我把稿子切段、数字人需要准备哪些素材、按 <平台> 规范给我 prompt。零 API 调用，不生成 mp4 / mp3 / srt。
+description_en: A local workbench for any digital-human platform. Split a script into segments, audit reference assets, and write per-segment prompts. Output is text + JSON — copy it into MiniMax / Kling / Vidu / HeyGen / D-ID or any avatar platform to start. Trigger: split my script into segments, what materials do I need, per-segment prompts for <platform>. No API calls, no mp4 / mp3 / srt output.
+version: 3.0.0
+author: 晚枫工作室
+examples_zh:
+  - "把这篇稿子按可灵的单段上限切成 6 段，每段写好提示词"
+  - "我要用 MiniMax 做口播，先帮我把素材列一下、缺什么告诉我"
+  - "稿子有了，帮我把每段的提示词按通用六要素写出来"
+examples_en:
+  - "Split this script for Kling and write a prompt per segment"
+  - "Audit my reference assets before I run this on MiniMax"
+  - "Draft generic six-slot prompts for each segment"

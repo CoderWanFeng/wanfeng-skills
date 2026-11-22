@@ -200,5 +200,5 @@
       "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
     }
   ],
-  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：71-混元hy4-flash 的口播稿 + hy4-flash.srt，--style-path wanfeng）。字段含义：start/end=场景时间区间（原始口播时间，不是成片时间）；layout=建议版式（hook/statement/evidence/step/reveal/cta，仅供参考，最终按 wanfeng-path.md §5 定）；mode=overlay|fs；head=是否加圆形人头；head_pos=head_pos 建议位置（hook 走左下、其余走右上）；cues=该场包含的字幕原文；text=拼接后的整场文案；note=待办提示。本文件是**骨架不是分镜稿**，正式渲染前必须按 references/wanfeng-path.md §5/§6 手写每一场的 layers。"
+  "_readme": "本文件由 scripts/make_spec.py 真实生成（输入：2-AI工具/20-混元hy4-flash 的口播稿 + hy4-flash.srt，--style-path wanfeng）。字段含义：start/end=场景时间区间（原始口播时间，不是成片时间）；layout=建议版式（hook/statement/evidence/step/reveal/cta，仅供参考，最终按 wanfeng-path.md §5 定）；mode=overlay|fs；head=是否加圆形人头；head_pos=head_pos 建议位置（hook 走左下、其余走右上）；cues=该场包含的字幕原文；text=拼接后的整场文案；note=待办提示。本文件是**骨架不是分镜稿**，正式渲染前必须按 references/wanfeng-path.md §5/§6 手写每一场的 layers。"
 }

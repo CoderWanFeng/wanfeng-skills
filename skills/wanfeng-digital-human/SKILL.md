@@ -2,9 +2,9 @@
 name: wanfeng-digital-human
 display_name: 晚枫数字人
 display_name_en: WanFeng Digital Human
-description: 一句话做一条 4–10 秒的数字人短片：给你的一段视频或一张照片，配上画面里会说话的你，可选字幕。**完全零成本**——只消耗这个软件自带的积分，不绑任何付费接口、不需要密钥、不产生任何费用。当用户说「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「不露脸怎么做视频」「用积分做数字人」「零成本试一下数字人」时使用。要克隆自己的声音、要做 30 秒以上的长视频、要多段拼接和动效混剪，用「晚枫数字人-Pro」。
-description_zh: "一句话做一条 4–10 秒的数字人短片：一段你的视频或一张正脸照片，配上会说话的画面与台词，可选字幕。完全零成本，只消耗软件自带积分，不填密钥、不绑支付、不产生任何费用。要克隆自己的音色、做 30 秒以上的长视频或多段拼接，用晚枫数字人-Pro。"
-description_en: "Make a 4–10 second talking-head digital human clip from one line: give a short video or a front-facing photo, add a line of speech, and get a talking portrait with optional subtitles. Completely free — it only spends built-in software credits, no keys, no payment, no hidden fees. For voice cloning, 30s+ long videos, or multi-segment editing, use WanFeng Digital Human Pro."
+description: 一句话做一条 4–10 秒的数字人短片：给你的一段视频或一张照片，配上画面里会说话的你，可选字幕。**完全零成本**——只消耗这个软件自带的积分，不绑任何付费接口、不需要密钥、不产生任何费用。当用户说「做个数字人视频」「让我的照片说话」「AI 替我说话」「做一条十秒口播」「不露脸怎么做视频」「用积分做数字人」「零成本试一下数字人」时使用。要准备 30 秒以上长稿的分段脚本、素材清单和逐段提示词，用开源的「晚枫数字人-Pro」；它只产出施工图，不直接生成长视频、克隆音色或拼接成片。
+description_zh: "一句话做一条 4–10 秒的数字人短片：一段你的视频或一张正脸照片，配上会说话的画面与台词，可选字幕。完全零成本，只消耗软件自带积分，不填密钥、不绑支付、不产生任何费用。要准备 30 秒以上长稿的分段脚本、素材清单和逐段提示词，用开源的晚枫数字人-Pro；实际生成、音色克隆与拼接仍由所选平台或后期工具完成。"
+description_en: "Make a 4–10 second talking-head digital human clip from one line: give a short video or a front-facing photo, add a line of speech, and get a talking portrait with optional subtitles. Completely free — it only spends built-in software credits, no keys, no payment, no hidden fees. For segment scripts, asset checks, and prompts for 30s+ scripts, use the open-source WanFeng Digital Human Pro. It prepares production plans but does not generate long videos, clone voices, or assemble the final cut."
 version: 2.0.0
 author: 晚枫工作室
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion, present_files
@@ -22,7 +22,7 @@ examples_en:
 
 把一段你的视频、一张你的照片，变成一条 4–10 秒的数字人短片。画面里的你在说话，那句台词由模型念出来。
 
-**这条路只有一个出口：软件积分。** 不填密钥、不绑支付、不产生任何费用，用完只扣账号里的积分。想用自己的声音、想做长视频，那是 Pro 的事。
+**这条路只有一个出口：软件积分。** 不填密钥、不绑支付、不产生任何费用，用完只扣账号里的积分。长稿可以先用开源的「晚枫数字人-Pro」准备分段脚本、素材清单和提示词，再到所选平台生成。
 
 ## 一图看懂流程
 
@@ -51,13 +51,13 @@ examples_en:
 |---|---|---|---|---|
 | **默认**：模型念台词 | 生成时只给文本台词 | 通用音色，不是用户本人 | 大致同步 | 0，含在积分里 |
 | **换原声**：事后贴自己的录音 | 用户录同一句台词 → 本机贴上去 | **用户自己** | 只对齐时长，不逐字同步 | 0，本机 ffmpeg |
-| **克隆音色**：一句话克隆 | —— | —— | —— | 这条线**不做**，走 Pro |
+| **克隆音色** | 在支持该能力的目标平台完成 | 取决于平台与授权素材 | 取决于平台 | 这条线**不做**；Pro 只帮助准备参考音频与施工图 |
 
 三条边界，别越：
 
 1. **生成那一刻，声音不能指定**。只能给台词文本，由软件念；传一段音频进去驱动口型，这条线做不到。
 2. **换原声是「贴」，不是「对口型」**。画面说话节奏是按模型自己的读法生成的，换成用户的录音后，嘴型会和字错位——台词越短越不明显，所以这条线建议 ≤15 字再换原声。
-3. **想一次成型、声音就是本人** → 走 Pro。别在免费线上反复试，那是拿积分换失望。
+3. **想使用本人音色** → 先用 Pro 检查参考音频、准备分段脚本和提示词，再到支持声音克隆的平台生成；Pro 本身不克隆声音。别在免费线上反复试，那是拿积分换失望。
 
 ## 能做到 / 做不到
 
@@ -70,7 +70,7 @@ examples_en:
 | 从视频里挑一张正脸当基准 | 逐帧对齐的口型（只能做到大致同步） |
 | 视频自带字幕文件（可选） | 保证每帧都像你本人 |
 
-**如果你要的是「我的声音 + 我的脸 + 一条完整口播」**，直接说「用晚枫数字人-Pro」，别在这条线上耗。
+**如果你要的是「我的声音 + 我的脸 + 一条完整口播」**，先用「晚枫数字人-Pro」做长稿施工图，再选择支持参考音频与声音克隆的平台生成；Pro 不直接交付完整成片。
 
 ---
 
@@ -167,7 +167,7 @@ python3 scripts/prep.py subtitle --video <成片> --srt <字幕.srt> --out outpu
 | 1 | 这条线**只用软件积分**，绝不调用任何需要付费的接口、绝不引导用户去开密钥 | 承诺了零成本就必须是零成本 |
 | 2 | 不提任何平台名、模型名、积分之外的计费方式 | 用户只关心「花不花钱」 |
 | 3 | 不把模型念的台词说成「你的声音」 | 那不是他的声音，是冒充 |
-| 4 | 时长不超过 10 秒，超了就劝退到 Pro | 这条线做长片必崩 |
+| 4 | 时长不超过 10 秒；更长文稿改用 Pro 准备分段施工图，再去目标平台生成 | 这条线做长片必崩，Pro 也不直接出长片 |
 | 5 | 素材里出现别人，先问一句「这是你本人吗、有没有授权」 | 肖像权 |
 | 6 | 生成失败先看 `references/troubleshooting.md`，别连续重试烧积分 | 积分也是成本 |
 | 7 | 交付前必须自己看过成片 | 脸崩、多手、乱字幕都要拦下来 |

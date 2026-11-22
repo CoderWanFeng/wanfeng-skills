@@ -49,7 +49,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 
 ## 📚 Skill 一览
 
-17 个公开 Skill + 2 个付费 Skill，按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
+17 个开源 Skill + 1 个旗舰付费产品，按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
 
 ### 🔍 选题与资讯
 
@@ -74,10 +74,11 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 |---|---|
 | [knowledge-short-video](skills/knowledge-short-video/) | 知识类短视频全流程：口播稿 → 视觉 → 动画 → TTS → 渲染 [👉 介绍文章](https://www.python4office.cn/ads/ai/tools/知识短视频/20261116-知识短视频skill-口播稿到成片一条命令/) |
 | [ai-style-video](skills/ai-style-video/) | 晚枫AI动画：一句话生成 MG 短视频，8 风格 × 6 画幅 × 3 配音档，全程零付费 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-ai-style-video) |
+| [wanfeng-ai-model](skills/wanfeng-ai-model/) | 晚枫AI模特：服装图 + 模特参考 → 分步提示词、即梦操作指导、逐帧质检与批量走秀视频工作流（第三方平台费用另计） |
 | [mograph](skills/mograph/) | 晚枫自动剪视频：给真人口播视频按讲话内容定时弹出字卡 / 数据 / 图表并渲染成片 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph) |
-| [mograph-pro](skills/mograph-pro/) 💰 | 付费 Pro 版：晚枫自有风格 10 步一条龙（成片 + 封面换皮），自包含不装 Node |
+| **mograph-pro（旗舰付费）** | 真人剪辑 / 文稿生成数字人 A/B 混剪的完整维护版（成片 + 封面），含配套资产、更新与交付支持；公开仓库仅介绍，完整源码通过付费 ZIP 交付 [👉 WorkBuddy 购买](https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj) |
 | [wanfeng-digital-human](skills/wanfeng-digital-human/) | 一段视频 / 一张照片 → 4–10 秒会说话的数字人短片，零成本（只扣软件积分）[👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
-| [wanfeng-digital-human-pro](skills/wanfeng-digital-human-pro/) 💰 | 付费 Pro 版：30 秒以上长口播生产线，本人克隆音色、批量系列 |
+| [wanfeng-digital-human-pro](skills/wanfeng-digital-human-pro/) | 开源 Pro：30 秒以上长稿的切段、素材体检与平台提示词施工图，不单独售卖（第三方平台费用另计） |
 
 ### 🌐 建站与开源
 
@@ -88,7 +89,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 | [repowiki-generator](skills/repowiki-generator/) | 晚枫知识库：为任意项目生成结构化 Wiki 文档，让 Agent 秒懂项目 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator) |
 | [workbuddy-daily-credits](skills/workbuddy-daily-credits/) | WorkBuddy 成长中心每日积分自动领取（签到 / 猫猫旅行 / 开盲盒）[👉 介绍文章](https://www.python4office.cn/ads/ai/tools/WorkBuddy积分/20261116-workbuddy积分skill-签到猫猫盲盒自动领/) |
 
-> 💰 两个付费 Skill（mograph-pro、wanfeng-digital-human-pro）不在公开仓库分发，购买与安装渠道见 SkillHub / WorkBuddy 开放平台。
+> 唯一旗舰付费产品为 **mograph-pro**：公开仓库仅提供介绍，完整源码与配套资产通过付费 ZIP 交付。**wanfeng-digital-human-pro 已开源，不单独售卖。**
 
 ---
 
@@ -129,7 +130,7 @@ skills/<skill-name>/
 |---|---|
 | [GitHub](https://github.com/CoderWanFeng/wanfeng-skills) / [AtomGit 镜像](https://atomgit.com/CoderWanFeng1/wanfeng-skills) | 源码与内容源头 |
 | [skills.sh](https://www.skills.sh/coderwanfeng/wanfeng-skills) | `npx skills add` 一键安装 |
-| [SkillHub](https://skillhub.cn/skills/user_bf8c5b73) | 免费 + 付费 skill 发布页 |
+| [SkillHub](https://skillhub.cn/skills/user_bf8c5b73) | 开源 Skill 发布页 |
 | WorkBuddy 开放平台 | ZIP 包上架（含付费版） |
 
 ---
@@ -143,7 +144,8 @@ skills/<skill-name>/
 
 ## 📄 License
 
-MIT
+根仓库默认采用 **MIT**，见 [LICENSE](LICENSE)。
 
-> 各 Skill 目录的授权以该目录自带的说明为准 —— `mograph-pro` 是**付费产品**，
-> 适用其目录内 LICENSE.md 的商业授权条款，不适用仓库根的 MIT。
+各 Skill 目录若有独立许可说明，以该目录为准（例如 `mograph` 为 MIT-0）；SkillHub 等发布包以对应发布元数据为准。
+
+`mograph-pro` 是私有商业产品，不适用根 MIT，完整商业授权条款随付费 ZIP 提供。该商业许可不追溯改变其他已公开 Skill 的既有授权。

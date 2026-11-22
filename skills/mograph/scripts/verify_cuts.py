@@ -12,7 +12,7 @@
 import json
 import sys
 
-# 71-混元hy4-flash 的人工 CUTS 标注（来自 mograph-task/src/config.py）
+# 2-AI工具/20-混元hy4-flash 的人工 CUTS 标注（来自 mograph-task/src/config.py）
 # 注意：这里的 CUTS 里既有「删内容」也有「收紧停顿」两类，人工用同一张表记。
 CUTS = [
     (22.30, 25.20, "5.4s 长停顿收紧"),
