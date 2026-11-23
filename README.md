@@ -74,7 +74,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 |---|---|
 | [knowledge-short-video](skills/knowledge-short-video/) | 知识类短视频全流程：口播稿 → 视觉 → 动画 → TTS → 渲染 [👉 介绍文章](https://www.python4office.cn/ads/ai/tools/知识短视频/20261116-知识短视频skill-口播稿到成片一条命令/) |
 | [ai-style-video](skills/ai-style-video/) | 晚枫AI动画：一句话生成 MG 短视频，8 风格 × 6 画幅 × 3 配音档，全程零付费 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-ai-style-video) |
-| [wanfeng-ai-model](skills/wanfeng-ai-model/) | 晚枫AI模特：服装图 + 模特参考 → 分步提示词、即梦操作指导、逐帧质检与批量走秀视频工作流（第三方平台费用另计） |
+| [wanfeng-ai-model](skills/wanfeng-ai-model/) | 晚枫模特换装：模特图 + 服装图 → 分步确认参数，自动换装、生成卡点音乐、合成 9:16 短片并逐帧质检（生成前确认积分） |
 | [mograph](skills/mograph/) | 晚枫自动剪视频：给真人口播视频按讲话内容定时弹出字卡 / 数据 / 图表并渲染成片 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph) |
 | **mograph-pro（旗舰付费）** | 真人剪辑 / 文稿生成数字人 A/B 混剪的完整维护版（成片 + 封面），含配套资产、更新与交付支持；公开仓库仅介绍，完整源码通过付费 ZIP 交付 [👉 WorkBuddy 购买](https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj) |
 | [wanfeng-digital-human](skills/wanfeng-digital-human/) | 一段视频 / 一张照片 → 4–10 秒会说话的数字人短片，零成本（只扣软件积分）[👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
