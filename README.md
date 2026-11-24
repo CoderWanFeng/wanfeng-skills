@@ -85,7 +85,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 | Skill | 一句话用途 |
 |---|---|
 | [personal-website-builder](skills/personal-website-builder/) | 对话式引导建个人网站（博客 / 知识库 / 作品集 / 简历）+ 多平台一键部署 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-personal-website-builder) |
-| [opensource-housekeeper](skills/opensource-housekeeper/) | 晚枫开源管家：零基础陪跑「找到 → 讲清 → 跑通 → 读懂 → 改一处用出效果」，也能反向发布 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-opensource-housekeeper) |
+| [opensource-housekeeper](skills/opensource-housekeeper/) | 晚枫开源管家：每次打开先问「今天想找哪方面的 AI 项目？」，选完方向跑遍国内外所有开源平台找项目，再零基础陪跑「找到 → 讲清 → 跑通 → 读懂 → 改一处用出效果」，也能反向发布 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-opensource-housekeeper) |
 | [repowiki-generator](skills/repowiki-generator/) | 晚枫知识库：为任意项目生成结构化 Wiki 文档，让 Agent 秒懂项目 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator) |
 | [workbuddy-daily-credits](skills/workbuddy-daily-credits/) | WorkBuddy 成长中心每日积分自动领取（签到 / 猫猫旅行 / 开盲盒）[👉 介绍文章](https://www.python4office.cn/ads/ai/tools/WorkBuddy积分/20261116-workbuddy积分skill-签到猫猫盲盒自动领/) |
 

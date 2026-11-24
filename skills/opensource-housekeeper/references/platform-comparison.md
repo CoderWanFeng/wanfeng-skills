@@ -1,6 +1,12 @@
 # 开源平台对比（GitHub vs AtomGit vs Gitee）
 
 > 用户问「该用哪个」时，把这份表给 TA 看。
+>
+> ⚠️ **这份表只适用于「发布自己的项目」**。当用户是来**找项目 / 看 AI 项目**时，
+> 范围不是这三家，而是国内外所有主流开源平台——
+> 见 [platform-coverage.md](platform-coverage.md)（GitHub / GitLab / Codeberg / Bitbucket / SourceForge / Hugging Face
+> + 国内 AtomGit / Gitee / GitCode / GitLink / CODING / OSChina / ModelScope / OpenI / AI Studio / wisemodel）。
+> 简单记：**「发」看三家，「找」看全平台**。
 
 ## 三大平台一览
 
@@ -54,6 +60,21 @@ git push gitee   main
 ```
 
 ⚠️ 注意：两边都要建空仓库（不要勾 README），且 `main` 分支结构要一致。
+
+## 找项目时的全平台覆盖（与发布区分开）
+
+> 用户选完「今天想找哪方面的 AI 项目」后，AI 要按 [platform-coverage.md](platform-coverage.md) 逐平台检索，
+> 并在结果里写明「本次覆盖 / 跳过」。**不许只搜 GitHub，也不许只搜下面这三家**。
+
+| 场景 | 覆盖范围 | 要不要账号 |
+|---|---|---|
+| 找项目（主线 1A / 1） | GitHub、GitLab、Codeberg、Bitbucket、SourceForge、Hugging Face + 国内 AtomGit、Gitee、GitCode、GitLink、CODING、OSChina、ModelScope、OpenI、AI Studio、wisemodel | **不要**，Public 项目直接看 |
+| 发布项目（主线 2） | 主推 GitHub / AtomGit / Gitee（本文件对比表） | 要，需注册 + SSH / PAT |
+
+**为什么找项目要覆盖国内平台**：一是国内网络直连、clone 快；二是很多国产 AI 项目先在国内平台首发或有同步仓；
+三是中文 README 对小白更友好。找到后由 AI 去重合并，把「国内镜像地址」留作 clone 备选。
+
+---
 
 ## 三个平台的「建空仓库」入口
 

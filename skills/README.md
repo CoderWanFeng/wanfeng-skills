@@ -74,7 +74,7 @@ mp-saver
 
 ### 🚀 开源协作
 
-- **[opensource-housekeeper](opensource-housekeeper/)** — 晚枫开源管家：主打「学用开源项目」（找到 → 讲清 → 跑通 → 读懂 → 改一处用出效果），也能反向发布项目、生成项目文档
+- **[opensource-housekeeper](opensource-housekeeper/)** — 晚枫开源管家：主打「学用开源项目」（找到 → 讲清 → 跑通 → 读懂 → 改一处用出效果）；**v2.1.0 起每次打开先问「今天想找哪方面的 AI 项目？」，选完方向自动跑遍国内外所有主流开源平台找项目**，也能反向发布项目、生成项目文档
 
 ---
 
@@ -93,6 +93,7 @@ mp-saver
 | 我想搭个博客 / 个人站 | [personal-website-builder](personal-website-builder/) |
 | 我想把代码推到 GitHub | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想学一个开源项目、把它真正用起来 | [opensource-housekeeper](opensource-housekeeper/) |
+| 今天想找点 AI 项目看看（不知道具体名字） | [opensource-housekeeper](opensource-housekeeper/) |
 | 我想把公众号文章存本地（不登录） | [mp-saver](mp-saver/) |
 | 哪个大模型能白嫖？Cursor 里哪个能白嫖？哪个 API 有免费额度？ | [free-ai-models](free-ai-models/) |
 | 视频已经拍好了，只想在讲话时旁边弹出数据卡 / 图表 | [mograph](mograph/) |
@@ -219,7 +220,7 @@ skills/<skill-name>/
 | mp-saver | ✅ v2.0 稳定（纯 HTTP 零依赖） | 2026-08-13 |
 | knowledge-short-video | ✅ v2.2 稳定 | 2026-07 |
 | personal-website-builder | ✅ v2.3 稳定（对话式建站，6 种类型；**Step 0 文件完整性自检与还原** —— 针对安装平台过滤 `.gitignore` 隐藏文件、`.template` 后缀文件与 `.vue` 组件文件；新增 `scripts/gen-restricted-files.py` 生成器，把 12 个受限文件的生成规律固化成代码，一键重建 + 三项自检；**新增归档分发** —— 平台限制包内最多一层子目录，`templates/` 转成 `templates-<框架>.tar.gz` 进包，归档内保留完整目录结构与隐藏文件（平台扫不到也就过滤不掉），`init-*.sh` 经 `scripts/resolve-template.sh` 自动解包；已实测装包后 5 种类型建站 + `npm run build` 全部通过；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
-| opensource-housekeeper | ✅ v2.0 稳定（已优化可用性；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / version / author / examples；reference/ 已改名 references/） | 2026-11-17 |
+| opensource-housekeeper | ✅ v2.1.0（**新增：每次打开必问「今天想找哪方面的 AI 项目？」+ 选完方向自动跑遍国内外所有主流开源平台找项目** —— Step 00 开场提问 / 主线 1A / Step A0 全平台检索 / 新增 `references/platform-coverage.md` 全平台清单含实测可达性；发布仍主推三家，「找」与「发」分离；frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / version / author / examples） | 2026-11-25 |
 | doc-speedreader（晚枫速读侠） | ✅ v1.0.0 已上架（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples；reference/ 已改名 references/） | 2026-11-17 |
 | repowiki-generator（晚枫知识库） | ✅ v1.0.0 可用（frontmatter 已按 WorkBuddy 开放平台标准补齐：display_name / display_name_en / description_zh / description_en / author / examples） | 2026-11-17 |
 | free-ai-models | ✅ v1 稳定 | 2026-07-12 |
