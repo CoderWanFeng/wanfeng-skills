@@ -1,7 +1,10 @@
 ---
 name: wanfeng-ai-model
 display_name: 晚枫模特换装
+display_name_en: WanFeng AI Virtual Try-On
 description: 晚枫模特换装：把模特图与服装图做成自动换装、卡点音乐和 9:16 试衣走秀短片。先确认素材来源，再逐项确认套数、机位、是否出片、真走与多姿势，汇总积分后执行 A1–A5。使用 WorkBuddy 内置 ImageGen / VideoGen 与本地 ffmpeg，支持图片交付、批量换装、抽帧质检、台账和发布文案。当用户要求 AI 模特试衣、批量换装或走秀视频时使用。触发词：晚枫模特换装、AI模特、AI美女、虚拟模特、试衣视频、换装视频、服装上身、模特走秀视频、AI服装视频、模特起号、批量生产模特视频、卡点换装。
+description_zh: "模特图 + 服装图 → 自动换装 → 卡点音乐 → 9:16 试衣走秀短片。先确认素材来源（用户提供 / WorkBuddy 代生成），再逐项确认套数、机位、是否出片、真走与多姿势，汇总积分后执行 A1–A5。纯画面、无口播；支持仅图片交付或批量走秀视频。"
+description_en: "Turns model photos and garment images into virtual try-on frames with beat-synced music and a 9:16 runway video. Confirms source first (user-provided or WorkBuddy-generated), then the number of outfits, camera angle, stills vs video, walking pose, and extra poses, sums credits, and runs pipeline A1–A5. No talking head."
 version: 1.1.0
 author: 晚枫工作室
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, ViewImage, AskUserQuestion, WebSearch, WebFetch
