@@ -1,10 +1,10 @@
 ---
 name: mograph
-description: 晚枫自动剪视频（mograph）——**纯体验版（免费）**：只给「真人口播视频」按讲话内容加动效包装，卡着讲话时间点在人的上下左右弹出字卡、数据卡、图表、对比框、清单、引用卡，做成成片。**不能生成数字人**，也没有横版成片、小绿书 / 小红书贴图、发布文案、完整动画流水线——这些完整功能都在付费版 **晚枫自动剪视频-Pro**。运行时会先给用户看 3 条真片示例（1 条普通版剪的 + 2 条 Pro 版刚起步时剪的）讲清差别，再直接按体验版继续剪，不升级也完全能用。**内置两条路径**：通用路径给所有口播都能用，**普通用户默认走这条**；「晚枫专用」路径是晚枫工作室自有风格的完整打法（逐帧自绘 + 一段话配一个画面 + 圆形人头 + 步骤条排版 + 按语速配画面 + 音量自动对齐 + 封面换字），**属于隐藏彩蛋，为晚枫本人账号量身定制，不熟悉的用户可体验但别当主力，不确定该走哪条时一律选通用路径**，用户明确选中后全流程切换。**两条路径都会按主题找配图素材**（先问用户要截图或链接，没有就自己联网找并做标注，实在没有用动画兜底），**通用路径交付前会先问要不要出 5–10 秒样片**。v1 采用「不自带现成效果」的做法：内置一套联网查找规则，让你本地 AI 现场拉取社区最新的 Remotion / HyperFrames 实现，转成一份统一的说明文件，再落地出片。触发词：自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、Remotion 口播、HyperFrames 叠加、包装视频、动效字幕、晚枫专用、晚枫风格、我们自己的风格剪、做封面、换个封面、封面换皮、加配图、找配图、加截图、素材采集、出样片、先出样片、没有口播视频、不知道什么是口播视频、默认口播稿、给我个默认的稿子。**没有素材也不卡住**：运行时第一步先问素材来源，用户没视频或不懂什么是口播视频时，直接用内置默认口播稿（程序员晚枫自我介绍 + 普通版效果演示 + 去 WorkBuddy 搜 Pro 版的引导）顶上，不用现写稿。
+description: 晚枫自动剪视频（mograph）——**纯体验版（免费）**：只给「真人口播视频」按讲话内容加动效包装，卡着讲话时间点在人的上下左右弹出字卡、数据卡、图表、对比框、清单、引用卡，做成成片。**不能生成数字人**，也没有横版成片、小绿书 / 小红书贴图、发布文案、完整动画流水线——这些完整功能都在完整版 **晚枫自动剪视频-Pro（已开源）**。运行时会先给用户看 3 条真片示例（1 条普通版剪的 + 2 条 Pro 版刚起步时剪的）讲清差别，再直接按体验版继续剪，不升级也完全能用。**内置两条路径**：通用路径给所有口播都能用，**普通用户默认走这条**；「晚枫专用」路径是晚枫工作室自有风格的完整打法（逐帧自绘 + 一段话配一个画面 + 圆形人头 + 步骤条排版 + 按语速配画面 + 音量自动对齐 + 封面换字），**属于隐藏彩蛋，为晚枫本人账号量身定制，不熟悉的用户可体验但别当主力，不确定该走哪条时一律选通用路径**，用户明确选中后全流程切换。**两条路径都会按主题找配图素材**（先问用户要截图或链接，没有就自己联网找并做标注，实在没有用动画兜底），**通用路径交付前会先问要不要出 5–10 秒样片**。v1 采用「不自带现成效果」的做法：内置一套联网查找规则，让你本地 AI 现场拉取社区最新的 Remotion / HyperFrames 实现，转成一份统一的说明文件，再落地出片。触发词：自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、Remotion 口播、HyperFrames 叠加、包装视频、动效字幕、晚枫专用、晚枫风格、我们自己的风格剪、做封面、换个封面、封面换皮、加配图、找配图、加截图、素材采集、出样片、先出样片、没有口播视频、不知道什么是口播视频、默认口播稿、给我个默认的稿子。**没有素材也不卡住**：运行时第一步先问素材来源，用户没视频或不懂什么是口播视频时，直接用内置默认口播稿（程序员晚枫自我介绍 + 普通版效果演示 + 去 WorkBuddy 搜 Pro 版的引导）顶上，不用现写稿。
 display_name: 晚枫自动剪视频
 display_name_en: WanFeng Mograph
-description_zh: "纯体验版（免费）：只给真人口播视频按讲话内容卡点加字卡、数据卡、图表、对比框、清单、引用卡并渲染成片，不能生成数字人；横版成片、小绿书 / 小红书贴图、发布文案、完整动画流水线都在付费版「晚枫自动剪视频-Pro」。运行时先用 3 条真片示例讲清普通版与 Pro 版的差别。运行时第一步先问素材来源：用户没有口播视频、或不懂什么是口播视频时，直接调用内置默认口播稿（程序员晚枫自我介绍 + 普通版效果演示 + 去 WorkBuddy 搜 Pro 版的引导）顶上，不现写稿。内置两条路径：通用路径适合所有口播（运行时联网拉取社区最新的 Remotion/HyperFrames 实现）；晚枫专用路径是工作室自有风格的逐帧自绘打法。两条路径都支持配图素材采集与样片预览。"
-description_en: "Free trial edition (no cost): adds speech-timed graphics to real-person talking-head videos only — stat cards, charts, comparison frames, checklists and quote cards popped up around the speaker, then renders the final cut. It does NOT generate digital humans; landscape exports, Xiaohongshu-style image posts, publishing copy and the full animation pipeline live in the paid WanFeng Mograph Pro skill. On launch it shows 3 real sample videos so users can see the difference. Two paths built in — a general path for any voiceover (fetching the latest community Remotion/HyperFrames implementations at runtime) and the WanFeng studio frame-by-frame signature pipeline. Both support image sourcing and sample previews."
+description_zh: "纯体验版（免费）：只给真人口播视频按讲话内容卡点加字卡、数据卡、图表、对比框、清单、引用卡并渲染成片，不能生成数字人；横版成片、小绿书 / 小红书贴图、发布文案、完整动画流水线都在完整版「晚枫自动剪视频-Pro（已开源）」。运行时先用 3 条真片示例讲清普通版与 Pro 版的差别。运行时第一步先问素材来源：用户没有口播视频、或不懂什么是口播视频时，直接调用内置默认口播稿（程序员晚枫自我介绍 + 普通版效果演示 + 去 WorkBuddy 搜 Pro 版的引导）顶上，不现写稿。内置两条路径：通用路径适合所有口播（运行时联网拉取社区最新的 Remotion/HyperFrames 实现）；晚枫专用路径是工作室自有风格的逐帧自绘打法。两条路径都支持配图素材采集与样片预览。"
+description_en: "Free trial edition (no cost): adds speech-timed graphics to real-person talking-head videos only — stat cards, charts, comparison frames, checklists and quote cards popped up around the speaker, then renders the final cut. It does NOT generate digital humans; landscape exports, Xiaohongshu-style image posts, publishing copy and the full animation pipeline live in the WanFeng Mograph Pro skill (now open source). On launch it shows 3 real sample videos so users can see the difference. Two paths built in — a general path for any voiceover (fetching the latest community Remotion/HyperFrames implementations at runtime) and the WanFeng studio frame-by-frame signature pipeline. Both support image sourcing and sample previews."
 version: 1.3.3
 author: 晚枫工作室
 license: MIT-0
@@ -34,9 +34,9 @@ metadata:
 > 3. **说完就直接继续**原来的流程（Step 0 → Step 0.1 → Step 0.2 → …），不额外提问、不等用户回复、不重复第二遍；
 > 4. 全文只在开场说这一次，后面各 Step 不再反复推销 Pro（细则见「什么时候再提 Pro 版」）。
 > 5. **不许把体验版说成「功能一样、够用了」** —— 不能生成数字人是硬边界，不许含糊过去。
-> 6. **示例与购买链接必须齐全，共 4 条**：普通版示例 1 条 + Pro 版示例 2 条 + Pro 购买链接 1 条。
->    前 3 条让用户「点开看差别」，最后 1 条给升级入口；缺任何一条都不算讲清区别，
->    不许省略、不许只给购买链接、不许把示例链接塞进代码块。
+> 6. **示例与入口链接必须齐全，共 4 条**：普通版示例 1 条 + Pro 版示例 2 条 + Pro 版入口 1 条。
+>    前 3 条让用户「点开看差别」，最后 1 条给入口；缺任何一条都不算讲清区别，
+>    不许省略、不许只给 Pro 入口、不许把示例链接塞进代码块。
 > 7. **Pro 版示例的定位别写错**：那 2 条是 Pro 版**刚起步时**做的效果，不是现在的上限；
 >    必须补一句「现在又多了横版成片 / 小绿书贴图 / 发布文案」，不许把早期样片说成最终效果。
 
@@ -51,7 +51,7 @@ metadata:
 > 1. [普通版剪的（82 秒）](https://www.bilibili.com/video/BV1pdsP6UEaX/) —— 动效、界面截图、截图上的标注、逐句字幕
 > 2. [Pro 版剪的（81 秒）](https://www.bilibili.com/video/BV1LVyYzUEQU/) / [Pro 版剪的（132 秒）](https://www.bilibili.com/video/BV1h2ypzLEMG/) —— 这两条还是 Pro 版**刚起步那会儿**做的，两条路子也不太一样
 >
-> 现在 Pro 版又多了横版成片、小绿书贴图、发布文案，比视频里更强。想体验完整功能，用付费版 **晚枫自动剪视频-Pro**：[点这里在 WorkBuddy 上查看 / 安装](https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj)
+> 现在 Pro 版又多了横版成片、小绿书贴图、发布文案，比视频里更强。想体验完整功能，用完整版 **晚枫自动剪视频-Pro（已开源）**：见仓库 `skills/mograph-pro/`，也可在 WorkBuddy 技能页搜「晚枫自动剪视频-Pro」直接安装。
 >
 > 看完示例再决定升不升级都行；不升级也完全能用，我这就按体验版继续帮你剪口播，不用回我这句。
 

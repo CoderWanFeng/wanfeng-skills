@@ -8,6 +8,7 @@ description_en: "Adds a footage-first daily-vlog branch: give a folder of casual
 version: 1.4.0
 agent_created: true
 author: 晚枫工作室
+license: MIT-0
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 examples_zh:
 - "我不想露脸，先帮我写一段介绍稿，再用它做成竖版视频"
@@ -49,9 +50,9 @@ metadata:
 > 保留晚枫工作室真人成片打法；新增自包含数字人分支，不需要安装其他数字人 Skill。最终包装仍用 Pillow，不装 Node、不起浏览器。
 > 真人设计规范来自历史交付；数字人时间契约做本地验证，真实人脸、口型与云端效果仍需用户实跑验收。
 
-> **购买与安装（唯一渠道）**：本 Pro 版在 WorkBuddy 开放平台分发，点技能页直接安装：https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj ；链接若打不开，在 WorkBuddy 技能页搜「晚枫自动剪视频-Pro」。
+> **安装方式**：本 Pro 版已开源（MIT-0），可直接从仓库 `skills/mograph-pro/` 安装；也可在 WorkBuddy 开放平台技能页搜「晚枫自动剪视频-Pro」一键安装。
 > **只是想先体验一下？** 可以先用免费版：https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph
-> 免费版继续保留通用路径、晚枫专用路径和封面示例；本 Pro 是完整维护版，额外提供完整打包交付、配套资产、持续更新与使用支持。免费版已公开内容的既有授权不受 Pro 商业条款影响。
+> 免费版继续保留通用路径、晚枫专用路径和封面示例；本 Pro 是完整维护版，额外提供完整打包交付、配套资产、持续更新与使用支持。免费版已公开内容的既有授权不受本次开源影响。
 
 ---
 
@@ -396,7 +397,7 @@ E 步**逐张读图**（W5），F 步两遍法 loudnorm 出 `-14.4 LUFS / TP -1.
 mograph-pro/
 ├── SKILL.md                            # 本文件
 ├── README.md                           # 30 秒上手 + FAQ + 授权说明
-├── LICENSE.md                          # 商业授权条款
+├── LICENSE.md                          # 开源许可（MIT-0）
 ├── engine/                             # 本地引擎快照；分发包改为 engine.tar.gz
 ├── engine-source.json                  # 来源与逐文件哈希
 ├── requirements-digital.txt            # 仅数字人引擎所需 requests
@@ -489,7 +490,7 @@ ffmpeg 是系统依赖；**真人线不调用付费生成 API**。数字人线�
 
 ---
 
-## 研发参考（私有资料，不公开）
+## 研发参考（内部笔记）
 
 同行项目清单 —— 都是**给 AI 编程助手用的技能包，靠写代码出图 / 出视频 / 改网页，不用剪辑软件**。
 **只作背景知识与方法论参考，不安装、不接入**（与本线「Python + 标准库、不装 Node、不起浏览器」的硬约束冲突）。
@@ -515,5 +516,5 @@ Anidoodle（手绘插画与确定性渲染）、Impeccable（网页排版配色�
 | 免费版 `mograph` | 保留通用包装路径、现有晚枫专用路径和封面示例，作为开源基础体验；普通用户默认走通用路径 |
 | 本 skill `mograph-pro` | 完整维护的真人 / 数字人双分支成片线，提供完整打包交付、配套资产、持续更新与使用支持 |
 
-两者可能包含同源规范或公开资产；已随免费版公开的内容继续按原许可使用，本 Pro 的独立交付、更新与支持按商业条款执行。
+两者可能包含同源规范或公开资产；已随免费版公开的内容继续按原许可使用，本 Pro 同样采用 MIT-0 开源。
 用户没明确要「完整维护版 / Pro / 数字人双分支」时，不要擅自走这条线。

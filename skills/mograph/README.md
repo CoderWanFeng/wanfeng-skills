@@ -11,8 +11,7 @@
 
 > 💡 **想要完整维护的晚枫成片工作流？**
 > 本 skill 继续免费保留通用路径、晚枫专用路径和封面示例，可用于基础体验。
-> 付费版 **晚枫自动剪视频-Pro（`mograph-pro`）** 提供完整维护版、配套资产、持续更新与交付支持。
-> [WorkBuddy 购买与安装](https://www.workbuddy.cn/share/asset?shareCode=l6Db2M9PIgSq7zGj98JuOD&sig=UpntKZbYiI8mJ8uj)。
+> 完整版 **晚枫自动剪视频-Pro（`mograph-pro`）** 提供完整维护版、配套资产、持续更新与交付支持，现已开源（MIT-0），见 [`skills/mograph-pro/`](../mograph-pro/)。
 
 ---
 
