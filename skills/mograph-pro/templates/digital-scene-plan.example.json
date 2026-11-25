@@ -1,0 +1,36 @@
+{
+  "$schema": "mograph-pro/wanfeng-scene-plan@2",
+  "meta": {
+    "source_mode": "digital-human",
+    "duration": 12.0,
+    "fps": 30,
+    "speed": 1.0,
+    "timing_source": "example-only",
+    "note": "A→B→A 契约示例；真实任务须从完整 a_roll.json 导入，不可直接用于交付"
+  },
+  "scenes": [
+    {
+      "id": 1, "segment_index": 1, "start": 0.0, "end": 4.0, "duration": 4.0,
+      "roll": "a", "presenter": "full", "mode": "overlay", "head": false,
+      "text": "今天介绍从文稿到成片的流程。", "audio": "seg_001.mp3", "video": "seg_001.mp4",
+      "layers": [], "assets": [], "visual_status": "presenter-ready"
+    },
+    {
+      "id": 2, "segment_index": 2, "start": 4.0, "end": 8.0, "duration": 4.0,
+      "roll": "b", "presenter": "none", "mode": "fs", "head": false,
+      "text": "先拆镜头，再定声音时长，最后对齐画面。", "audio": "seg_002.mp3", "video": null,
+      "visual_hint": "真实自绘三步流程：分镜、配音、合成；带步骤条",
+      "layers": ["workflow_explainer"], "assets": [], "full_frame": true,
+      "visual_status": "pending",
+      "note": "任务渲染器必须实现 workflow_explainer 并复核静帧后才可改 ready"
+    },
+    {
+      "id": 3, "segment_index": 3, "start": 8.0, "end": 12.0, "duration": 4.0,
+      "roll": "a", "presenter": "circle", "mode": "fs", "head": true,
+      "head_pos": "bottom-left", "sub_dy": -430,
+      "text": "关键是只在表达观点时出镜。", "audio": "seg_003.mp3", "video": "seg_003.mp4",
+      "layers": ["closing_steps"], "assets": [], "visual_status": "pending",
+      "note": "裁脸参数按新素材实测，不能直接使用旧真人源坐标"
+    }
+  ]
+}

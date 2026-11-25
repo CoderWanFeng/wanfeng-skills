@@ -1,0 +1,9 @@
+# 数字人分支 Python 依赖（Python 3.10+）；真人分支无需安装
+# 用户确认后安装：pip3 install -r requirements-digital.txt
+requests>=2.28,<3
+
+# 系统依赖不在 pip 里，需要单独安装：
+#   macOS:  brew install ffmpeg
+#   Ubuntu: sudo apt install ffmpeg
+#   Windows: 下载 ffmpeg 并把 bin/ 加入 PATH
+# 验证：ffmpeg -version && ffprobe -version

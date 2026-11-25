@@ -1,0 +1,204 @@
+{
+  "$schema": "mograph-pro/wanfeng-scene-plan@1",
+  "meta": {
+    "style_path": "wanfeng",
+    "renderer_hint": "pillow-frame",
+    "source_script": "口播稿.md",
+    "source_video": "",
+    "aspect": "9:16",
+    "duration": 84.27,
+    "duration_source": "timeline",
+    "timing_source": "measured",
+    "scenes": 9,
+    "generated_by": "scripts/make_scene_plan.py v1.0.0",
+    "spec_ref": "references/wanfeng-path.md"
+  },
+  "warnings": [
+    "本文件是**骨架**：场景版式、文案、圆形人头位置须按 references/wanfeng-path.md 手写后才可渲染"
+  ],
+  "scenes": [
+    {
+      "id": 1,
+      "start": 0.13,
+      "end": 5.87,
+      "duration": 5.74,
+      "layout": "hook",
+      "layout_hint": "开场钩子（fs 全屏设计版式 + 圆形人头）",
+      "mode": "fs",
+      "head": true,
+      "head_pos": "bottom-left",
+      "cues": [
+        "所有打工人注意了",
+        "特别适合办公的hy4 flash",
+        "这个大模型今天发布了"
+      ],
+      "text": "所有打工人注意了特别适合办公的hy4 flash这个大模型今天发布了",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 2,
+      "start": 6.6,
+      "end": 20.67,
+      "duration": 14.07,
+      "layout": "evidence",
+      "layout_hint": "证据卡 / 数字卡（overlay）",
+      "mode": "overlay",
+      "head": false,
+      "head_pos": "top-right",
+      "cues": [
+        "而且人人都可以免费使用",
+        "没有任何的技术门槛",
+        "并且悄悄告诉大家",
+        "现在大家看到的这个视频就是",
+        "我用hy4自动剪辑出来的",
+        "是不是这些动画效果都做的非常好",
+        "括我这里面用到的一些动画"
+      ],
+      "text": "而且人人都可以免费使用没有任何的技术门槛并且悄悄告诉大家现在大家看到的这个视频就是我用hy4自动剪辑出来的是不是这些动画效果都做的非常好括我这里面用到的一些动画",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 3,
+      "start": 21.27,
+      "end": 28.43,
+      "duration": 7.16,
+      "layout": "statement",
+      "layout_hint": "观点卡（overlay 真人打底 + 单卡）",
+      "mode": "overlay",
+      "head": false,
+      "head_pos": "top-right",
+      "cues": [
+        "还有一些截图",
+        "包括截图上那些标记",
+        "都是他自己标注的",
+        "最后我给大家说我用的是哪个工具"
+      ],
+      "text": "还有一些截图包括截图上那些标记都是他自己标注的最后我给大家说我用的是哪个工具",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 4,
+      "start": 28.43,
+      "end": 34.5,
+      "duration": 6.07,
+      "layout": "evidence",
+      "layout_hint": "证据卡 / 数字卡（overlay）",
+      "mode": "overlay",
+      "head": false,
+      "head_pos": "top-right",
+      "cues": [
+        "看到最后我告诉",
+        "大家怎么自动剪视频",
+        "咱们先说hy4 flash",
+        "免费使用就只需要两步"
+      ],
+      "text": "看到最后我告诉大家怎么自动剪视频咱们先说hy4 flash免费使用就只需要两步",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 5,
+      "start": 34.5,
+      "end": 42.1,
+      "duration": 7.6,
+      "layout": "step",
+      "layout_hint": "操作步骤（fs 全屏 + 截图 + 步骤条 + 圆形人头）",
+      "mode": "fs",
+      "head": true,
+      "head_pos": "top-right",
+      "cues": [
+        "第一步打开workbuddy",
+        "腾讯出的这个AI工具",
+        "我相信我的粉丝应该",
+        "绝大多数都安装了",
+        "没安装的话点开这个链接"
+      ],
+      "text": "第一步打开workbuddy腾讯出的这个AI工具我相信我的粉丝应该绝大多数都安装了没安装的话点开这个链接",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 6,
+      "start": 42.3,
+      "end": 55.37,
+      "duration": 13.07,
+      "layout": "step",
+      "layout_hint": "操作步骤（fs 全屏 + 截图 + 步骤条 + 圆形人头）",
+      "mode": "fs",
+      "head": true,
+      "head_pos": "top-right",
+      "cues": [
+        "第二步在这个模型列表",
+        "里直接选择hy4 flash",
+        "对就是这么简单",
+        "我是怎么剪视频的呢",
+        "在workbuddy这个专家技能连接器里面",
+        "大家来选择",
+        "点点进去之后",
+        "选择技能"
+      ],
+      "text": "第二步在这个模型列表里直接选择hy4 flash对就是这么简单我是怎么剪视频的呢在workbuddy这个专家技能连接器里面大家来选择点点进去之后选择技能",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 7,
+      "start": 55.37,
+      "end": 62.63,
+      "duration": 7.26,
+      "layout": "evidence",
+      "layout_hint": "证据卡 / 数字卡（overlay）",
+      "mode": "overlay",
+      "head": false,
+      "head_pos": "top-right",
+      "cues": [
+        "然后搜索晚枫AI",
+        "晚枫自动剪视频",
+        "这是我发布上来免费给",
+        "大家使用的一个技能",
+        "大家直接点它"
+      ],
+      "text": "然后搜索晚枫AI晚枫自动剪视频这是我发布上来免费给大家使用的一个技能大家直接点它",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 8,
+      "start": 62.73,
+      "end": 72.07,
+      "duration": 9.34,
+      "layout": "step",
+      "layout_hint": "操作步骤（fs 全屏 + 截图 + 步骤条 + 圆形人头）",
+      "mode": "fs",
+      "head": true,
+      "head_pos": "top-right",
+      "cues": [
+        "然后他就会让你提供你自己的视频",
+        "你随便给他一个什么视频",
+        "看看他剪辑的效果是不是",
+        "和我今天这个视频一样",
+        "大家赶紧去试试吧"
+      ],
+      "text": "然后他就会让你提供你自己的视频你随便给他一个什么视频看看他剪辑的效果是不是和我今天这个视频一样大家赶紧去试试吧",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    },
+    {
+      "id": 9,
+      "start": 72.07,
+      "end": 84.27,
+      "duration": 12.2,
+      "layout": "cta",
+      "layout_hint": "行动号召（片尾 CTA）",
+      "mode": "overlay",
+      "head": false,
+      "head_pos": "top-right",
+      "cues": [
+        "而且不仅这个技能是免费的",
+        "你还可以用hy4Flash去剪辑视频",
+        "一点积分都不花",
+        "大家赶紧去试试吧",
+        "有什么问题打在评论区",
+        "用完了回来在评论区告诉我"
+      ],
+      "text": "而且不仅这个技能是免费的你还可以用hy4Flash去剪辑视频一点积分都不花大家赶紧去试试吧有什么问题打在评论区用完了回来在评论区告诉我",
+      "note": "待填：按 references/wanfeng-path.md §5/§6 手写这一场的 layers 与文案"
+    }
+  ],
+  "_readme": "本文件由 scripts/make_scene_plan.py 真实生成（输入：2-AI工具/20-混元hy4-flash 的口播稿 + hy4-flash.srt）。字段含义：start/end=场景时间区间（原始口播时间，不是成片时间）；layout=建议版式（hook/statement/evidence/step/reveal/cta，仅供参考，最终按 wanfeng-path.md §5 定）；mode=overlay|fs；head=是否加圆形人头；head_pos=head_pos 建议位置（hook 走左下、其余走右上）；cues=该场包含的字幕原文；text=拼接后的整场文案 ；note=待办提示。本文件是**骨架不是分镜稿**，正式渲染前必须按 references/wanfeng-path.md §5/§6 手写每一场的 layers。"
+}
