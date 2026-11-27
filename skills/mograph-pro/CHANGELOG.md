@@ -5,6 +5,22 @@
 
 ---
 
+## v1.5.0 · 2026-11-27
+
+两条一起收口：**日常碎片 vlog 分支移出本 skill**，并补记之前只改了文档没登记的**开源换证**。
+
+| 变化 | 是什么 | 影响 |
+|---|---|---|
+| **vlog 分支独立** ⭐ | 随手拍视频 / 照片剪 vlog 的那条线（素材先行、AI 选形式写旁白、丰富动效、几秒样片）拆成同级独立技能 **晚枫自动剪vlog（`mograph-vlog`）** | `references/daily-vlog.md`、`scripts/vlog_scan.py`、`scripts/vlog_render.py` 及其测试**移到新技能目录**；本 Pro 不再内置 vlog 路径 |
+| **本 skill 回到两条路径** | 真人口播包装 / 文稿生成数字人混剪；`description` 与触发词去掉 vlog 词，§3.0 与「何时使用」改成「遇到碎片 vlog 直接改用 `mograph-vlog`」 | 不会再拿口播的问答关卡和圆头版式去管日常 vlog |
+| **补记 MIT-0 开源** | 11-26 已把本 skill 标为开源（`LICENSE.md` 换 MIT-0、README §八、SKILL 安装说明），当时没写进本记录 | 授权口径以 MIT-0 为准；`cover-assets/` 里晚枫本人形象仍只授权「固定底图换字换 logo」 |
+
+**要重新做什么**：装过带 vlog 分支版本（1.4.0，未公开分发）的本机副本，需要删掉 `scripts/vlog_*` 与 `references/daily-vlog.md`，并按新 `SKILL.md` / `README.md` 覆盖；剪 vlog 的需求改装 `skills/mograph-vlog/`。
+
+**还没验**：本次为文档与目录重排，未重跑口播 / 数字人端到端出片；Pro 的分发包（`dist/mograph-pro.zip`）与安装副本需按上条重新打包对齐。
+
+---
+
 ## v1.3.0 · 2026-11-25
 
 一次把 11-20 到 11-23 已经写好、但一直没正式打进分发包的能力全部收口。**这次是「功能补齐 + 发版链路修好」，不是只改个版本号。**

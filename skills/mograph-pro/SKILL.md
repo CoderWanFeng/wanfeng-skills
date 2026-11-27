@@ -2,10 +2,10 @@
 name: mograph-pro
 display_name: 晚枫自动剪视频-Pro
 display_name_en: WanFeng Mograph Pro
-description: "晚枫自动剪视频-Pro：三条独立成片路径。日常碎片vlog只需随手拍的视频、照片或素材目录，不需要口播视频、文稿或字幕；AI先实际看素材，再选择叙事形式、写旁白、安排剪辑与丰富动画，先出指定时长样片或直接成片，不套固定圆形人头、口播卡片和品牌版式。原真人口播包装与文稿生成数字人混剪功能保留：语义A/B分镜、逐帧动效、宽屏选择、响度归一、封面和可选贴图；数字人按阶段授权。触发词：日常vlog、剪辑vlog、随手拍、零碎视频、碎片素材、照片视频混剪、旅行记录、出差记录、活动回顾、把目录剪成视频、没有口播、没有稿子、自动剪辑、口播加动画、数字人混剪、加花字、加数据卡、晚枫风格、Pro版、mograph-pro、出样片、先出5秒、做封面、素材采集。"
-description_zh: "新增日常碎片vlog：只给视频照片目录，AI看素材、选形式、写旁白、设计丰富动画并剪成片，不要求口播或稿子、不套口播固定版式。保留真人包装与数字人混剪、宽屏选择、响度和封面；付费声音与素材上传仍按授权执行。"
-description_en: "Adds a footage-first daily-vlog branch: give a folder of casual clips and photos without narration or a script; the agent reviews media, chooses a format, writes narration and edits rich motion without a talking-head template. Existing presenter workflows, loudness and cover tools remain independent."
-version: 1.4.0
+description: "晚枫自动剪视频-Pro：把真人口播或文稿生成的数字人混剪做成有设计感的成片 + 封面（逐帧自己画、整屏排版、圆形人头、步骤条、一段话配一个画面、按语速配画面、说什么就出现什么效果、任意文稿通用、效果参数从口播句子里抽不写死、竖横版与各平台比例可选、音量自动对齐、封面换字换 logo）。**这是晚枫工作室自有账号的完整成片打法**，从选择素材来源 → 确认是否生成宽屏 → 确认文稿与语义分镜 → 准备素材 → 排画面 → 先看单张画面 → 出整条片子 → 最后检查 → 统一音量 → 写交付说明 → 做封面，一条龙，不联网找现成卡片代码、不装 Node、不起浏览器。先选择真人视频或文稿生成数字人，两条线都做语义 A/B 预分镜；真人始终可见，数字人 B-roll 无人像。数字人引擎内置，按阶段授权生成。日常随手拍碎片 vlog 不在这条线里，用姊妹技能「晚枫自动剪vlog」（mograph-vlog）。触发词：数字人混剪、文稿生成视频、自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、晚枫专用、晚枫风格、我们自己的风格剪、Pro 版、mograph-pro、做封面、换个封面、封面换皮、换 logo、产品 logo、下 logo、下载 logo、logo 素材、加配图、找配图、加截图、素材采集、出样片、先出样片。"
+description_zh: "真人口播或文稿生成数字人混剪 → 确认是否生成宽屏 → 语义 A/B 分镜 → Pillow 自绘包装 → 成片与封面。支持仅竖版、横竖双版或仅宽屏；宽屏单独排版和归档。数字人按阶段确认费用，不装 Node、不起浏览器。日常碎片 vlog 交给姊妹技能 mograph-vlog。"
+description_en: "Creates branded videos and covers from talking-head footage or script-driven digital presenters. Confirms portrait-only, widescreen-only, or both before layout, and uses an independent layout and cover for widescreen. Includes semantic A/B planning, stage approvals, Pillow compositing and loudness normalization. Casual daily-vlog footage is handled by the sibling mograph-vlog skill."
+version: 1.5.0
 agent_created: true
 author: 晚枫工作室
 license: MIT-0
@@ -13,11 +13,11 @@ allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 examples_zh:
 - "我不想露脸，先帮我写一段介绍稿，再用它做成竖版视频"
 - "这条口播视频，用晚枫风格剪成有版式的成片"
-- "这里只有随手拍的视频和照片，没有稿子，帮我剪成vlog，先出5秒，动画丰富一点"
+- "用这份文案加数字人做讲解视频，只在必要镜头出镜"
 examples_en:
 - "I don't want to be on camera — draft the script first, then turn it into a vertical video"
 - "Cut this talking-head clip in the WanFeng house style into a designed final video"
-- "Turn this folder of casual clips and photos into a vlog; choose the format and write narration yourself, then show a richly animated five-second preview"
+- "Make an explainer video with a digital presenter from this script, on camera only when needed"
 metadata:
   emoji: "🎬"
   requires:
@@ -28,19 +28,10 @@ metadata:
 
 # 晚枫自动剪视频-Pro（mograph-pro）
 
-## 先路由：三条分支独立，不让口播要求管住 vlog
-
-| 用户给的素材与意图 | 路径 |
-|---|---|
-| 日常随手拍、零碎视频与照片、一个素材目录，要剪 vlog / 活动记录；可以没有稿子 | **日常碎片 vlog**：先读 [daily-vlog.md](references/daily-vlog.md)，看素材 → AI选形式与写旁白 → 设计丰富动画 → 按要求出稿、样片或成片 |
-| 已有对镜头讲话的口播，要晚枫固定风格包装 | 下文原真人口播流程 |
-| 明确要文稿生成数字人讲解 | 下文原数字人混剪流程 |
-
-**素材已有足够上下文就直接做，不问用户要口播或稿子。** 手机自拍视频不等于口播；先看实际内容，不按文件名推断。新 vlog 可自动写稿、重排镜头、照片视频混剪、音乐卡点、加旁白与环境声。用户说“先看稿”就停在稿件，说“先出5秒”就只做带动画和已授权声音的5秒样片。
-
-**适用范围**：下文固定圆头、三行标题、步骤条、品牌色、A/B分镜、每句一张卡、固定底图封面、不装Node/不起浏览器及 W1–W25 的口播制作规约，只约束原口播/数字人路径。vlog 按独立参考选择合适的形式、工具与节奏，不强加上述模板和问答关卡；不能免除事实、隐私、原素材保护、付费/上传授权与真实验收要求。新分支支持基础渲染入口，复杂效果由 Agent 按素材另外设计，不把脚本效果清单当创意上限。
-
-## 原口播 / 数字人路径（以下保留）
+> **本线只管两条路径**：已有真人口播 → 晚枫固定风格包装；文稿 → 数字人混剪。
+> **日常随手拍的碎片视频 / 照片剪 vlog 不在这里**——那条线已经独立成姊妹技能 **晚枫自动剪vlog（`mograph-vlog`）**：
+> 只给素材目录，AI 看素材、选形式、写第一人称旁白、排转场与动效，不要求口播或稿子。遇到这类需求直接改用那个技能，
+> 不要在本线里追问「有没有口播稿」。
 
 > **一句话**：真人口播视频 / 文稿生成数字人混剪 → 语义 A/B 分镜 → 逐帧包装 → 成片 + 固定底图封面。
 > **最核心的一条能力：他说什么，就出现什么；出现什么，就真的会动。** 这不是某一期的效果，是给**任何使用者、任何一份文稿**通用的引擎 ——
@@ -80,7 +71,7 @@ metadata:
 
 **用它的时机**（用户这么说就触发）：
 
-- 「这些是日常随手拍的视频」「只有零碎素材没有稿子」「把这个目录剪成vlog」「帮我选形式，动画丰富一点」→ 直接进 [日常碎片vlog](references/daily-vlog.md)，不走下面的口播来源问答。
+- 「这些是随手拍的零碎视频和照片，帮我剪成vlog」→ 改用姊妹技能 **晚枫自动剪vlog（`mograph-vlog`）**，不在本线追问口播或稿子。
 - 「这条口播视频按我们自己的风格剪」「走晚枫那条路」「用 Pro 版剪」
 - 「用文稿做数字人混剪」「演示部分用纯 B-roll，只在观点镜头出镜」
 - 「帮我给这条口播做成有版式的成片」「加花字 / 加数据卡 / 加截图标注」
@@ -100,8 +91,6 @@ metadata:
 ---
 
 ## 二、前置条件（几个坑先说清楚）
-
-本节只用于原口播/数字人路径；日常vlog按 [daily-vlog.md](references/daily-vlog.md) 选择已可用工具与字体，不为了开工要求补口播、数字人或固定封面。
 
 1. **Python 解释器**：本线的渲染器要 **Pillow 12.x + numpy**，用托管解释器：
    `~/.workbuddy/binaries/python/envs/default/bin/python3`
@@ -158,7 +147,7 @@ Step I  · 小绿书贴图（可选）  → 问用户要不要，要则按 xiaol
 
 ### 3.0 第一步 · 来源与生成方式（必须按顺序问，不要跳步）
 
-先排除日常碎片vlog：用户给的是零碎视频/照片目录并要vlog时，直接进 [daily-vlog.md](references/daily-vlog.md)，不走本节。其余素材按下面三层分叉依次问，**上一层的答案决定下一层问什么**，不要一次性把所有选项抛给用户。
+先排除碎片 vlog：用户给的是随手拍的视频 / 照片目录、要剪成 vlog 时，改用姊妹技能「晚枫自动剪vlog」（`mograph-vlog`），不走本节。其余素材按下面三层分叉依次问，**上一层的答案决定下一层问什么**，不要一次性把所有选项抛给用户。
 
 **① 有没有口播？**
 - 有真人口播视频 → 走「真人线」（人物始终可见，先做 Step 0 删减授权）。**只有文稿不能当成已有真人视频。**
@@ -402,8 +391,6 @@ mograph-pro/
 ├── engine-source.json                  # 来源与逐文件哈希
 ├── requirements-digital.txt            # 仅数字人引擎所需 requests
 ├── scripts/
-│   ├── vlog_scan.py                    # 日常碎片素材探测、旋转识别、关键帧与接触表
-│   ├── vlog_render.py                  # 独立vlog时间轴、逐帧动效、转场和声音混合
 │   ├── make_scene_plan.py              # 真人旧骨架 / 数字人完整时间轴导入
 │   ├── init_digital_workspace.py        # 校验并展开引擎，只补缺失
 │   ├── preflight_digital.py             # 数字人零调用体检
@@ -417,7 +404,6 @@ mograph-pro/
 ├── assets/
 │   └── execution-flow.png              # 双分支总览图（Pillow 2 倍超采样自绘）
 ├── references/
-│   ├── daily-vlog.md                   # 素材先行的独立vlog流程与输入/渲染契约
 │   ├── wanfeng-path.md                 # ⭐ 主规范（执行流 / 设计令牌 / 版式库 / 场景表 / 语速 / 渲染交付 / 踩坑 / W 规则）
 │   ├── semantic-to-effect.md           # ⭐⭐ 语义→效果引擎（说什么出什么：通用映射表 / 效果基元库 / 指令通道 / 逐句对照表）
 │   ├── aspect-ratio.md                 # ⭐ 画幅可选（竖横版 / 各平台比例 / 通发安全区 / CANVAS 参数化 / 横版重排版）
