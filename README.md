@@ -49,7 +49,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 
 ## 📚 Skill 一览
 
-18 个开源 Skill（含旗舰完整版 mograph-pro），按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
+19 个开源 Skill（含旗舰完整版 mograph-pro 与独立的 mograph-vlog），按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
 
 ### 🔍 选题与资讯
 
@@ -77,6 +77,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 | [wanfeng-ai-model](skills/wanfeng-ai-model/) | 晚枫模特换装：模特图 + 服装图 → 分步确认参数，自动换装、生成卡点音乐、合成 9:16 短片并逐帧质检（生成前确认积分） |
 | [mograph](skills/mograph/) | 晚枫自动剪视频：给真人口播视频按讲话内容定时弹出字卡 / 数据 / 图表并渲染成片 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-mograph) |
 | [mograph-pro（旗舰开源版）](skills/mograph-pro/) | 真人剪辑 / 文稿生成数字人 A/B 混剪的完整维护版（成片 + 封面），含配套资产与持续更新；源码、文档、引擎全部开源（MIT-0） |
+| [mograph-vlog（晚枫自动剪vlog）](skills/mograph-vlog/) | 日常碎片 vlog：只给随手拍的视频 / 照片目录，AI 看素材、选形式、写第一人称旁白、排转场与动效，先出几秒样片再成片；不需要口播、稿子或数字人 |
 | [wanfeng-digital-human](skills/wanfeng-digital-human/) | 一段视频 / 一张照片 → 4–10 秒会说话的数字人短片，零成本（只扣软件积分）[👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-digital-human) |
 | [wanfeng-digital-human-pro](skills/wanfeng-digital-human-pro/) | 开源 Pro：30 秒以上长稿的切段、素材体检与平台提示词施工图，不单独售卖（第三方平台费用另计） |
 
