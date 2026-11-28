@@ -49,7 +49,7 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 
 ## 📚 Skill 一览
 
-19 个开源 Skill（含旗舰完整版 mograph-pro 与独立的 mograph-vlog），按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
+20 个开源 Skill（含旗舰完整版 mograph-pro 与独立的 mograph-vlog），按场景分组（详细触发词与选用决策表见 [skills/README.md](skills/README.md)）：
 
 ### 🔍 选题与资讯
 
@@ -90,6 +90,12 @@ git clone https://atomgit.com/CoderWanFeng1/wanfeng-skills.git
 | [repowiki-generator](skills/repowiki-generator/) | 晚枫知识库：为任意项目生成结构化 Wiki 文档，让 Agent 秒懂项目 [👉 SkillHub](https://skillhub.cn/skills/user_bf8c5b73/wanfeng-repowiki-generator) |
 | [workbuddy-daily-credits](skills/workbuddy-daily-credits/) | WorkBuddy 成长中心每日积分自动领取（签到 / 猫猫旅行 / 开盲盒）[👉 介绍文章](https://www.python4office.cn/ads/ai/tools/WorkBuddy积分/20261116-workbuddy积分skill-签到猫猫盲盒自动领/) |
 
+### 📊 数据与运营
+
+| Skill | 一句话用途 |
+|---|---|
+| [wanfeng-hit-ops](skills/wanfeng-hit-ops/) | 晚枫爆款数据分析：多平台账号后台数据 → 归类 → 解析 → 爆款归因 → 月度运营报告。**不看播放量看每千播放涨粉与收藏**，识别真爆款与伪爆款，产出带数据范围声明与反例的复盘稿 |
+
 > **全部 Skill 均已开源**：旗舰完整版 **mograph-pro** 的源码、文档与配套资产同样公开（MIT-0），与 **wanfeng-digital-human-pro** 一样不再单独售卖。
 
 ---
@@ -104,6 +110,7 @@ Skill 之间相互独立，但串起来就是完整生产线：
 口播包装  已拍口播视频 + 讲稿 → [mograph] 弹卡动效成片 → [cover-hero] 同视觉封面
 存档线    [mp-saver] 公众号文章 → MHTML → [doc-speedreader] 转 Markdown → 喂 LLM
 建站线    [personal-website-builder] 建站 → [opensource-housekeeper] 推 GitHub
+数据线    [wanfeng-hit-ops] 后台数据 → 爆款归因 → 月度报告 → 下期选题实验 → 回到选题
 ```
 
 ---
