@@ -1,5 +1,6 @@
 # 晚枫自动剪视频-Pro（mograph-pro）
 
+> **v1.6.0：口播里提到品牌名，画面上自动长出那个品牌的官方 logo**（识别 → 取件 → 上屏 → 兜底，一条龙）。
 > **v1.5.0：日常碎片 vlog 已拆分为独立技能「晚枫自动剪vlog」（`mograph-vlog`），本 Pro 回到真人口播 / 数字人两条成片路径。**
 > 真人口播 / 文稿生成数字人混剪 → 确认是否出宽屏 → 成片 + 封面 + 可选小绿书贴图。第一步选择来源；两线都做语义 A/B 分镜。真人全程有人，数字人只在 A 段出镜、B 段为纯素材且旁白连续。
 > 晚枫工作室自己账号用的成片打法，全流程写死成一个 skill：不用装 Node、不用起浏览器、不联网找现成的卡片效果代码。
@@ -27,6 +28,7 @@
 | 开头提速 | 无 | 真人保留底片与时间映射同步提速；数字人默认 1.0×，避免破坏口型 |
 | 音量统一 | 无 | 有（自动量一遍，音量对齐到平台要求，出 **-14.4 LUFS** 的上传版） |
 | 封面 | 无 | 有（**固定底图换字换 logo，人像完全不动**，自动检查三处；文案按视频号缩略图适配：更粗、更靠下） |
+| **视频里的品牌 logo** | 无 | 有（**口播提到 GLM / MiniMax / WorkBuddy… 就自动取官方 logo 并上屏**；自动去白底裁留白、自动登记来源；取不准就退纯文字，**不拿近似 logo 硬凑**） |
 | 小绿书 / 小红书贴图 | 无 | 有（发布包整理时问一次，3:4 竖版 1080×1440，1 张主封面 + 3–4 张内页，深墨绿终端工作台风，`xiaolvshu.md`） |
 | 交付说明 | 简版 | 八节交付说明（写清「本轮改了什么」「哪些勿改」） |
 
@@ -46,6 +48,7 @@
 数字人 素材准备    → plan → 配音试听 → 第一段出镜样段 → 补齐 → 完整时间轴
 A   定版式与令牌    → mograph-task 工程骨架
 A2  配图素材采集    → 截图 / 配图 / 红框标注 + 来源登记表
+A2-2 品牌 logo 采集 → 口播提到品牌名 → 自动取官方 logo 并上屏
 B   切场景表        → build_scenes()，逐句对齐 SRT
 C   静帧复核        → 秒级出图，改版式只要几秒
 D   重渲全片        → 逐帧渲染 + ffmpeg 管道
@@ -60,7 +63,7 @@ I   小绿书贴图      → 发布包整理时问一次；要则出 3:4 竖版�
 
 1. **设计令牌与版式库**（`references/wanfeng-path.md` §4–§5）：配色、字幕条、卡片圆角、胶囊配对铁律、
    `fs` 全屏分层坐标、圆形人头位置半径、步骤条、截图面板与红框规格 —— **每一行都是四轮用户反馈收敛出来的**，不是审美玄学。
-2. **25 条硬规则**（W1–W25）：每条后面都写着「违反的后果」。其中 **W24「说什么出什么」是面向任意文稿 / 使用者的通用引擎**（映射表 + 效果基元库 + 指令通道 + 逐句对照表，见 `references/semantic-to-effect.md`）；**W25「宽屏选择」**（排版前一次选定；宽屏独立排版和验收，见 `references/aspect-ratio.md`）。22 条踩坑清单逐条附解法
+2. **26 条硬规则**（W1–W26）：每条后面都写着「违反的后果」。其中 **W24「说什么出什么」是面向任意文稿 / 使用者的通用引擎**（映射表 + 效果基元库 + 指令通道 + 逐句对照表，见 `references/semantic-to-effect.md`）；**W25「宽屏选择」**（排版前一次选定；横屏独立排版和验收，见 `references/aspect-ratio.md`）；**W26「视频内品牌 logo」**（提到才上、三关准确、每片 ≤3 次，见 `references/brand-logo.md`）。22 条踩坑清单逐条附解法
    （基线锚点、胶囊同明度、语速只改一半、`✓` 字形缺失、投影盖字、椅子渗进墙面、宽光带盖正文、翻牌器重影、横版拉伸竖版帧……）。
 3. **实证数据底账**：71 号原片的 30 块全表（含时长与 ASR 原文）、发布版保留的 25 句对照、
    删除量构成、阈值检验 —— 规则为什么这么定，写在数据里，不靠「经验」二字糊弄。
@@ -89,6 +92,10 @@ I   小绿书贴图      → 发布包整理时问一次；要则出 3:4 竖版�
 （矢量优先、自动去白底裁留白、自动登记来源），并按「**在准确的前提下要好看**」的标准挑 ——
 是不是这个产品、是不是官方源、是不是同一版本，三关全过才用，好看排在这三关之后。
 拿不准就问你，宁可用纯文字提产品名，也不用近似 logo 硬凑。
+
+**画面里的品牌 logo 也一样**：口播里提到 GLM、MiniMax、WorkBuddy 这些品牌名，
+它会自动找到官方 logo、下载、去白底裁留白、登记来源，然后挂到那句的画面上（品牌角标 / 品牌卡 / 片尾聚合三档）。
+**提到才上、每片最多 3 次**；官方源取不到就退成纯文字品牌名，**不会拿长得像的 logo 硬凑**。
 
 ---
 
@@ -144,6 +151,14 @@ python3 scripts/get_logo.py \
   --brand "<产品名>" \
   --manifest "<选题>/mograph-task/assets/asset-manifest.json"
 # 把输出的路径填进模板 CONFIG 的 LOGO_PATH 即可
+
+# ⑤ 视频里提到的品牌？扫候选 + 自动取官方 logo（Step A2-2）
+python3 scripts/brand_scan.py --script 口播稿.md --out 品牌候选.md
+python3 scripts/brand_logo.py \
+  --brand "GLM" --site "https://glm.cn" \
+  --out "<选题>/mograph-task/assets/logos/GLM.png" \
+  --manifest "<选题>/mograph-task/assets/asset-manifest.json"
+# 取不到官方源会退成纯文字品牌名，不会拿近似 logo 硬凑
 ```
 
 ---
@@ -178,6 +193,7 @@ python3 scripts/digital_human.py --root <工作区> --script 标记稿.txt --job
 | **画幅/比例设置（竖横版 / 各平台）** | `references/aspect-ratio.md` | 只需定档位；给出画布、安全区、横版重排版骨架，任何成片都先过这一关。默认竖版通发国内，不用选 |
 | **语义删减** | `references/cut-feature.md` | 只需 ffmpeg（ASR 可选），不要 Pillow、不要 Node |
 | **封面换皮** | `references/wanfeng-cover.md` | 托管解释器 + cv2，秒级出图；logo 本地没有就 `scripts/get_logo.py` 自己上网取 |
+| **视频里的品牌 logo** | `references/brand-logo.md` | 只需文稿 / SRT；扫出提到的品牌 → 自动取官方 logo → 上屏；取不准就退纯文字 |
 | **场景骨架** | `scripts/make_scene_plan.py` | 纯标准库，秒出，离线可跑 |
 | **动画优先两阶段** | `references/animation-first.md` | 成片 + 现成 SRT 即可，无需重新识别；先纯动画 Demo 确认，再叠真人层出成片 |
 | **小绿书 / 小红书贴图** | `references/xiaolvshu.md` | 发布包整理时问一次再决定；3:4 竖版 1080×1440，1 张主封面 + 3–4 张内页，模板 `templates/xiaolvshu.example.py` |
@@ -198,6 +214,7 @@ python3 scripts/digital_human.py --root <工作区> --script 标记稿.txt --job
 | 找不到图 | 小众工具没公开截图 | 退自动效卡 / 自绘示意图，**绝不拿「看起来相关」的图硬凑** |
 | 封面改完字压到头发 | 没跑三闸自检 | 净空闸 ≥ 30px，投影收在发顶之上 |
 | 封面 logo 本地没有 / 不合适 | 本地素材里没有那个产品的标识 | 它会自己从官方源下载（`scripts/get_logo.py`）；拿不准准不准就问你，**宁可用纯文字也不用近似 logo** |
+| 提到了品牌但画面上没 logo | 品牌名没加引号、扫描扫不出来 | 用 `scripts/brand_scan.py --add "品牌名"` 手工补；或直接说「把 XX 的 logo 放上去」，它会按官网取件 |
 | 封面 logo 贴上去有一块白方块 | 白底 logo 没去透明 | 用 `scripts/get_logo.py` 取（自动去白底 + 裁留白）；确实要保留白底就加 `--keep-bg` |
 | 换到别的机器就崩 | 字体 / 解释器不对 | 换 Hiragino Sans GB + 托管解释器，重跑静帧 |
 | 想发 YouTube / B站横屏 | 正在确认交付画幅 | 说「只做横版」或「竖版再加一份宽屏」即可；横版独立重排，视频与横版封面进入 `发布包/横版视频/`（`aspect-ratio.md` §4.7） |
@@ -222,5 +239,6 @@ python3 scripts/digital_human.py --root <工作区> --script 标记稿.txt --job
 **动画优先支线**：`references/animation-first.md` ·
 **封面打法**：`references/wanfeng-cover.md` ·
 **配图规范**：`references/visual-assets.md` ·
+**品牌 logo 规范**：`references/brand-logo.md` ·
 **小绿书贴图**：`references/xiaolvshu.md` ·
 **删减规则**：`references/cut-rules.md`

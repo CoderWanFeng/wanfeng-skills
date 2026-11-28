@@ -2,10 +2,10 @@
 name: mograph-pro
 display_name: 晚枫自动剪视频-Pro
 display_name_en: WanFeng Mograph Pro
-description: "晚枫自动剪视频-Pro：把真人口播或文稿生成的数字人混剪做成有设计感的成片 + 封面（逐帧自己画、整屏排版、圆形人头、步骤条、一段话配一个画面、按语速配画面、说什么就出现什么效果、任意文稿通用、效果参数从口播句子里抽不写死、竖横版与各平台比例可选、音量自动对齐、封面换字换 logo）。**这是晚枫工作室自有账号的完整成片打法**，从选择素材来源 → 确认是否生成宽屏 → 确认文稿与语义分镜 → 准备素材 → 排画面 → 先看单张画面 → 出整条片子 → 最后检查 → 统一音量 → 写交付说明 → 做封面，一条龙，不联网找现成卡片代码、不装 Node、不起浏览器。先选择真人视频或文稿生成数字人，两条线都做语义 A/B 预分镜；真人始终可见，数字人 B-roll 无人像。数字人引擎内置，按阶段授权生成。日常随手拍碎片 vlog 不在这条线里，用姊妹技能「晚枫自动剪vlog」（mograph-vlog）。触发词：数字人混剪、文稿生成视频、自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、晚枫专用、晚枫风格、我们自己的风格剪、Pro 版、mograph-pro、做封面、换个封面、封面换皮、换 logo、产品 logo、下 logo、下载 logo、logo 素材、加配图、找配图、加截图、素材采集、出样片、先出样片。"
-description_zh: "真人口播或文稿生成数字人混剪 → 确认是否生成宽屏 → 语义 A/B 分镜 → Pillow 自绘包装 → 成片与封面。支持仅竖版、横竖双版或仅宽屏；宽屏单独排版和归档。数字人按阶段确认费用，不装 Node、不起浏览器。日常碎片 vlog 交给姊妹技能 mograph-vlog。"
-description_en: "Creates branded videos and covers from talking-head footage or script-driven digital presenters. Confirms portrait-only, widescreen-only, or both before layout, and uses an independent layout and cover for widescreen. Includes semantic A/B planning, stage approvals, Pillow compositing and loudness normalization. Casual daily-vlog footage is handled by the sibling mograph-vlog skill."
-version: 1.5.0
+description: "晚枫自动剪视频-Pro：把真人口播或文稿生成的数字人混剪做成有设计感的成片 + 封面（逐帧自己画、整屏排版、圆形人头、步骤条、一段话配一个画面、按语速配画面、说什么就出现什么效果、任意文稿通用、效果参数从口播句子里抽不写死、竖横版与各平台比例可选、音量自动对齐、封面换字换 logo）。**这是晚枫工作室自有账号的完整成片打法**，从选择素材来源 → 确认是否生成宽屏 → 确认文稿与语义分镜 → 准备素材 → 排画面 → 先看单张画面 → 出整条片子 → 最后检查 → 统一音量 → 写交付说明 → 做封面，一条龙，不联网找现成卡片代码、不装 Node、不起浏览器。先选择真人视频或文稿生成数字人，两条线都做语义 A/B 预分镜；真人始终可见，数字人 B-roll 无人像。数字人引擎内置，按阶段授权生成。日常随手拍碎片 vlog 不在这条线里，用姊妹技能「晚枫自动剪vlog」（mograph-vlog）。触发词：数字人混剪、文稿生成视频、自动剪辑、口播加动画、口播动效、给视频贴片、加花字、加数据卡、上下左右弹卡、晚枫专用、晚枫风格、我们自己的风格剪、Pro 版、mograph-pro、做封面、换个封面、封面换皮、换 logo、产品 logo、下 logo、下载 logo、logo 素材、加配图、找配图、加截图、素材采集、出样片、先出样片、品牌 logo 自动下载、提到品牌自动挂 logo、视频里放产品 logo。"
+description_zh: "9 块钱，你拿到一条能直接发的视频和一张配好的封面。给你一段口播视频，或者只给一段话就行。以前你要自己剪、自己配图、自己调声音、自己做封面，现在它全干：先剪掉废话（实测 3 分钟原话剪成 1 分 21 秒），再一句话配一个画面、你说的数字自己会动、提到的品牌 logo 它自己去官网找官方图挂上。26 项检查全程盯着，不用懂剪辑，也不用装软件。"
+description_en: "For 9 RMB you get one ready-to-post video plus a matching cover. Give it a talking-head clip, or just a script. Cutting, illustrations, audio levels and the cover used to be your job - now it does all of it: it drops the dead air (measured: 3 minutes of raw talking cut to 1 minute 21 seconds), matches one visual to every sentence, animates the numbers you mention, and pulls official brand logos straight from the source site when you name a brand. 26 checks run along the way, so no editing skills and no extra software are needed."
+version: 1.6.0
 agent_created: true
 author: 晚枫工作室
 license: MIT-0
@@ -76,6 +76,7 @@ metadata:
 - 「用文稿做数字人混剪」「演示部分用纯 B-roll，只在观点镜头出镜」
 - 「帮我给这条口播做成有版式的成片」「加花字 / 加数据卡 / 加截图标注」
 - 「做完顺便换张封面」「封面换皮」「把字改成 XX」
+- 「口播里提到 XX 的地方，把 XX 的 logo 放上去」「提到品牌就自动挂 logo」
 - 「这条原片太长太啰嗦，帮我剪一下」（只要 Step 0 也能单独跑）
 
 **不要用它**（明确转介）：
@@ -129,7 +130,7 @@ Step 0  · 确定可用文稿        → 真人先问删减授权；AI 生成无
 语义→效果 · 说什么出什么（贯穿主线 + 支线）→ 逐句标锚点 → 查 semantic-to-effect.md 基元库 → 参数从句子抽 → 逐帧真动（§3.8 / W24）
 数字人  · 按阶段准备素材      → plan → 已有媒体校验 / 配音试听 → 第一段出镜样段 → 补齐 → 回填完整时间轴
 Step A  · 定版式与设计令牌    → 抄 wanfeng-path.md §3 §4，建 mograph-task 工程；按选定画幅写 CANVAS（§3.9 / aspect-ratio.md §4），坐标参数化、横版用左右分栏骨架
-Step A2 · 配图素材采集        → 按主题找图/截图/做标注，登记来源 → visual-assets.md
+Step A2 · 配图素材采集        → 按主题找图/截图/做标注，登记来源 → visual-assets.md；A2-2 品牌名自动取官方 logo 并上屏 → brand-logo.md
 Step B  · 切场景表            → 按 wanfeng-path.md §5/§6 写 build_scenes()，逐句对齐 SRT；每句可视觉化表达都按 §3.8 配一个真动的效果
 Step C  · 静帧复核（秒级）    → 出 PNG，用 Read 工具真读图，改到干净再往下
 Step D  · 重渲全片            → 逐帧渲染 + ffmpeg 管道（约 6 分钟）
@@ -244,6 +245,11 @@ python3 scripts/cut_plan.py --video raw.MOV --out plan.json --apply base.mov
 
 规范见 `references/visual-assets.md`。三条硬判据（图上出现的东西必须正是那句口播在讲的 / 图上不可见的内容不能当证据 / 文件名与 OCR 命中都不等于证据成立）落到 W13–W15。
 
+**A2-2 · 品牌 Logo 自动采集（口播提到品牌名 → 自动挂官方 logo）**
+
+口播点名了品牌（GLM / MiniMax / WorkBuddy / Hy4-Flash…），就自动取该品牌的**官方 logo** 用进成片，用户不用自己找图：`python3 scripts/brand_scan.py --script 口播稿.md --out 品牌候选.md`（离线扫候选）→ `python3 scripts/brand_logo.py --brand GLM --site https://glm.cn --out <assets>/logos/GLM.png --manifest <assets>/asset-manifest.json`（取件 + 登记来源）。
+上屏三档与兜底见 [`references/brand-logo.md`](references/brand-logo.md)；**准确性与封面 logo 同一把尺子（W18 三关）**，落到 **W26**：三关全过才许上屏，取不到官方源就退成纯文字品牌名，不许拿近似 logo 硬凑。
+
 ### 3.4 Step B · 切场景表
 
 **手写，不靠正则。** 先用骨架脚本定位时间区间：
@@ -343,7 +349,7 @@ E 步**逐张读图**（W5），F 步两遍法 loudnorm 出 `-14.4 LUFS / TP -1.
 
 ---
 
-## 四、硬规则（W1–W25，不许违反）
+## 四、硬规则（W1–W26，不许违反）
 
 | # | 规则 | 违反的后果 |
 |---|---|---|
@@ -372,6 +378,7 @@ E 步**逐张读图**（W5），F 步两遍法 loudnorm 出 `-14.4 LUFS / TP -1.
 | **W23** | 参考外部动画项目前必须核实许可证（免费商用 + 可二开 + 可闭源），**结论落盘**；只借风格与运动语言，不搬源码/素材/字体/音频 | 版权风险；把第三方依赖条款带进自有代码 |
 | **W24** | **说什么出什么是主线通用能力**：任意文稿逐句标可视觉化锚点、每个锚点配一个**参数从该句抽取且有逐帧过程**的效果基元（查 `semantic-to-effect.md` §3 §4），并**落盘逐句对照表**验收覆盖；参数不许写死成上一期的值、文稿没说的不许编造；使用者用大白话提效果也按 §5 指令通道解析成「锚点/基元/参数」 | 换个使用者 / 换份稿子就退化成「随便贴几张静态卡」，宣传的「说什么出什么」当场穿帮；或把 72 号的 `6000→50000` 抄进别人的片子里 |
 | **W25** | 完整成片或样片在排版前确认一次「仅竖版 / 横竖双版 / 仅宽屏」；已明确不重问、不擅自多导出。分别用 `CANVAS` 和百分比安全区，横版走左右分栏、禁止拉伸 / 加黑边 / 直接裁切竖版；同时遵守 [`aspect-ratio.md`](references/aspect-ratio.md) §4.7 的原图标注、署名、配色、封面与归档规则 | 画幅未确认、人物变形或操作位置不明；混淆发布版本 |
+| **W26** | **视频内品牌 logo 只在口播真的点名该品牌时出现**，且三关全过：① 是这个品牌 ② 官方源 ③ 同一版本（`brand-logo.md` §3）；取不到官方源就退成纯文字，**不许拿近似 logo 硬凑**；每片上屏 ≤3 次，不得遮挡圆形人头与正文（W22） | 挂错 logo = 事实错误，比不好看严重得多；logo 刷屏抢走主效果 |
 
 > 完整版（含违反后果的细节）见 `references/wanfeng-path.md` §11。
 > W19–W23 的实证与可执行做法见 [`references/animation-first.md`](references/animation-first.md)。
@@ -400,6 +407,8 @@ mograph-pro/
 │   ├── cut_plan.py                     # Step 0 语义删减工具（v2.0.0）
 │   ├── verify_cuts.py                  # 71 号回归校验脚本
 │   ├── get_logo.py                     # Step H 联网取 logo（下载 / SVG转PNG / 去白底 / 裁留白 / 登记来源）
+│   ├── brand_scan.py                   # Step A2-2 离线扫品牌候选（不联网、不下载）
+│   ├── brand_logo.py                   # Step A2-2 按品牌名自动取官方 logo（扒官网 / Commons / GitHub）
 │   └── make_flow_diagram.py            # 重生成执行流总览图 assets/execution-flow.png
 ├── assets/
 │   └── execution-flow.png              # 双分支总览图（Pillow 2 倍超采样自绘）
@@ -411,6 +420,7 @@ mograph-pro/
 │   ├── wanfeng-cover.md                # ⭐ Step H 封面换皮（底图换字换 logo，人像不动）
 │   ├── xiaolvshu.md                    # Step I 小绿书/小红书贴图（3:4 公众号图片消息，问用户后做）
 │   ├── visual-assets.md                # ⭐ Step A2 配图素材采集规范
+│   ├── brand-logo.md                   # ⭐ Step A2-2 品牌 logo 自动采集（识别 / 取件 / 上屏 / 兜底 / W26）
 │   ├── digital-human.md                # 数字人分镜、阶段授权、完整时间轴与交付
 │   ├── digital-setup.md                # 后端配置、费用与故障处理
 │   ├── cut-feature.md                  # Step 0 删减功能说明（怎么单独跑 / 输出什么 / 核对清单）
@@ -471,7 +481,7 @@ ffmpeg 是系统依赖；**真人线不调用付费生成 API**。数字人线�
 5. **配图靠自己找，不保证有** —— 小众工具往往没有公开截图。找不到就退自动效卡，但**配图与口播对不上就是事故**，宁可少配几张。
 6. **真人分支不调用付费接口**；数字人生成可能付费，积分画面 + MiniMax 配音也有独立语音费。自托管 H3 固定画幅等限制见数字人参考；真实人脸、口型及云端效果待用户实跑。
 7. **横竖是两种构图，不能一个文件通吃** —— 默认竖版通发国内；横版要单独重排版出片（不是裁竖版），比例切换后所有圆头坐标 / 安全区都要重新静帧复核。各平台规格会调整，发布前以官方当期说明为准。
-8. **logo 能自己上网取，但取不准就不露** —— 本地没有合适的 logo 时可以联网下载（`scripts/get_logo.py`）。
+8. **logo 能自己上网取，但取不准就不露** —— 本地没有合适的 logo 时可以联网下载（`scripts/get_logo.py`）；**口播里提到的品牌也会自动取官方 logo**（`scripts/brand_logo.py` + `references/brand-logo.md`）。
    但官方源都拿不到、或拿不准是不是官方当期标识时，会退成「纯文字提产品名」，**不会拿近似 logo 硬凑**。
 
 ---

@@ -160,15 +160,38 @@ class RendererTests(unittest.TestCase):
     def test_effects_have_middle_frames_and_clamped_text(self):
         c = self.plan()['canvas']
         for kind in sorted(vr.EFFECTS):
-            effect = {'type': kind, 'text': 'Hello!', 'start': 0, 'duration': 1, 'x': .98, 'y': .98,
+            effect = {'type': kind, 'text': 'Hello 123', 'start': 0, 'duration': 1, 'x': .98, 'y': .98,
                       'size_px': 14, 'color': '#fff'}
             scene = {'duration': 1, 'effects': [effect]}
             base = Image.new('RGB', (160, 90), 'black')
+            # A patterned base proves that magnification and geometry really change the pixels.
+            pattern = ImageDraw.Draw(base)
+            for i in range(0, 160, 16):
+                pattern.line((i, 0, i, 90), fill=(90, 120, 160), width=3)
+            pattern.ellipse((20, 10, 90, 70), outline=(220, 180, 90), width=4)
             images = [vr.animate(base, scene, c, t).tobytes() for t in (0, .2, .6)]
             with self.subTest(kind=kind):
                 self.assertEqual(len(set(images)), 3)
                 x, y, w, h, _, _ = vr.effect_layout(effect, c)
                 self.assertTrue(0 <= x <= 160 - w and 0 <= y <= 90 - h)
+
+    def test_counter_rolls_to_the_written_number_and_progress_fill_is_capped(self):
+        c = self.plan()['canvas']
+        effect = {'type': 'counter', 'text': '第 42 期', 'start': 0, 'duration': 1, 'x': .1, 'y': .1,
+                  'size_px': 20, 'color': '#fff'}
+        scene = {'duration': 1, 'effects': [effect]}
+        base = Image.new('RGB', (160, 90), 'black')
+        rendered = []
+        for t in (0, .5, 1):
+            frame = vr.animate(base, scene, c, t)
+            rendered.append(frame.tobytes())
+        self.assertNotEqual(rendered[0], rendered[2])
+        self.assertEqual(len(set(rendered)), 3)
+        filled = {'type': 'progress', 'start': 0, 'duration': 1, 'x': .1, 'y': .5, 'size_px': 20,
+                  'color': '#fff', 'fill': .25}
+        self.assertEqual(vr.effect_layout(filled, c)[2], 100)
+        self.invalid(lambda p: p['scenes'][0]['effects'][0].update(fill=1.5), 'fill')
+        self.invalid(lambda p: p['scenes'][0]['effects'][0].update(fill=-.1), 'fill')
 
     def test_real_one_second_preview_has_audio_size_duration_and_animation(self):
         p = self.plan()

@@ -174,6 +174,9 @@
 
 `shows` 与 `proves` 两栏是判据 1 的落地形式——**写不出 `proves` 的图，说明它不该出现在这条片子里**。
 
+> **品牌 logo 也进这张表**（字段与上表一致，多一个 `logo_source_kind`）——
+> 口播提到品牌名时的自动取件与上屏见 [`brand-logo.md`](brand-logo.md)。
+
 ---
 
 ## 7. 兜底：找不到图怎么办
@@ -198,6 +201,7 @@
 | 标注风格 | 红框（6px / 圆角 9 / 只框一行）+ `① ② ③` | 渲染时叠加的高亮框 / 编号 chip / 箭头 |
 | 截图太扁看不清 | 改自绘卡片模拟 UI（`wanfeng-path.md` §5.5） | 换一张，或做成卡片 |
 | 能不能联网找图 | 能 | 能 |
+| 品牌 logo | 有（Step A2-2，`brand-logo.md`） | 无 |
 | 采集逻辑（三段式来源优先级 / 三条硬判据 / manifest 字段） | 完全相同 | 完全相同 |
 
 ---
@@ -219,7 +223,8 @@
 
 | 文件 | 内容 |
 |---|---|
-| `references/wanfeng-path.md` | 本线主规范（Step A2 在 §2.3，标注规范在 §5.6，红框配色铁律在 §5.7） |
+| `references/wanfeng-path.md` | 本线主规范（Step A2 在 §2.3，Step A2-2 品牌 logo 在 §2.4，标注规范在 §5.6，红框配色铁律在 §5.7） |
+| `references/brand-logo.md` | 品牌 logo 自动采集（Step A2-2：识别 / 取件 / 上屏 / 兜底 / W26） |
 | `references/wanfeng-cover.md` | Step H 封面换皮 |
 | `references/cut-feature.md` | 删减功能说明书（做底片用） |
 | `references/cut-rules.md` | 删减规则全文与实证数据 |

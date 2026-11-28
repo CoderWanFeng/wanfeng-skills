@@ -11,11 +11,42 @@ import subprocess
 import sys
 import tempfile
 
-from PIL import Image, ImageColor, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageChops, ImageColor, ImageDraw, ImageFont, ImageOps
 
 SCHEMA = 'mograph-vlog.plan/v1'
-EFFECTS = {'typewriter', 'stamp', 'arrow', 'progress', 'frame'}
+EFFECTS = {'typewriter', 'stamp', 'arrow', 'progress', 'frame', 'underline', 'pop', 'slide', 'highlight',
+           'counter', 'bar', 'hud', 'lens', 'scanline', 'line_boil', 'crosshatch', 'pixel', 'isometric'}
+TEXT_EFFECTS = {'typewriter', 'stamp', 'underline', 'pop', 'slide', 'highlight', 'counter', 'line_boil', 'crosshatch', 'pixel', 'isometric'}
 TRANSITIONS = {'cut', 'fade', 'wipeleft', 'slideleft', 'smoothup', 'circleopen'}
+
+
+def ease_out_cubic(t):
+    return 1 - (1 - t) ** 3
+
+
+def ease_out_quint(t):
+    return 1 - (1 - t) ** 5
+
+
+def ease_out_back(t, s=1.70158):
+    return 1 + (s + 1) * (t - 1) ** 3 + s * (t - 1) ** 2
+
+
+def boil(seed):
+    """Deterministic per-frame jitter in [-1, 1] for hand-drawn "line boil".
+
+    Python salts str hashing per process, so integer mixing is used instead —
+    the same frame index must always draw the same wobble (same code, same frame, same result).
+    """
+    x = (int(seed) * 2654435761 + 1013904223) & 0xFFFFFFFF
+    x ^= x >> 15
+    x = (x * 2246822519) & 0xFFFFFFFF
+    x ^= x >> 13
+    return (x % 2001 - 1000) / 1000
+
+
+def frame_index(t, c):
+    return int(round(t * c['fps']))
 FF = ['ffmpeg', '-nostdin', '-hide_banner', '-loglevel', 'error']
 LOCAL = ['-protocol_whitelist', 'file,pipe']
 
@@ -122,7 +153,7 @@ def validate(plan, out=None, preview_seconds=None):
         effects = s.setdefault('effects', [])
         check(isinstance(effects, list) and len(effects) <= 100, 'Invalid effects list')
         for e in effects:
-            fields(e, 'type text start duration x y size_px color', ('type', 'duration', 'x', 'y', 'color'))
+            fields(e, 'type text start duration x y size_px color fill', ('type', 'duration', 'x', 'y', 'color'))
             check(e['type'] in EFFECTS, 'Unknown effect')
             e['start'] = number(e.get('start', 0), 'effect start', 0, s['duration'])
             number(e['duration'], 'effect duration', 2 / fps, s['duration'])
@@ -130,9 +161,12 @@ def validate(plan, out=None, preview_seconds=None):
             for key in ('x', 'y'):
                 number(e[key], key, 0, 1)
             number(e.get('size_px', 32), 'size_px', 2, 4096)
+            if 'fill' in e:
+                number(e['fill'], 'fill', 0, 1)
             color(e['color'])
             check(isinstance(e.get('text', ''), str) and len(e.get('text', '')) <= 10000, 'Invalid effect text')
             check(e['type'] != 'typewriter' or bool(e.get('text')), 'typewriter needs text')
+            check(e['type'] not in TEXT_EFFECTS or bool(e.get('text')), f'{e["type"]} needs text')
             effect_layout(e, c)  # Fail on unrenderable text before opening output.
         s['_media'] = media(s['source'])
         check((s['_media']['kind'] != 'image' or s['source_in'] == 0), 'Images require source_in=0')
@@ -183,11 +217,16 @@ def color(value):
     return ImageColor.getrgb(value)
 
 
+def stroke_args(size):
+    """Text needs an outline so it stays readable over bright footage."""
+    return {'stroke_width': max(2, size // 16), 'stroke_fill': (0, 0, 0, 175)}
+
+
 def effect_layout(e, c):
     w, h = c['width'], c['height']
     size = int(e.get('size_px', max(2, min(w, h) * .07)))
     text, font = e.get('text', ''), None
-    if e['type'] in ('typewriter', 'stamp'):
+    if e['type'] in TEXT_EFFECTS:
         draw = ImageDraw.Draw(Image.new('RGB', (1, 1)))
         for size in range(size, 1, -1):
             font = ImageFont.truetype(c['font_path'], size, index=c.get('font_index', 0))
@@ -198,6 +237,16 @@ def effect_layout(e, c):
         else:
             raise ValueError('Text cannot fit canvas, even at 2px; shorten it or enlarge canvas')
         bw, bh = math.ceil((bw + 12) * 1.12), math.ceil((bh + 12) * 1.12)
+    elif e['type'] == 'progress':
+        bw, bh = min(w, size * 5), min(h, max(4, size // 6))
+    elif e['type'] == 'hud':
+        bw, bh = min(w, size * 5), min(h, size * 3)
+    elif e['type'] == 'bar':
+        bw, bh = min(w, size * 2), min(h, size * 5)
+    elif e['type'] == 'scanline':
+        bw, bh = min(w, size * 6), min(h, size * 3)
+    elif e['type'] == 'lens':
+        bw = bh = min(w, h, size * 2)
     else:
         bw, bh = min(w, size * (5 if e['type'] == 'frame' else 4)), min(h, size * (3 if e['type'] == 'frame' else 1))
     return min(round(e['x'] * w), w - bw), min(round(e['y'] * h), h - bh), bw, bh, size, font
@@ -215,25 +264,169 @@ def animate(image, scene, c, t):
         q = min(1, (t - e['start']) / min(.8, e['duration'] * .65))
         x, y, w, h, size, font = effect_layout(e, c)
         ink, line = color(e['color']), max(1, size // 10)
-        if e['type'] in ('typewriter', 'stamp'):
+        if e['type'] == 'typewriter':
             text = e.get('text', '')
-            if e['type'] == 'typewriter':
-                text = text[:int(len(text) * q)]
-                box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
-                draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), text, font=font, fill=ink, spacing=2)
+            text = text[:int(len(text) * q)]
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+        elif e['type'] == 'stamp':
+            text = e.get('text', '')
+            sticker = Image.new('RGBA', (w, h))
+            sd = ImageDraw.Draw(sticker)
+            sd.rounded_rectangle((3, 3, w - 4, h - 4), radius=max(1, size // 4), outline=ink, width=line)
+            box = sd.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            sd.multiline_text((6 - box[0], 6 - box[1]), text, font=font, fill=ink, spacing=2)
+            scale = max(.01, 1 + 2.70158 * (q - 1) ** 3 + 1.70158 * (q - 1) ** 2)
+            sticker = sticker.resize((max(1, round(w * scale / 1.12)), max(1, round(h * scale / 1.12))), Image.Resampling.LANCZOS)
+            layer.alpha_composite(sticker, (x + (w - sticker.width) // 2, y + (h - sticker.height) // 2))
+        elif e['type'] == 'underline':
+            text = e.get('text', '')
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+            ux = x + 6 + min(0, box[0])
+            uy = y + 6 + (box[3] - box[1]) + max(2, size // 7)
+            draw.rounded_rectangle((ux, uy, ux + max(0, (box[2] - box[0]) * q), uy + max(2, size // 9)),
+                                   radius=max(1, size // 18), fill=ink)
+        elif e['type'] == 'highlight':
+            text = e.get('text', '')
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            draw.rounded_rectangle((x, y, x + max(0, (box[2] - box[0]) * q), y + h - 1),
+                                   radius=max(1, size // 5), fill=tuple(ink[:3]) + (110,))
+            draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+        elif e['type'] == 'pop':
+            text = e.get('text', '')
+            pop = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+            pd = ImageDraw.Draw(pop)
+            box = pd.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            pd.multiline_text((6 - box[0], 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+            scale = max(.01, 1 + 2.70158 * (q - 1) ** 3 + 1.70158 * (q - 1) ** 2)
+            pop = pop.resize((max(1, round(w * scale / 1.12)), max(1, round(h * scale / 1.12))), Image.Resampling.LANCZOS)
+            layer.alpha_composite(pop, (x + (w - pop.width) // 2, y + (h - pop.height) // 2))
+        elif e['type'] == 'slide':
+            text = e.get('text', '')
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            shift = (1 - min(1, q / .7)) * (image.width * .5 if e['x'] < .5 else -image.width * .5)
+            draw.multiline_text((x + 6 - box[0] + shift, y + 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+        elif e['type'] == 'counter':
+            text = e.get('text', '')
+            parts = []
+            for part in re.split(r'(\d+)', text):
+                if part.isdigit():
+                    target = int(part)
+                    start = max(0, target - 40) if target > 40 else 0
+                    value = start + (target - start) * ease_out_quint(q)
+                    parts.append(str(int(round(value))).zfill(len(part)))
+                else:
+                    parts.append(part)
+            box = draw.multiline_textbbox((0, 0), ''.join(parts), font=font, spacing=2)
+            draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), ''.join(parts), font=font, fill=ink, spacing=2,
+                                **stroke_args(size))
+        elif e['type'] == 'bar':
+            draw.rectangle((x, y, x + w - 1, y + h - 1), outline=ink, width=line)
+            grown = h * ease_out_cubic(q) * e.get('fill', 1)
+            if grown > 0:
+                draw.rectangle((x, y + h - grown, x + w - 1, y + h - 1), fill=ink)
+        elif e['type'] == 'hud':
+            arm = min(w, h) * .3 * ease_out_cubic(min(1, q * 1.2))
+            thick = max(2, size // 10)
+            for cx, cy, dx, dy in ((x, y, 1, 1), (x + w - 1, y, -1, 1), (x, y + h - 1, 1, -1), (x + w - 1, y + h - 1, -1, -1)):
+                draw.line((cx, cy, cx + dx * arm, cy), fill=ink, width=thick)
+                draw.line((cx, cy, cx, cy + dy * arm), fill=ink, width=thick)
+            if q > .6:
+                gap = max(2, size // 12)
+                draw.rectangle((x + w // 2 - gap, y + h // 2 - gap, x + w // 2 + gap, y + h // 2 + gap), outline=ink, width=max(1, thick // 2))
+        elif e['type'] == 'scanline':
+            step = max(4, size // 8)
+            for yy in range(int(y), int(y + h), step):
+                draw.line((x, yy, x + w - 1, yy), fill=tuple(ink[:3]) + (70,), width=1)
+            band_y = y + ease_out_cubic(q) * (h + size) - size
+            draw.rectangle((x, band_y, x + w - 1, band_y + max(2, size // 6)), fill=tuple(ink[:3]) + (55,))
+        elif e['type'] == 'lens':
+            radius = max(4, w // 2)
+            cx = min(max(x + radius, radius), max(radius, image.width - radius))
+            cy = min(max(y + radius, radius), max(radius, image.height - radius))
+            zoom = 1.2 + 1.0 * ease_out_cubic(min(1, t / max(.001, scene['duration'])))
+            src = max(8, radius / zoom)
+            region = image.crop((int(cx - src), int(cy - src), int(cx + src), int(cy + src)))
+            region = region.resize((radius * 2, radius * 2), Image.Resampling.LANCZOS)
+            mask = Image.new('L', (radius * 2, radius * 2), 0)
+            ImageDraw.Draw(mask).ellipse((0, 0, radius * 2 - 1, radius * 2 - 1), fill=255)
+            layer.paste(region, (int(cx - radius), int(cy - radius)), mask)
+            draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), outline=ink, width=line)
+        elif e['type'] == 'line_boil':
+            # MG Styles 15 · 01 Line Boil / Anidoodle 手绘：字一个一个落，落下的每一帧都重新抖一遍，
+            # 边缘像逐帧手绘那样"沸腾"，而不是贴一张静止的字。
+            text = e.get('text', '')
+            shown = text[:max(1, math.ceil(len(text) * ease_out_cubic(q)))]
+            step = int(round(t * c['fps'] * 0.34))  # boil 每秒约重掷 10 次，靠帧号而不是随机数
+            amp = max(2, size // 13)
+            line_h = int(font.size * 1.18)
+            for row, chunk in enumerate(shown.split('\n')):
+                cursor_x = x + 6
+                for col, glyph in enumerate(chunk):
+                    if glyph != ' ':
+                        jx = round(boil(step * 31 + row * 7 + col) * amp)
+                        jy = round(boil(step * 57 + row * 11 + col * 3 + 911) * amp)
+                        draw.text((cursor_x + jx, y + 6 + row * line_h + jy), glyph, font=font, fill=ink, **stroke_args(size))
+                    cursor_x += font.getlength(glyph)
+        elif e['type'] == 'crosshatch':
+            # Animate · crosshatch：文字压在一块素描排线上，排线按时间由疏到密铺满，整块每秒轻微错位。
+            text = e.get('text', '')
+            step = int(round(t * c['fps'] * 0.34))
+            shift = (round(boil(step * 13) * 2), round(boil(step * 29 + 5) * 2))
+            tile = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+            td = ImageDraw.Draw(tile)
+            gap = max(4, int(size / (0.9 + 5.5 * ease_out_cubic(q))))  # 排线由疏到密，是"正在画"的过程
+            for off in range(0, w + h, gap):
+                td.line(((off - h, 0), (off, h)), fill=tuple(ink[:3]) + (115,), width=max(1, size // 22))
+            clip = Image.new('L', (w, h), 0)
+            ImageDraw.Draw(clip).rounded_rectangle((1, 1, w - 2, h - 2), radius=max(2, size // 6), fill=255)
+            tile.putalpha(ImageChops.multiply(tile.getchannel('A'), clip))
+            layer.alpha_composite(tile, (x + shift[0], y + shift[1]))
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            draw.multiline_text((x + 6 - box[0] + shift[0], y + 6 - box[1] + shift[1]), text, font=font,
+                                fill=ink, spacing=2, **stroke_args(size))
+        elif e['type'] == 'pixel':
+            # MG Styles 15 · 13 Pixel Art / Animate · pixel：先按大色块栅格化，格子随时间变细，
+            # 字从马赛克里一格格"解析"清楚；缩放只用最近邻，保证是硬边像素而不是糊字。
+            text = e.get('text', '')
+            tile = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+            td = ImageDraw.Draw(tile)
+            box = td.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            td.multiline_text((6 - box[0], 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
+            blocks = max(2, int(round(14 - 12 * ease_out_quint(q))))
+            coarse = tile.resize((max(1, w // blocks), max(1, h // blocks)), Image.Resampling.BILINEAR)
+            layer.alpha_composite(coarse.resize((w, h), Image.Resampling.NEAREST), (x, y))
+        elif e['type'] == 'isometric':
+            # MG Styles 15 · 02 Isometric 2.5D / Animate · isometric：文字旁边一块块等距板按时间长出来，
+            # 用来表达层级结构；板子是真的逐块画顶面加两侧面，不是整块淡入。
+            text = e.get('text', '')
+            plates = 3
+            unit = max(3, size // 3)
+            below = image.height - (y + h) - 2
+            if below >= unit * plates:
+                top = y + h + unit // 2          # 优先排在文字下方
             else:
-                sticker = Image.new('RGBA', (w, h))
-                sd = ImageDraw.Draw(sticker)
-                sd.rounded_rectangle((3, 3, w - 4, h - 4), radius=max(1, size // 4), outline=ink, width=line)
-                box = sd.multiline_textbbox((0, 0), text, font=font, spacing=2)
-                sd.multiline_text((6 - box[0], 6 - box[1]), text, font=font, fill=ink, spacing=2)
-                scale = max(.01, 1 + 2.70158 * (q - 1) ** 3 + 1.70158 * (q - 1) ** 2)
-                sticker = sticker.resize((max(1, round(w * scale / 1.12)), max(1, round(h * scale / 1.12))), Image.Resampling.LANCZOS)
-                layer.alpha_composite(sticker, (x + (w - sticker.width) // 2, y + (h - sticker.height) // 2))
+                top = max(unit, min(y + h // 2 - unit * plates // 2 + unit // 2, image.height - unit))
+            half_w = min(max(1, w // 2), int(size * 1.6))
+            cx = x + w // 2
+            for k in range(plates):
+                grow = ease_out_cubic(min(1, max(0, q * plates - k)))
+                if grow <= 0:
+                    continue
+                cy = top + k * unit
+                hw, hh = half_w * grow, max(2, unit // 2) * grow
+                draw.polygon([(cx, cy - hh), (cx + hw, cy), (cx, cy + hh), (cx - hw, cy)],
+                             fill=tuple(ink[:3]) + (int(120 * grow),), outline=ink, width=max(1, size // 22))
+                draw.line([(cx - hw, cy), (cx - hw, cy + hh * .55), (cx, cy + hh * 1.55), (cx + hw, cy + hh * .55), (cx + hw, cy)],
+                          fill=tuple(ink[:3]) + (int(80 * grow),), width=max(1, size // 26))
+            box = draw.multiline_textbbox((0, 0), text, font=font, spacing=2)
+            draw.multiline_text((x + 6 - box[0], y + 6 - box[1]), text, font=font, fill=ink, spacing=2, **stroke_args(size))
         elif e['type'] == 'progress':
             draw.rectangle((x, y, x + w - 1, y + h - 1), outline=ink, width=line)
+            target = e.get('fill', 1)
             if q > 0:
-                draw.rectangle((x, y, x + max(0, (w - 1) * q), y + h - 1), fill=ink)
+                draw.rectangle((x, y, x + max(0, (w - 1) * q * target), y + h - 1), fill=ink)
         else:
             points = [(x, y + h // 2), (x + w - 1, y + h // 2)] if e['type'] == 'arrow' else [
                 (x, y), (x + w - 1, y), (x + w - 1, y + h - 1), (x, y + h - 1), (x, y)]
